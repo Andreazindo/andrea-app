@@ -2,24 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
-
-async function getAvailableStock(variant: {
-  id: string;
-  trackInventory: boolean;
-  stock: number;
-}): Promise<number | null> {
-  if (variant.trackInventory) return variant.stock;
-
-  const components = await prisma.kitComponent.findMany({
-    where: { kitVariantId: variant.id },
-    include: { componentVariant: true },
-  });
-  if (components.length === 0) return null;
-
-  return Math.min(
-    ...components.map((c) => Math.floor(c.componentVariant.stock / c.quantity))
-  );
-}
+import { getAvailableStock } from "@/lib/inventory";
+import { addToCartAction } from "@/app/carrito/actions";
 
 export default async function ProductPage({
   params,
@@ -117,14 +101,26 @@ export default async function ProductPage({
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-lg font-semibold">{formatCents(variant.priceCents)}</span>
-                  <button
-                    type="button"
-                    disabled
-                    title="El carrito se habilita en el siguiente paso del proyecto"
-                    className="rounded-md bg-black/20 dark:bg-white/20 text-black/50 dark:text-white/50 px-4 py-2 text-sm font-medium cursor-not-allowed"
-                  >
-                    Agregar al carrito
-                  </button>
+                  {outOfStock ? (
+                    <button
+                      type="button"
+                      disabled
+                      className="rounded-md bg-black/20 dark:bg-white/20 text-black/50 dark:text-white/50 px-4 py-2 text-sm font-medium cursor-not-allowed"
+                    >
+                      Agotado
+                    </button>
+                  ) : (
+                    <form action={addToCartAction}>
+                      <input type="hidden" name="variantId" value={variant.id} />
+                      <input type="hidden" name="quantity" value={1} />
+                      <button
+                        type="submit"
+                        className="rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium hover:opacity-90"
+                      >
+                        Agregar al carrito
+                      </button>
+                    </form>
+                  )}
                 </div>
               </div>
             );
