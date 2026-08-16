@@ -1,0 +1,244 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------- Marcas ----------
+
+enum BrandCode {
+  DAVANA
+  ZINDO
+  PROSPERMIND
+  STERIL_MIL
+}
+
+model Brand {
+  id          String    @id @default(cuid())
+  code        BrandCode @unique
+  name        String
+  slug        String    @unique
+  description String?
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  categories Category[]
+  products   Product[]
+}
+
+// Agrupa productos dentro de una marca (ej. "Yoga Face", "Limpieza", "Perfumes", "Suplementos")
+model Category {
+  id        String   @id @default(cuid())
+  brandId   String
+  brand     Brand    @relation(fields: [brandId], references: [id])
+  name      String
+  slug      String
+  createdAt DateTime @default(now())
+
+  products Product[]
+
+  @@unique([brandId, slug])
+}
+
+// ---------- Catálogo ----------
+
+enum ProductType {
+  SIMPLE // producto suelto
+  KIT // combo armado a partir de otros productos (BOM via KitComponent)
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  brandId     String
+  brand       Brand       @relation(fields: [brandId], references: [id])
+  categoryId  String?
+  category    Category?   @relation(fields: [categoryId], references: [id])
+  name        String
+  slug        String
+  description String?
+  imageUrl    String?
+  type        ProductType @default(SIMPLE)
+  active      Boolean     @default(true)
+
+  // Steril Mil (por ahora) no se vende en el sistema: el catálogo solo enlaza a Mercado Libre.
+  isExternal  Boolean @default(false)
+  externalUrl String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  variants ProductVariant[]
+
+  @@unique([brandId, slug])
+}
+
+model ProductVariant {
+  id              String   @id @default(cuid())
+  productId       String
+  product         Product  @relation(fields: [productId], references: [id])
+  sku             String   @unique
+  name            String // ej. "Kit con Guasha Eléctrica", "500 ml"
+  priceCents      Int
+  currency        String   @default("MXN")
+  // Los kits descuentan stock de sus componentes (KitComponent) y no llevan stock propio.
+  trackInventory  Boolean  @default(true)
+  stock           Int      @default(0)
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  kitComponents KitComponent[] @relation("KitVariant")
+  usedInKits    KitComponent[] @relation("ComponentVariant")
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+}
+
+// Receta del kit: qué variantes componentes y en qué cantidad se descuentan al vender el kit.
+model KitComponent {
+  id                 String         @id @default(cuid())
+  kitVariantId       String
+  kitVariant         ProductVariant @relation("KitVariant", fields: [kitVariantId], references: [id])
+  componentVariantId String
+  componentVariant   ProductVariant @relation("ComponentVariant", fields: [componentVariantId], references: [id])
+  quantity           Int            @default(1)
+
+  @@unique([kitVariantId, componentVariantId])
+}
+
+// ---------- Usuarios ----------
+
+enum UserRole {
+  CUSTOMER
+  ADMIN // administradoras: catálogo, pedidos, clientes (sin reportes financieros completos)
+  OWNER // Andrea: acceso total
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  phone        String?
+  role         UserRole @default(CUSTOMER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  cart    Cart?
+  orders  Order[]
+  payments Payment[] @relation("RecordedByAdmin")
+}
+
+// ---------- Carrito ----------
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  items     CartItem[]
+}
+
+model CartItem {
+  id               String         @id @default(cuid())
+  cartId           String
+  cart             Cart           @relation(fields: [cartId], references: [id])
+  productVariantId String
+  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
+  quantity         Int            @default(1)
+  createdAt        DateTime       @default(now())
+
+  @@unique([cartId, productVariantId])
+}
+
+// ---------- Pedidos ----------
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAID
+  PROCESSING
+  SHIPPED
+  CANCELLED
+  REFUNDED
+}
+
+model Order {
+  id     String      @id @default(cuid())
+  userId String
+  user   User        @relation(fields: [userId], references: [id])
+  status OrderStatus @default(PENDING_PAYMENT)
+
+  subtotalCents Int
+  shippingCents Int    @default(0)
+  totalCents    Int
+  currency      String @default("MXN")
+
+  shippingName        String
+  shippingPhone       String
+  shippingAddressLine String
+  shippingCity        String
+  shippingState       String
+  shippingZip         String
+  shippingCountry     String @default("MX")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  items    OrderItem[]
+  payments Payment[]
+}
+
+model OrderItem {
+  id               String  @id @default(cuid())
+  orderId          String
+  order            Order   @relation(fields: [orderId], references: [id])
+  productVariantId String
+  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
+  brandCode        BrandCode // desnormalizado para reporte de ventas por marca
+  productName      String // snapshot al momento de la compra
+  variantName      String
+  unitPriceCents   Int
+  quantity         Int
+}
+
+// ---------- Pagos ----------
+
+enum PaymentMethod {
+  MERCADO_PAGO
+  PAYPAL
+  MANUAL_TRANSFER
+  MANUAL_CASH
+}
+
+enum PaymentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REFUNDED
+}
+
+model Payment {
+  id         String        @id @default(cuid())
+  orderId    String
+  order      Order         @relation(fields: [orderId], references: [id])
+  method     PaymentMethod
+  status     PaymentStatus @default(PENDING)
+  amountCents Int
+  currency   String        @default("MXN")
+  externalId String? // id de la transacción en Mercado Pago / PayPal
+  rawPayload Json? // respuesta cruda del procesador, para depuración
+
+  // Quién registró el pago manualmente (transferencia/efectivo). Null para pagos automáticos.
+  recordedByUserId String?
+  recordedByUser   User?   @relation("RecordedByAdmin", fields: [recordedByUserId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
