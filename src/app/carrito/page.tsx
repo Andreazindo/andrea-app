@@ -88,14 +88,12 @@ export default async function CarritoPage() {
             <span className="text-lg font-semibold">{formatCents(total)}</span>
           </div>
 
-          <button
-            type="button"
-            disabled
-            title="El pago se habilita en el siguiente paso del proyecto"
-            className="mt-6 w-full rounded-md bg-black/20 dark:bg-white/20 text-black/50 dark:text-white/50 px-4 py-3 text-sm font-medium cursor-not-allowed"
+          <Link
+            href="/checkout"
+            className="mt-6 block w-full text-center rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-3 text-sm font-medium hover:opacity-90"
           >
             Continuar al pago
-          </button>
+          </Link>
         </>
       )}
     </div>
