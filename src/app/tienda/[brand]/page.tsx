@@ -1,21 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Jost, Mulish } from "next/font/google";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { ZindoLogo } from "@/components/zindo/ZindoLogo";
-
-const zindoHeadingFont = Jost({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-zindo-heading",
-});
-const zindoBodyFont = Mulish({
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-zindo-body",
-});
+import { zindoFontVars } from "@/components/zindo/theme";
 
 async function getBrandWithCatalog(brandSlug: string) {
   return prisma.brand.findUnique({
@@ -104,7 +93,7 @@ type BrandWithCatalog = NonNullable<Awaited<ReturnType<typeof getBrandWithCatalo
 
 function ZindoBrandPage({ brand }: { brand: BrandWithCatalog }) {
   return (
-    <div className={`${zindoHeadingFont.variable} ${zindoBodyFont.variable}`} style={{ backgroundColor: "#EEE7DF" }}>
+    <div className={zindoFontVars} style={{ backgroundColor: "#EEE7DF" }}>
       <section className="relative flex flex-col items-center justify-center py-24 px-4 text-center overflow-hidden">
         <Image
           src="/zindo/marble.jpg"
