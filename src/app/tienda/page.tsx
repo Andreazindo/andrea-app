@@ -1,5 +1,6 @@
-import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { ZindoBrandCard } from "@/components/zindo/BrandCard";
+import { zindoColors } from "@/components/zindo/theme";
 
 export default async function TiendaPage() {
   const brands = await prisma.brand.findMany({
@@ -9,24 +10,22 @@ export default async function TiendaPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
-      <h1 className="text-2xl font-bold tracking-tight mb-6">Tienda</h1>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <h1
+        className="text-2xl uppercase tracking-[0.15em] mb-6"
+        style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
+      >
+        Tienda
+      </h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {brands.map((brand) => (
-          <li key={brand.id}>
-            <Link
-              href={`/tienda/${brand.slug}`}
-              className="block rounded-lg border border-black/10 dark:border-white/15 p-6 hover:border-black/30 dark:hover:border-white/40 transition-colors"
-            >
-              <h2 className="text-lg font-semibold">{brand.name}</h2>
-              {brand.description && (
-                <p className="mt-1 text-sm text-black/60 dark:text-white/60">
-                  {brand.description}
-                </p>
-              )}
-            </Link>
-          </li>
+          <ZindoBrandCard
+            key={brand.id}
+            href={`/tienda/${brand.slug}`}
+            name={brand.name}
+            description={brand.description}
+          />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

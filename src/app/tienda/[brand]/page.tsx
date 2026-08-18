@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { ZindoLogo } from "@/components/zindo/ZindoLogo";
-import { zindoFontVars } from "@/components/zindo/theme";
+import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
 
 async function getBrandWithCatalog(brandSlug: string) {
   return prisma.brand.findUnique({
@@ -35,85 +35,22 @@ export default async function BrandPage({
 
   if (!brand || !brand.active) notFound();
 
-  if (brand.code === "ZINDO") {
-    return <ZindoBrandPage brand={brand} />;
-  }
-
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
-      <h1 className="text-2xl font-bold tracking-tight">{brand.name}</h1>
-      {brand.description && (
-        <p className="mt-2 text-black/60 dark:text-white/60">{brand.description}</p>
-      )}
-
-      <div className="mt-8 space-y-10">
-        {brand.categories.map((category) => {
-          const products = category.products;
-          if (products.length === 0) return null;
-          return (
-            <section key={category.id}>
-              <h2 className="text-lg font-semibold mb-4">{category.name}</h2>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {products.map((product) => {
-                  const prices = product.variants.map((v) => v.priceCents);
-                  const minPrice = prices.length ? Math.min(...prices) : null;
-                  return (
-                    <li key={product.id}>
-                      <Link
-                        href={`/tienda/${brand.slug}/${product.slug}`}
-                        className="block h-full rounded-lg border border-black/10 dark:border-white/15 p-4 hover:border-black/30 dark:hover:border-white/40 transition-colors"
-                      >
-                        <h3 className="font-medium">{product.name}</h3>
-                        {product.description && (
-                          <p className="mt-1 text-sm text-black/60 dark:text-white/60 line-clamp-2">
-                            {product.description}
-                          </p>
-                        )}
-                        <p className="mt-3 text-sm font-semibold">
-                          {product.isExternal
-                            ? "Ver en Mercado Libre"
-                            : minPrice !== null
-                            ? `Desde ${formatCents(minPrice)}`
-                            : "Consultar precio"}
-                        </p>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </section>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-type BrandWithCatalog = NonNullable<Awaited<ReturnType<typeof getBrandWithCatalog>>>;
-
-function ZindoBrandPage({ brand }: { brand: BrandWithCatalog }) {
-  return (
-    <div className={zindoFontVars} style={{ backgroundColor: "#EEE7DF" }}>
+    <div className={zindoFontVars} style={{ backgroundColor: zindoColors.ivory }}>
       <section className="relative flex flex-col items-center justify-center py-24 px-4 text-center overflow-hidden">
-        <Image
-          src="/zindo/marble.jpg"
-          alt=""
-          fill
-          priority
-          className="object-cover"
-        />
+        <Image src="/zindo/marble.jpg" alt="" fill priority className="object-cover" />
         <div className="relative z-10">
-          <ZindoLogo color="#1A1A1A" className="w-72 sm:w-96 mx-auto" />
+          <ZindoLogo color={zindoColors.ink} className="w-72 sm:w-96 mx-auto" />
           <p
             className="mt-6 text-sm sm:text-base tracking-[0.2em] uppercase"
-            style={{ fontFamily: "var(--font-zindo-body)", color: "#0D3B36" }}
+            style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.green }}
           >
-            &ldquo;Tu mente crea tu realidad&rdquo;
+            {brand.code === "ZINDO" ? "“Tu mente crea tu realidad”" : brand.name}
           </p>
           {brand.description && (
             <p
               className="mt-4 max-w-xl mx-auto text-sm sm:text-base"
-              style={{ fontFamily: "var(--font-zindo-body)", color: "#1A1A1A" }}
+              style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink }}
             >
               {brand.description}
             </p>
@@ -129,7 +66,7 @@ function ZindoBrandPage({ brand }: { brand: BrandWithCatalog }) {
             <section key={category.id}>
               <h2
                 className="text-xl sm:text-2xl uppercase tracking-[0.15em] mb-6"
-                style={{ fontFamily: "var(--font-zindo-heading)", color: "#0D3B36" }}
+                style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
               >
                 {category.name}
               </h2>
@@ -142,18 +79,22 @@ function ZindoBrandPage({ brand }: { brand: BrandWithCatalog }) {
                       <Link
                         href={`/tienda/${brand.slug}/${product.slug}`}
                         className="block h-full rounded-lg bg-white/70 border p-5 transition-colors hover:border-[#C9A15B]"
-                        style={{ borderColor: "#9CBA9D", fontFamily: "var(--font-zindo-body)" }}
+                        style={{ borderColor: zindoColors.sage, fontFamily: "var(--font-zindo-body)" }}
                       >
-                        <h3 className="font-semibold" style={{ color: "#1A1A1A" }}>
+                        <h3 className="font-semibold" style={{ color: zindoColors.ink }}>
                           {product.name}
                         </h3>
                         {product.description && (
-                          <p className="mt-1 text-sm line-clamp-2" style={{ color: "#1A1A1A99" }}>
+                          <p className="mt-1 text-sm line-clamp-2" style={{ color: zindoColors.ink, opacity: 0.6 }}>
                             {product.description}
                           </p>
                         )}
-                        <p className="mt-3 text-sm font-semibold" style={{ color: "#0D3B36" }}>
-                          {minPrice !== null ? `Desde ${formatCents(minPrice)}` : "Consultar precio"}
+                        <p className="mt-3 text-sm font-semibold" style={{ color: zindoColors.green }}>
+                          {product.isExternal
+                            ? "Ver en Mercado Libre"
+                            : minPrice !== null
+                            ? `Desde ${formatCents(minPrice)}`
+                            : "Consultar precio"}
                         </p>
                       </Link>
                     </li>

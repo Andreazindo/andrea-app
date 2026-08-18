@@ -1,5 +1,8 @@
-import Link from "next/link";
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
+import { ZindoLogo } from "@/components/zindo/ZindoLogo";
+import { ZindoBrandCard } from "@/components/zindo/BrandCard";
+import { zindoColors } from "@/components/zindo/theme";
 
 export default async function HomePage() {
   const brands = await prisma.brand.findMany({
@@ -8,34 +11,43 @@ export default async function HomePage() {
   });
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-12">
-      <section className="mb-12 text-center">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
-          Belleza, bienestar y acompañamiento
-        </h1>
-        <p className="mt-3 text-black/60 dark:text-white/60 max-w-2xl mx-auto">
-          Cuatro marcas, un solo lugar. Conoce Davana, Zindo, ProsperMind y Steril Mil.
-        </p>
+    <div>
+      <section className="relative flex flex-col items-center justify-center py-24 px-4 text-center overflow-hidden">
+        <Image src="/zindo/marble.jpg" alt="" fill priority className="object-cover" />
+        <div className="relative z-10">
+          <ZindoLogo color={zindoColors.ink} className="w-72 sm:w-96 mx-auto" />
+          <p
+            className="mt-6 text-sm sm:text-base tracking-[0.2em] uppercase"
+            style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.green }}
+          >
+            &ldquo;Tu mente crea tu realidad&rdquo;
+          </p>
+          <p
+            className="mt-4 max-w-xl mx-auto text-sm sm:text-base"
+            style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink }}
+          >
+            Belleza, bienestar y acompañamiento. Un solo lugar para Davana, Zindo, ProsperMind y Steril Mil.
+          </p>
+        </div>
       </section>
 
-      <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {brands.map((brand) => (
-          <Link
-            key={brand.id}
-            href={`/tienda/${brand.slug}`}
-            className="rounded-lg border border-black/10 dark:border-white/15 p-6 hover:border-black/30 dark:hover:border-white/40 transition-colors"
-          >
-            <h2 className="text-xl font-semibold">{brand.name}</h2>
-            {brand.description && (
-              <p className="mt-2 text-sm text-black/60 dark:text-white/60">
-                {brand.description}
-              </p>
-            )}
-            <span className="mt-4 inline-block text-sm font-medium">
-              Ver catálogo →
-            </span>
-          </Link>
-        ))}
+      <section className="mx-auto max-w-5xl px-4 py-16">
+        <h2
+          className="text-xl sm:text-2xl uppercase tracking-[0.15em] mb-6 text-center"
+          style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
+        >
+          Nuestras marcas
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {brands.map((brand) => (
+            <ZindoBrandCard
+              key={brand.id}
+              href={`/tienda/${brand.slug}`}
+              name={brand.name}
+              description={brand.description}
+            />
+          ))}
+        </div>
       </section>
     </div>
   );
