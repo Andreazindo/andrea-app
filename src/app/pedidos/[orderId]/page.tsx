@@ -30,7 +30,9 @@ export default async function PedidoPage({
     include: { items: true, payments: true },
   });
 
-  if (!order || order.userId !== session.user.id) notFound();
+  const isOwner = order?.userId === session.user.id;
+  const isStaff = session.user.role === "ADMIN" || session.user.role === "OWNER";
+  if (!order || (!isOwner && !isStaff)) notFound();
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
@@ -68,7 +70,7 @@ export default async function PedidoPage({
         </p>
       </div>
 
-      {order.status === "PENDING_PAYMENT" ? (
+      {order.status === "PENDING_PAYMENT" && isOwner ? (
         <div className="space-y-3">
           <h2 className="text-sm font-semibold">Elige cómo pagar</h2>
 
