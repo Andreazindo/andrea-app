@@ -47,6 +47,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                   <Link href="/carrito" className="hover:underline">
                     Carrito
                   </Link>
+                  {(session.user.role === "ADMIN" || session.user.role === "OWNER") && (
+                    <Link href="/admin/ventas/nueva" className="hover:underline">
+                      Registrar venta
+                    </Link>
+                  )}
                   <span className="text-black/50 dark:text-white/50 hidden sm:inline">
                     {session.user.name}
                   </span>
