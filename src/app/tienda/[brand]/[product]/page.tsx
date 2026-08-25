@@ -4,18 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { getAvailableStock } from "@/lib/inventory";
 import { addToCartAction } from "@/app/carrito/actions";
+import { ProductGallery } from "@/components/zindo/ProductGallery";
 import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
-import type { Product, ProductVariant, KitComponent } from "@/generated/prisma/client";
-
-type VariantWithStock = {
-  variant: ProductVariant & {
-    kitComponents: (KitComponent & {
-      componentVariant: ProductVariant & { product: Product };
-    })[];
-  };
-  availableStock: number | null;
-};
-
 export default async function ProductPage({
   params,
 }: {
@@ -35,6 +25,7 @@ export default async function ProductPage({
           kitComponents: { include: { componentVariant: { include: { product: true } } } },
         },
       },
+      images: { orderBy: { position: "asc" } },
     },
   });
 
@@ -49,7 +40,7 @@ export default async function ProductPage({
 
   return (
     <div className={zindoFontVars} style={{ backgroundColor: zindoColors.ivory, minHeight: "100%" }}>
-      <div className="mx-auto max-w-3xl px-4 py-12">
+      <div className="mx-auto max-w-5xl px-4 py-12">
         <nav className="text-sm mb-6" style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.green }}>
           <Link href={`/tienda/${brand.slug}`} className="hover:underline">
             {brand.name}
@@ -58,19 +49,25 @@ export default async function ProductPage({
           <span>{product.name}</span>
         </nav>
 
-        <h1
-          className="text-2xl sm:text-3xl uppercase tracking-[0.1em]"
-          style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
-        >
-          {product.name}
-        </h1>
-        {product.description && (
-          <p className="mt-3" style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink }}>
-            {product.description}
-          </p>
-        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div className="md:max-w-md">
+            <ProductGallery name={product.name} images={product.images} />
+          </div>
 
-        {product.isExternal ? (
+          <div>
+            <h1
+              className="text-2xl sm:text-3xl uppercase tracking-[0.1em]"
+              style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
+            >
+              {product.name}
+            </h1>
+            {product.description && (
+              <p className="mt-3" style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink }}>
+                {product.description}
+              </p>
+            )}
+
+            {product.isExternal ? (
           <div className="mt-8 rounded-lg bg-white/70 border p-6" style={{ borderColor: zindoColors.sage }}>
             <p className="text-sm mb-4" style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink }}>
               Este producto se vende en Mercado Libre.
@@ -153,7 +150,9 @@ export default async function ProductPage({
               );
             })}
           </div>
-        )}
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

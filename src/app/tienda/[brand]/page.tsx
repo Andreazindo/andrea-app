@@ -1,9 +1,9 @@
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { ZindoLogo } from "@/components/zindo/ZindoLogo";
+import { ProductCard } from "@/components/zindo/ProductCard";
 import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
 
 async function getBrandWithCatalog(brandSlug: string) {
@@ -16,7 +16,10 @@ async function getBrandWithCatalog(brandSlug: string) {
           products: {
             where: { active: true },
             orderBy: { name: "asc" },
-            include: { variants: { where: { active: true } } },
+            include: {
+              variants: { where: { active: true } },
+              images: { orderBy: { position: "asc" } },
+            },
           },
         },
       },
@@ -70,33 +73,24 @@ export default async function BrandPage({
               >
                 {category.name}
               </h2>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {products.map((product) => {
                   const prices = product.variants.map((v) => v.priceCents);
                   const minPrice = prices.length ? Math.min(...prices) : null;
+                  const priceLabel = product.isExternal
+                    ? "Ver en Mercado Libre"
+                    : minPrice !== null
+                    ? `Desde ${formatCents(minPrice)}`
+                    : "Consultar precio";
                   return (
                     <li key={product.id}>
-                      <Link
+                      <ProductCard
                         href={`/tienda/${brand.slug}/${product.slug}`}
-                        className="block h-full rounded-lg bg-white/70 border p-5 transition-colors hover:border-[#C9A15B]"
-                        style={{ borderColor: zindoColors.sage, fontFamily: "var(--font-zindo-body)" }}
-                      >
-                        <h3 className="font-semibold" style={{ color: zindoColors.ink }}>
-                          {product.name}
-                        </h3>
-                        {product.description && (
-                          <p className="mt-1 text-sm line-clamp-2" style={{ color: zindoColors.ink, opacity: 0.6 }}>
-                            {product.description}
-                          </p>
-                        )}
-                        <p className="mt-3 text-sm font-semibold" style={{ color: zindoColors.green }}>
-                          {product.isExternal
-                            ? "Ver en Mercado Libre"
-                            : minPrice !== null
-                            ? `Desde ${formatCents(minPrice)}`
-                            : "Consultar precio"}
-                        </p>
-                      </Link>
+                        name={product.name}
+                        description={product.description}
+                        priceLabel={priceLabel}
+                        images={product.images}
+                      />
                     </li>
                   );
                 })}
