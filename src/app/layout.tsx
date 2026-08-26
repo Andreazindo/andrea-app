@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { auth, signOut } from "@/lib/auth";
-import { ZindoLogo } from "@/components/zindo/ZindoLogo";
 import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
 import "./globals.css";
 
@@ -24,7 +23,8 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <header className="border-b" style={{ borderColor: zindoColors.sage, fontFamily: "var(--font-zindo-body)" }}>
           <div className="mx-auto max-w-5xl px-4 py-3 flex items-center justify-between">
             <Link href="/" className="flex items-center">
-              <ZindoLogo color={zindoColors.ink} className="h-9 w-auto" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/zindo/monograma.png" alt="Zindo" className="h-9 w-auto" />
             </Link>
             <nav className="flex items-center gap-4 text-sm">
               <Link href="/tienda" className="hover:underline" style={{ color: zindoColors.green }}>

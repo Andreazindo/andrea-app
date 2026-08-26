@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ZindoLogo } from "@/components/zindo/ZindoLogo";
 import { zindoColors } from "@/components/zindo/theme";
 
 export function ProductCard({
@@ -44,7 +43,8 @@ export function ProductCard({
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <ZindoLogo color={zindoColors.sage} className="w-16 opacity-60" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/zindo/monograma.png" alt="" className="w-16 opacity-40" />
           </div>
         )}
 

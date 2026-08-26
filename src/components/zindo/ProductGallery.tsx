@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { ZindoLogo } from "@/components/zindo/ZindoLogo";
 import { zindoColors } from "@/components/zindo/theme";
 
 export function ProductGallery({
@@ -24,7 +23,8 @@ export function ProductGallery({
           <img src={images[index].url} alt={name} className="h-full w-full object-cover" />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <ZindoLogo color={zindoColors.sage} className="w-24 opacity-60" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/zindo/monograma.png" alt="" className="w-24 opacity-40" />
           </div>
         )}
       </div>
