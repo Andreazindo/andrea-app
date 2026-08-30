@@ -19,6 +19,7 @@ export default async function ProductPage({
   const product = await prisma.product.findUnique({
     where: { brandId_slug: { brandId: brand.id, slug: productSlug } },
     include: {
+      category: true,
       variants: {
         where: { active: true },
         include: {
@@ -31,6 +32,13 @@ export default async function ProductPage({
 
   if (!product || !product.active) notFound();
 
+  // Los productos de la categoría "Programa" se muestran solo en Evolución Personal,
+  // no en el listado de Tienda Wellness, así que su botón de volver debe apuntar ahí.
+  const back =
+    product.category?.slug === "programa"
+      ? { href: "/evolucion-personal", label: "Evolución Personal" }
+      : { href: "/tienda", label: "Tienda Wellness" };
+
   const variantsWithStock = await Promise.all(
     product.variants.map(async (variant) => ({
       variant,
@@ -42,7 +50,7 @@ export default async function ProductPage({
     <div className={zindoFontVars} style={{ backgroundColor: zindoColors.ivory, minHeight: "100%" }}>
       <div className="mx-auto max-w-5xl px-4 py-12">
         <nav className="mb-6 flex items-center gap-2">
-          <ZindoBackLink href="/tienda" label="Tienda Wellness" />
+          <ZindoBackLink href={back.href} label={back.label} />
           <span className="text-sm" style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink, opacity: 0.5 }}>
             / {product.name}
           </span>
