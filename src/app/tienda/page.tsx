@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { ZindoBrandCard } from "@/components/zindo/BrandCard";
 import { zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
+import { getSiteContent } from "@/lib/site-content";
 
 const CATEGORY_ORDER = ["yoga-face", "limpieza", "suplementos", "esencias", "catalogo-ml"];
 
@@ -23,7 +24,10 @@ async function getWellnessCategories() {
 }
 
 export default async function TiendaPage() {
-  const categories = await getWellnessCategories();
+  const [categories, content] = await Promise.all([
+    getWellnessCategories(),
+    getSiteContent(["tienda_tagline"] as const),
+  ]);
 
   return (
     <div>
@@ -40,7 +44,7 @@ export default async function TiendaPage() {
             className="mt-3 max-w-lg mx-auto text-sm sm:text-base"
             style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink }}
           >
-            Elige lo que suma a tu bienestar.
+            {content.tienda_tagline}
           </p>
         </div>
       </section>

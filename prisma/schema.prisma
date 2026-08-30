@@ -255,3 +255,25 @@ model Payment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// ---------- Contenido editable del sitio ----------
+
+// Textos sueltos de las páginas (tagline del hero, descripciones, mail/whatsapp/redes de Contacto, etc.)
+// editables desde /admin/contenido sin necesidad de tocar código.
+model SiteContent {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model SalesPoint {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  position    Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([position])
+}

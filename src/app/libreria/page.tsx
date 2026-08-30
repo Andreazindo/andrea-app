@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ZindoBrandCard } from "@/components/zindo/BrandCard";
 import { zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
+import { getSiteContent } from "@/lib/site-content";
 
 const RECURSOS = [
   { slug: "detox-emocional", name: "Detox Emocional", description: "Libera lo que ya no necesitas cargar." },
@@ -13,7 +14,9 @@ const RECURSOS = [
   { slug: "meditaciones", name: "Meditaciones", description: "Audios guiados para pausar y respirar." },
 ];
 
-export default function LibreriaPage() {
+export default async function LibreriaPage() {
+  const content = await getSiteContent(["libreria_tagline"] as const);
+
   return (
     <div>
       <section className="relative flex flex-col items-center justify-center py-16 px-4 text-center overflow-hidden">
@@ -29,7 +32,7 @@ export default function LibreriaPage() {
             className="mt-3 max-w-lg mx-auto text-sm sm:text-base"
             style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink }}
           >
-            Cuestiona · Aprende · Expande.
+            {content.libreria_tagline}
           </p>
         </div>
       </section>

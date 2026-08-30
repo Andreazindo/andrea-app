@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ZindoBrandCard } from "@/components/zindo/BrandCard";
 import { zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
+import { getSiteContent } from "@/lib/site-content";
 
 const CURSOS = [
   { slug: "redefiniendo-el-exito", name: "Redefiniendo el éxito" },
@@ -11,7 +12,9 @@ const CURSOS = [
   { slug: "observa-crea", name: "Observa, crea" },
 ];
 
-export default function EvolucionPersonalPage() {
+export default async function EvolucionPersonalPage() {
+  const content = await getSiteContent(["evolucion_tagline"] as const);
+
   return (
     <div>
       <section className="relative flex flex-col items-center justify-center py-16 px-4 text-center overflow-hidden">
@@ -27,7 +30,7 @@ export default function EvolucionPersonalPage() {
             className="mt-3 max-w-lg mx-auto text-sm sm:text-base"
             style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink }}
           >
-            Conoce tu mente. Transforma tu realidad.
+            {content.evolucion_tagline}
           </p>
         </div>
       </section>
