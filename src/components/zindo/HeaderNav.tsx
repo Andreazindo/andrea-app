@@ -5,6 +5,7 @@ import Link from "next/link";
 import { zindoColors } from "@/components/zindo/theme";
 
 const linkStyle = { color: zindoColors.green };
+const linkClass = "text-sm whitespace-nowrap hover:underline";
 
 function CartIcon() {
   return (
@@ -49,34 +50,34 @@ export function HeaderNav({
     <>
       {userName ? (
         <>
-          <span className="text-sm" style={{ color: zindoColors.ink, opacity: 0.5 }}>
+          <span className="text-sm whitespace-nowrap" style={{ color: zindoColors.ink, opacity: 0.5 }}>
             {userName}
           </span>
           <form action={logoutAction}>
-            <button type="submit" onClick={close} className="text-sm hover:underline" style={linkStyle}>
+            <button type="submit" onClick={close} className={linkClass} style={linkStyle}>
               Cerrar sesión
             </button>
           </form>
         </>
       ) : (
         <>
-          <Link href="/login" onClick={close} className="text-sm hover:underline" style={linkStyle}>
+          <Link href="/login" onClick={close} className={linkClass} style={linkStyle}>
             Iniciar sesión
           </Link>
-          <Link href="/registro" onClick={close} className="text-sm hover:underline" style={linkStyle}>
+          <Link href="/registro" onClick={close} className={linkClass} style={linkStyle}>
             Crear cuenta
           </Link>
         </>
       )}
-      <Link href="/tienda" onClick={close} className="text-sm hover:underline" style={linkStyle}>
+      <Link href="/tienda" onClick={close} className={linkClass} style={linkStyle}>
         Tienda
       </Link>
       {isAdmin && (
-        <Link href="/admin/ventas/nueva" onClick={close} className="text-sm hover:underline" style={linkStyle}>
+        <Link href="/admin/ventas/nueva" onClick={close} className={linkClass} style={linkStyle}>
           Registrar venta
         </Link>
       )}
-      <Link href="/contacto" onClick={close} className="text-sm hover:underline" style={linkStyle}>
+      <Link href="/contacto" onClick={close} className={linkClass} style={linkStyle}>
         Contacto
       </Link>
     </>
@@ -100,7 +101,7 @@ export function HeaderNav({
 
       {open && (
         <div
-          className="sm:hidden absolute right-0 top-full mt-2 flex flex-col items-end gap-3 rounded-lg border p-4 shadow-lg"
+          className="sm:hidden absolute right-0 top-full mt-2 flex w-48 flex-col items-start gap-3 rounded-lg border p-4 shadow-lg"
           style={{ borderColor: zindoColors.sage, backgroundColor: zindoColors.ivory }}
         >
           {links}
