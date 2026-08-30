@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { updateCartItemAction, removeCartItemAction } from "@/app/carrito/actions";
+import { PlainBackLink } from "@/components/BackLink";
 
 export default async function CarritoPage() {
   const session = await auth();
@@ -24,10 +25,8 @@ export default async function CarritoPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <Link href="/tienda" className="text-sm text-black/60 dark:text-white/60 hover:underline">
-        ← Tienda
-      </Link>
-      <h1 className="text-2xl font-bold tracking-tight mt-1 mb-6">Carrito</h1>
+      <PlainBackLink href="/tienda" label="Tienda" />
+      <h1 className="text-2xl font-bold tracking-tight mt-3 mb-6">Carrito</h1>
 
       {items.length === 0 ? (
         <div className="rounded-lg border border-black/10 dark:border-white/15 p-6 text-center">

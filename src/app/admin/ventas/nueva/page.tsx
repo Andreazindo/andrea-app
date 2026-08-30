@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { registerManualSaleAction } from "./actions";
+import { PlainBackLink } from "@/components/BackLink";
 
 const ERROR_MESSAGES: Record<string, string> = {
   "falta-correo": "Ingresa el correo del cliente.",
@@ -39,10 +39,8 @@ export default async function NuevaVentaManualPage({
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <Link href="/" className="text-sm text-black/60 dark:text-white/60 hover:underline">
-        ← Inicio
-      </Link>
-      <h1 className="text-2xl font-bold tracking-tight mt-1 mb-1">Registrar venta manual</h1>
+      <PlainBackLink href="/" label="Inicio" />
+      <h1 className="text-2xl font-bold tracking-tight mt-3 mb-1">Registrar venta manual</h1>
       <p className="text-sm text-black/60 dark:text-white/60 mb-6">
         Para ventas cerradas fuera del sistema (transferencia o efectivo) que quieres dejar registradas.
       </p>

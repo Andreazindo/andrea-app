@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
+import { PlainBackLink } from "@/components/BackLink";
 
 export default async function ProductosAdminPage() {
   await requireAdmin("/admin/productos");
@@ -26,10 +27,8 @@ export default async function ProductosAdminPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 space-y-10">
       <div>
-        <Link href="/" className="text-sm text-black/60 dark:text-white/60 hover:underline">
-          ← Inicio
-        </Link>
-        <div className="flex items-center justify-between gap-4 mt-1">
+        <PlainBackLink href="/" label="Inicio" />
+        <div className="flex items-center justify-between gap-4 mt-3">
           <h1 className="text-2xl font-bold tracking-tight">Productos</h1>
           <Link
             href="/admin/productos/nuevo"

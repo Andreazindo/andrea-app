@@ -1,10 +1,10 @@
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { ProductCard } from "@/components/zindo/ProductCard";
 import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
+import { ZindoBackLink } from "@/components/BackLink";
 
 async function getBrandWithCatalog(brandSlug: string) {
   return prisma.brand.findUnique({
@@ -43,13 +43,7 @@ export default async function BrandPage({
       <section className="relative flex flex-col items-center justify-center py-24 px-4 text-center overflow-hidden">
         <Image src="/zindo/marble.jpg" alt="" fill priority className="object-cover" />
         <div className="relative z-10">
-          <Link
-            href="/tienda"
-            className="text-sm hover:underline"
-            style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.gold }}
-          >
-            ‹ Tienda Wellness
-          </Link>
+          <ZindoBackLink href="/tienda" label="Tienda Wellness" />
           <Image
             src="/zindo/logo.png"
             alt="Zindo"

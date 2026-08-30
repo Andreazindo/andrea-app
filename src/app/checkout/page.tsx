@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { createOrderAction } from "./actions";
+import { PlainBackLink } from "@/components/BackLink";
 
 export default async function CheckoutPage({
   searchParams,
@@ -26,10 +26,8 @@ export default async function CheckoutPage({
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
-      <Link href="/carrito" className="text-sm text-black/60 dark:text-white/60 hover:underline">
-        ← Carrito
-      </Link>
-      <h1 className="text-2xl font-bold tracking-tight mt-1 mb-6">Datos de envío</h1>
+      <PlainBackLink href="/carrito" label="Carrito" />
+      <h1 className="text-2xl font-bold tracking-tight mt-3 mb-6">Datos de envío</h1>
 
       {error === "datos-incompletos" && (
         <p className="mb-4 rounded-md bg-red-500/10 text-red-600 dark:text-red-400 text-sm px-3 py-2">

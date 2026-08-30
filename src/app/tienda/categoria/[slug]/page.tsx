@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { ProductCard } from "@/components/zindo/ProductCard";
 import { zindoColors } from "@/components/zindo/theme";
+import { ZindoBackLink } from "@/components/BackLink";
 
 async function getCategory(slug: string) {
   return prisma.category.findFirst({
@@ -35,13 +35,7 @@ export default async function TiendaCategoriaPage({
   return (
     <div>
       <section className="mx-auto max-w-5xl px-4 pt-14 pb-6 text-center">
-        <Link
-          href="/tienda"
-          className="text-sm hover:underline"
-          style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.gold }}
-        >
-          ‹ Tienda Wellness
-        </Link>
+        <ZindoBackLink href="/tienda" label="Tienda Wellness" />
         <h1
           className="mt-3 text-2xl sm:text-3xl uppercase tracking-[0.15em]"
           style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}

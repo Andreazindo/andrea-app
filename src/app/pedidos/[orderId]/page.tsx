@@ -6,6 +6,7 @@ import { formatCents } from "@/lib/money";
 import { isMercadoPagoConfigured } from "@/lib/payments/mercadopago";
 import { isPaypalConfigured } from "@/lib/payments/paypal";
 import { startMercadoPagoAction, startPaypalAction } from "./actions";
+import { PlainBackLink } from "@/components/BackLink";
 
 const STATUS_LABELS: Record<string, string> = {
   PENDING_PAYMENT: "Pendiente de pago",
@@ -36,10 +37,8 @@ export default async function PedidoPage({
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
-      <Link href="/tienda" className="text-sm text-black/60 dark:text-white/60 hover:underline">
-        ← Tienda
-      </Link>
-      <h1 className="text-2xl font-bold tracking-tight mt-1 mb-1">
+      <PlainBackLink href="/tienda" label="Tienda" />
+      <h1 className="text-2xl font-bold tracking-tight mt-3 mb-1">
         Pedido #{order.id.slice(-8).toUpperCase()}
       </h1>
       <p className="text-sm text-black/60 dark:text-white/60 mb-6">

@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { createProductAction } from "./actions";
+import { PlainBackLink } from "@/components/BackLink";
 
 const ERROR_MESSAGES: Record<string, string> = {
   "falta-nombre": "El nombre es obligatorio.",
@@ -29,10 +29,8 @@ export default async function NuevoProductoPage({
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 space-y-6">
       <div>
-        <Link href="/admin/productos" className="text-sm text-black/60 dark:text-white/60 hover:underline">
-          ← Productos
-        </Link>
-        <h1 className="text-2xl font-bold tracking-tight mt-1">Nuevo producto</h1>
+        <PlainBackLink href="/admin/productos" label="Productos" />
+        <h1 className="text-2xl font-bold tracking-tight mt-3">Nuevo producto</h1>
       </div>
 
       {error && (

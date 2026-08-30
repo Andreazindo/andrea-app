@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
@@ -6,6 +5,7 @@ import { getAvailableStock } from "@/lib/inventory";
 import { addToCartAction } from "@/app/carrito/actions";
 import { ProductGallery } from "@/components/zindo/ProductGallery";
 import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
+import { ZindoBackLink } from "@/components/BackLink";
 export default async function ProductPage({
   params,
 }: {
@@ -41,12 +41,11 @@ export default async function ProductPage({
   return (
     <div className={zindoFontVars} style={{ backgroundColor: zindoColors.ivory, minHeight: "100%" }}>
       <div className="mx-auto max-w-5xl px-4 py-12">
-        <nav className="text-sm mb-6" style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.green }}>
-          <Link href="/tienda" className="hover:underline">
-            ‹ Tienda Wellness
-          </Link>
-          <span className="mx-1">/</span>
-          <span>{product.name}</span>
+        <nav className="mb-6 flex items-center gap-2">
+          <ZindoBackLink href="/tienda" label="Tienda Wellness" />
+          <span className="text-sm" style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink, opacity: 0.5 }}>
+            / {product.name}
+          </span>
         </nav>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">

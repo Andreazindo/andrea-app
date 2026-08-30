@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { loginAction } from "./actions";
+import { PlainBackLink } from "@/components/BackLink";
 
 export default async function LoginPage({
   searchParams,
@@ -10,10 +11,8 @@ export default async function LoginPage({
 
   return (
     <div className="mx-auto max-w-sm px-4 py-16">
-      <Link href="/" className="text-sm text-black/60 dark:text-white/60 hover:underline">
-        ← Inicio
-      </Link>
-      <h1 className="text-2xl font-bold tracking-tight mt-1 mb-6">Iniciar sesión</h1>
+      <PlainBackLink href="/" label="Inicio" />
+      <h1 className="text-2xl font-bold tracking-tight mt-3 mb-6">Iniciar sesión</h1>
 
       {error && (
         <p className="mb-4 rounded-md bg-red-500/10 text-red-600 dark:text-red-400 text-sm px-3 py-2">

@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import { zindoColors } from "@/components/zindo/theme";
+import { ZindoBackLink } from "@/components/BackLink";
 
 export function ZindoPlaceholderPage({
   title,
@@ -16,13 +16,7 @@ export function ZindoPlaceholderPage({
       <section className="relative flex flex-col items-center justify-center py-16 px-4 text-center overflow-hidden">
         <Image src="/zindo/marble.jpg" alt="" fill className="object-cover" />
         <div className="relative z-10">
-          <Link
-            href={backHref}
-            className="text-sm hover:underline"
-            style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.gold }}
-          >
-            ‹ {backLabel}
-          </Link>
+          <ZindoBackLink href={backHref} label={backLabel} />
           <h1
             className="mt-3 text-2xl sm:text-3xl uppercase tracking-[0.15em]"
             style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
