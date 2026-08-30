@@ -58,6 +58,7 @@ export function HeaderNav({
   }
   items.push({ type: "link", key: "tienda", href: "/tienda", label: "Tienda" });
   if (isAdmin) {
+    items.push({ type: "link", key: "productos", href: "/admin/productos", label: "Productos" });
     items.push({ type: "link", key: "venta", href: "/admin/ventas/nueva", label: "Registrar venta" });
   }
   items.push({ type: "link", key: "contacto", href: "/contacto", label: "Contacto" });
