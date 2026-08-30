@@ -24,7 +24,7 @@ export default function LibreriaPage() {
             className="mt-3 max-w-lg mx-auto text-sm sm:text-base"
             style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink }}
           >
-            Recursos gratuitos para tu intención diaria.
+            Cuestiona · Aprende · Expande.
           </p>
         </div>
       </section>

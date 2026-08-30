@@ -6,19 +6,19 @@ const PILLARS = [
   {
     href: "/evolucion-personal",
     name: "Evolución Personal",
-    description: "Cursos, journal, acompañamiento personalizado, webinars y testimonios.",
+    description: "Conoce tu mente. Transforma tu realidad.",
     comingSoon: true,
   },
   {
     href: "/tienda",
     name: "Tienda Wellness",
-    description: "Elige lo que suma a tu bienestar: Yoga Face, Limpieza, Suplementos y Esencias.",
+    description: "Elige lo que suma a tu bienestar.",
     comingSoon: false,
   },
   {
     href: "/libreria",
     name: "Librería Gratuita",
-    description: "Detox emocional, 21 días de gratitud y meditaciones.",
+    description: "Cuestiona · Aprende · Expande.",
     comingSoon: true,
   },
   {

@@ -38,7 +38,7 @@ export function ZindoBrandCard({
           {description}
         </p>
       )}
-      {!comingSoon && (
+      {!comingSoon && href && (
         <span className="mt-4 inline-block text-sm font-medium" style={{ color: zindoColors.gold }}>
           Ver →
         </span>

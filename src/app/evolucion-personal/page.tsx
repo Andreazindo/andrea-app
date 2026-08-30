@@ -26,7 +26,7 @@ export default function EvolucionPersonalPage() {
             className="mt-3 max-w-lg mx-auto text-sm sm:text-base"
             style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink }}
           >
-            Herramientas y acompañamiento para una forma consciente de vivir.
+            Conoce tu mente. Transforma tu realidad.
           </p>
         </div>
       </section>

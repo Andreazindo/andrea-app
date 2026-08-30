@@ -8,6 +8,11 @@ const CANALES = [
   { name: "Redes Sociales", description: "Muy pronto encontrarás aquí nuestras redes sociales." },
 ];
 
+const PUNTOS_DE_VENTA = [
+  { name: "Body & Face Spa", description: "Cancún · Plaza Aria, Huayacán" },
+  { name: "Diana Leal", description: "Playa del Carmen" },
+];
+
 export default function ContactoPage() {
   return (
     <div>
@@ -29,14 +34,32 @@ export default function ContactoPage() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-5xl px-4 py-14">
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {CANALES.map((canal) => (
-            <li key={canal.name}>
-              <ZindoBrandCard name={canal.name} description={canal.description} comingSoon />
-            </li>
-          ))}
-        </ul>
+      <div className="mx-auto max-w-5xl px-4 py-14 space-y-14">
+        <section>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {CANALES.map((canal) => (
+              <li key={canal.name}>
+                <ZindoBrandCard name={canal.name} description={canal.description} comingSoon />
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section>
+          <h2
+            className="text-xl sm:text-2xl uppercase tracking-[0.15em] mb-6"
+            style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
+          >
+            Puntos de Venta
+          </h2>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {PUNTOS_DE_VENTA.map((punto) => (
+              <li key={punto.name}>
+                <ZindoBrandCard name={punto.name} description={punto.description} />
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
     </div>
   );
