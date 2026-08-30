@@ -4,7 +4,7 @@ import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { PlainBackLink } from "@/components/BackLink";
-import { updateOrderStatusAction } from "./actions";
+import { updateOrderStatusAction, updateOrderShippingAction } from "./actions";
 
 const STATUS_LABELS: Record<string, string> = {
   PENDING_PAYMENT: "Pendiente de pago",
@@ -24,9 +24,12 @@ const PAYMENT_METHOD_LABELS: Record<string, string> = {
 
 const ERROR_MESSAGES: Record<string, string> = {
   "estatus-invalido": "Elige un estatus válido.",
+  "envio-invalido": "Completa nombre, teléfono, dirección, ciudad, estado y C.P.",
 };
 
 const sectionClass = "rounded-lg border border-black/10 dark:border-white/15 p-4 space-y-3";
+const inputClass = "w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm";
+const labelClass = "block text-sm font-medium mb-1";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
@@ -66,7 +69,7 @@ export default async function PedidoAdminPage({
 
       {guardado && (
         <p className="rounded-md bg-green-500/10 text-green-700 dark:text-green-400 text-sm px-3 py-2">
-          Estatus actualizado.
+          Cambios guardados.
         </p>
       )}
       {error && (
@@ -109,12 +112,90 @@ export default async function PedidoAdminPage({
 
       <section className={sectionClass}>
         <h2 className="text-sm font-semibold">Envío</h2>
-        <p className="text-sm">
-          {order.shippingName} · {order.shippingPhone}
-          <br />
-          {order.shippingAddressLine}, {order.shippingCity}, {order.shippingState} {order.shippingZip},{" "}
-          {order.shippingCountry}
-        </p>
+        <form action={updateOrderShippingAction} className="space-y-3">
+          <input type="hidden" name="orderId" value={order.id} />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className={labelClass} htmlFor="shippingName">
+                Nombre
+              </label>
+              <input id="shippingName" name="shippingName" defaultValue={order.shippingName} required className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="shippingPhone">
+                Teléfono
+              </label>
+              <input
+                id="shippingPhone"
+                name="shippingPhone"
+                defaultValue={order.shippingPhone}
+                required
+                className={inputClass}
+              />
+            </div>
+          </div>
+          <div>
+            <label className={labelClass} htmlFor="shippingAddressLine">
+              Dirección
+            </label>
+            <input
+              id="shippingAddressLine"
+              name="shippingAddressLine"
+              defaultValue={order.shippingAddressLine}
+              required
+              className={inputClass}
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            <div>
+              <label className={labelClass} htmlFor="shippingCity">
+                Ciudad
+              </label>
+              <input
+                id="shippingCity"
+                name="shippingCity"
+                defaultValue={order.shippingCity}
+                required
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="shippingState">
+                Estado
+              </label>
+              <input
+                id="shippingState"
+                name="shippingState"
+                defaultValue={order.shippingState}
+                required
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="shippingZip">
+                C.P.
+              </label>
+              <input id="shippingZip" name="shippingZip" defaultValue={order.shippingZip} required className={inputClass} />
+            </div>
+          </div>
+          <div>
+            <label className={labelClass} htmlFor="shippingCountry">
+              País
+            </label>
+            <input
+              id="shippingCountry"
+              name="shippingCountry"
+              defaultValue={order.shippingCountry}
+              className={inputClass}
+            />
+          </div>
+          <button
+            type="submit"
+            className="rounded-md border border-black/15 dark:border-white/20 px-4 py-2 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10"
+          >
+            Guardar envío
+          </button>
+        </form>
       </section>
 
       <section className={sectionClass}>
