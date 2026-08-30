@@ -56,13 +56,13 @@ export function HeaderNav({
     items.push({ type: "link", key: "login", href: "/login", label: "Iniciar sesión" });
     items.push({ type: "link", key: "registro", href: "/registro", label: "Crear cuenta" });
   }
-  items.push({ type: "link", key: "tienda", href: "/tienda", label: "Tienda" });
   if (isAdmin) {
+    items.push({ type: "link", key: "app", href: "/", label: "App" });
     items.push({ type: "link", key: "productos", href: "/admin/productos", label: "Productos" });
     items.push({ type: "link", key: "contenido", href: "/admin/contenido", label: "Contenido" });
     items.push({ type: "link", key: "venta", href: "/admin/ventas/nueva", label: "Registrar venta" });
-  }
-  if (!isAdmin) {
+  } else {
+    items.push({ type: "link", key: "tienda", href: "/tienda", label: "Tienda" });
     items.push({ type: "link", key: "contacto", href: "/contacto", label: "Contacto" });
   }
 
