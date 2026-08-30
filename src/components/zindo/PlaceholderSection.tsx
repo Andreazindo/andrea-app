@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
+import { ZindoMarbleFade } from "@/components/zindo/MarbleFade";
 
 export function ZindoPlaceholderPage({
   title,
@@ -15,6 +16,7 @@ export function ZindoPlaceholderPage({
     <div>
       <section className="relative flex flex-col items-center justify-center py-16 px-4 text-center overflow-hidden">
         <Image src="/zindo/marble.jpg" alt="" fill className="object-cover" />
+        <ZindoMarbleFade />
         <div className="relative z-10">
           <h1
             className="text-2xl sm:text-3xl uppercase tracking-[0.15em]"
