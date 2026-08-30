@@ -20,26 +20,18 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className={`${zindoFontVars} h-full antialiased`}>
       <body className="min-h-full flex flex-col" style={{ backgroundColor: zindoColors.ivory, color: zindoColors.ink }}>
-        <header className="border-b" style={{ borderColor: zindoColors.sage, fontFamily: "var(--font-zindo-body)" }}>
-          <div className="mx-auto max-w-5xl px-4 py-3 flex items-center justify-between">
-            <Link href="/" className="flex items-center">
+        <header
+          className="sticky top-0 z-50 border-b backdrop-blur"
+          style={{ borderColor: zindoColors.sage, fontFamily: "var(--font-zindo-body)", backgroundColor: `${zindoColors.ivory}f2` }}
+        >
+          <div className="mx-auto max-w-5xl px-4 py-3 flex items-center justify-between gap-4">
+            <Link href="/" className="flex items-center flex-none">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/zindo/monograma.png" alt="Zindo" className="h-9 w-auto" />
             </Link>
-            <nav className="flex items-center gap-4 text-sm">
-              <Link href="/tienda" className="hover:underline" style={{ color: zindoColors.green }}>
-                Tienda
-              </Link>
+            <nav className="flex items-center gap-4 text-sm flex-wrap justify-end">
               {session?.user ? (
                 <>
-                  <Link href="/carrito" className="hover:underline" style={{ color: zindoColors.green }}>
-                    Carrito
-                  </Link>
-                  {(session.user.role === "ADMIN" || session.user.role === "OWNER") && (
-                    <Link href="/admin/ventas/nueva" className="hover:underline" style={{ color: zindoColors.green }}>
-                      Registrar venta
-                    </Link>
-                  )}
                   <span className="hidden sm:inline" style={{ color: zindoColors.ink, opacity: 0.5 }}>
                     {session.user.name}
                   </span>
@@ -59,6 +51,22 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                   </Link>
                 </>
               )}
+              <Link href="/tienda" className="hover:underline" style={{ color: zindoColors.green }}>
+                Tienda
+              </Link>
+              {session?.user && (
+                <Link href="/carrito" className="hover:underline" style={{ color: zindoColors.green }}>
+                  Carrito
+                </Link>
+              )}
+              {session?.user && (session.user.role === "ADMIN" || session.user.role === "OWNER") && (
+                <Link href="/admin/ventas/nueva" className="hover:underline" style={{ color: zindoColors.green }}>
+                  Registrar venta
+                </Link>
+              )}
+              <Link href="/contacto" className="hover:underline" style={{ color: zindoColors.green }}>
+                Contacto
+              </Link>
             </nav>
           </div>
         </header>

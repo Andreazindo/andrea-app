@@ -1,14 +1,35 @@
 import Image from "next/image";
-import { prisma } from "@/lib/prisma";
 import { ZindoBrandCard } from "@/components/zindo/BrandCard";
 import { zindoColors } from "@/components/zindo/theme";
 
-export default async function HomePage() {
-  const brands = await prisma.brand.findMany({
-    where: { active: true },
-    orderBy: { name: "asc" },
-  });
+const PILLARS = [
+  {
+    href: "/evolucion-personal",
+    name: "Evolución Personal",
+    description: "Cursos, journal, acompañamiento personalizado, webinars y testimonios.",
+    comingSoon: true,
+  },
+  {
+    href: "/tienda",
+    name: "Tienda Wellness",
+    description: "Elige lo que suma a tu bienestar: Yoga Face, Limpieza, Suplementos y Esencias.",
+    comingSoon: false,
+  },
+  {
+    href: "/libreria",
+    name: "Librería Gratuita",
+    description: "Detox emocional, 21 días de gratitud y meditaciones.",
+    comingSoon: true,
+  },
+  {
+    href: "/contacto",
+    name: "Contacto",
+    description: "Correo, WhatsApp y redes sociales.",
+    comingSoon: false,
+  },
+];
 
+export default function HomePage() {
   return (
     <div>
       <section className="relative flex flex-col items-center justify-center py-24 px-4 text-center overflow-hidden">
@@ -25,25 +46,33 @@ export default async function HomePage() {
             className="mt-4 max-w-xl mx-auto text-sm sm:text-base"
             style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink }}
           >
-            Belleza, bienestar y acompañamiento. Un solo lugar para Davana, Zindo, ProsperMind y Steril Mil.
+            Un espacio de bienestar y de desarrollo personal hacia una forma consciente de vivir.
           </p>
+          <a
+            href="#explora"
+            className="mt-6 inline-block rounded-md px-6 py-2.5 text-sm font-medium text-white hover:opacity-90"
+            style={{ backgroundColor: zindoColors.green, fontFamily: "var(--font-zindo-body)" }}
+          >
+            Conocer más de ZINDO
+          </a>
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 py-16">
+      <section id="explora" className="mx-auto max-w-5xl px-4 py-16">
         <h2
           className="text-xl sm:text-2xl uppercase tracking-[0.15em] mb-6 text-center"
           style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
         >
-          Nuestras marcas
+          Explora ZINDO
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {brands.map((brand) => (
+          {PILLARS.map((pillar) => (
             <ZindoBrandCard
-              key={brand.id}
-              href={`/tienda/${brand.slug}`}
-              name={brand.name}
-              description={brand.description}
+              key={pillar.href}
+              href={pillar.href}
+              name={pillar.name}
+              description={pillar.description}
+              comingSoon={pillar.comingSoon}
             />
           ))}
         </div>
