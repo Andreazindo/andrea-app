@@ -3,9 +3,13 @@ import { ZindoBrandCard } from "@/components/zindo/BrandCard";
 import { zindoColors } from "@/components/zindo/theme";
 
 const RECURSOS = [
-  { name: "Detox Emocional", description: "Libera lo que ya no necesitas cargar." },
-  { name: "21 Días de Gratitud", description: "Un reto diario para entrenar la mirada agradecida." },
-  { name: "Meditaciones", description: "Audios guiados para pausar y respirar." },
+  { slug: "detox-emocional", name: "Detox Emocional", description: "Libera lo que ya no necesitas cargar." },
+  {
+    slug: "21-dias-de-gratitud",
+    name: "21 Días de Gratitud",
+    description: "Un reto diario para entrenar la mirada agradecida.",
+  },
+  { slug: "meditaciones", name: "Meditaciones", description: "Audios guiados para pausar y respirar." },
 ];
 
 export default function LibreriaPage() {
@@ -32,8 +36,12 @@ export default function LibreriaPage() {
       <div className="mx-auto max-w-5xl px-4 py-14">
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {RECURSOS.map((recurso) => (
-            <li key={recurso.name}>
-              <ZindoBrandCard name={recurso.name} description={recurso.description} comingSoon />
+            <li key={recurso.slug}>
+              <ZindoBrandCard
+                href={`/libreria/${recurso.slug}`}
+                name={recurso.name}
+                description={recurso.description}
+              />
             </li>
           ))}
         </ul>

@@ -7,25 +7,21 @@ const PILLARS = [
     href: "/evolucion-personal",
     name: "Evolución Personal",
     description: "Conoce tu mente. Transforma tu realidad.",
-    comingSoon: true,
   },
   {
     href: "/tienda",
     name: "Tienda Wellness",
     description: "Elige lo que suma a tu bienestar.",
-    comingSoon: false,
   },
   {
     href: "/libreria",
     name: "Librería Gratuita",
     description: "Cuestiona · Aprende · Expande.",
-    comingSoon: true,
   },
   {
     href: "/contacto",
     name: "Contacto",
     description: "Correo, WhatsApp y redes sociales.",
-    comingSoon: false,
   },
 ];
 
@@ -67,13 +63,7 @@ export default function HomePage() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {PILLARS.map((pillar) => (
-            <ZindoBrandCard
-              key={pillar.href}
-              href={pillar.href}
-              name={pillar.name}
-              description={pillar.description}
-              comingSoon={pillar.comingSoon}
-            />
+            <ZindoBrandCard key={pillar.href} href={pillar.href} name={pillar.name} description={pillar.description} />
           ))}
         </div>
       </section>
