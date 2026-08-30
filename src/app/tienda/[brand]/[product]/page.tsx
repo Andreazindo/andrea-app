@@ -1,3 +1,5 @@
+import { cache } from "react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
@@ -6,15 +8,12 @@ import { addToCartAction } from "@/app/carrito/actions";
 import { ProductGallery } from "@/components/zindo/ProductGallery";
 import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
-export default async function ProductPage({
-  params,
-}: {
-  params: Promise<{ brand: string; product: string }>;
-}) {
-  const { brand: brandSlug, product: productSlug } = await params;
 
+type Params = { brand: string; product: string };
+
+const getProduct = cache(async (brandSlug: string, productSlug: string) => {
   const brand = await prisma.brand.findUnique({ where: { slug: brandSlug } });
-  if (!brand || !brand.active) notFound();
+  if (!brand || !brand.active) return null;
 
   const product = await prisma.product.findUnique({
     where: { brandId_slug: { brandId: brand.id, slug: productSlug } },
@@ -29,8 +28,27 @@ export default async function ProductPage({
       images: { orderBy: { position: "asc" } },
     },
   });
+  if (!product || !product.active) return null;
 
-  if (!product || !product.active) notFound();
+  return product;
+});
+
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
+  const { brand: brandSlug, product: productSlug } = await params;
+  const product = await getProduct(brandSlug, productSlug);
+  if (!product) return {};
+
+  return {
+    title: product.name,
+    description: product.description ?? undefined,
+    openGraph: product.images[0] ? { images: [{ url: product.images[0].url }] } : undefined,
+  };
+}
+
+export default async function ProductPage({ params }: { params: Promise<Params> }) {
+  const { brand: brandSlug, product: productSlug } = await params;
+  const product = await getProduct(brandSlug, productSlug);
+  if (!product) notFound();
 
   // Los productos de la categoría "Programa" se muestran solo en Evolución Personal,
   // no en el listado de Tienda Wellness, así que su botón de volver debe apuntar ahí.

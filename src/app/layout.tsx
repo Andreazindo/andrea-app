@@ -6,8 +6,11 @@ import { HeaderNav } from "@/components/zindo/HeaderNav";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Zindo · Davana, ProsperMind y Steril Mil",
-  description: "Catálogo y tienda en línea de las marcas de Andrea, bajo la identidad de Zindo.",
+  title: {
+    default: "ZINDO",
+    template: "%s · ZINDO",
+  },
+  description: "Un espacio de bienestar y de desarrollo personal hacia una forma consciente de vivir.",
 };
 
 async function logoutAction() {

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { getSiteContent, EDITABLE_CONTENT_KEYS } from "@/lib/site-content";
@@ -8,6 +9,8 @@ import {
   updateSalesPointAction,
   deleteSalesPointAction,
 } from "./actions";
+
+export const metadata: Metadata = { title: "Contenido (Admin)" };
 
 const ERROR_MESSAGES: Record<string, string> = {
   "punto-invalido": "Nombre y descripción son obligatorios.",

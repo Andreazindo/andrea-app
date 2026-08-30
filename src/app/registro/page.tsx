@@ -1,6 +1,9 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { registerAction } from "./actions";
 import { PlainBackLink } from "@/components/BackLink";
+
+export const metadata: Metadata = { title: "Crear cuenta" };
 
 const ERROR_MESSAGES: Record<string, string> = {
   "datos-invalidos": "Revisa tus datos: el nombre, correo y una contraseña de al menos 8 caracteres son obligatorios.",

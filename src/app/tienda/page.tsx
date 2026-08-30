@@ -1,9 +1,12 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { ZindoBrandCard } from "@/components/zindo/BrandCard";
 import { zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
 import { getSiteContent } from "@/lib/site-content";
+
+export const metadata: Metadata = { title: "Tienda Wellness" };
 
 const CATEGORY_ORDER = ["yoga-face", "limpieza", "suplementos", "esencias", "catalogo-ml"];
 

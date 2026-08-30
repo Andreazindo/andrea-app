@@ -1,9 +1,12 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import { ZindoBrandCard } from "@/components/zindo/BrandCard";
 import { zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
 import { getSiteContent } from "@/lib/site-content";
 import { prisma } from "@/lib/prisma";
+
+export const metadata: Metadata = { title: "Contacto" };
 
 const CONTENT_KEYS = ["contacto_tagline", "contacto_mail", "contacto_whatsapp", "contacto_redes"] as const;
 

@@ -1,8 +1,11 @@
+import type { Metadata } from "next";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { registerManualSaleAction } from "./actions";
 import { PlainBackLink } from "@/components/BackLink";
+
+export const metadata: Metadata = { title: "Registrar venta (Admin)" };
 
 const ERROR_MESSAGES: Record<string, string> = {
   "falta-correo": "Ingresa el correo del cliente.",

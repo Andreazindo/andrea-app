@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { createProductAction } from "./actions";
 import { PlainBackLink } from "@/components/BackLink";
+
+export const metadata: Metadata = { title: "Nuevo producto (Admin)" };
 
 const ERROR_MESSAGES: Record<string, string> = {
   "falta-nombre": "El nombre es obligatorio.",

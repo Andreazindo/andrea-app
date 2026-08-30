@@ -1,8 +1,11 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import { ZindoBrandCard } from "@/components/zindo/BrandCard";
 import { zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
 import { getSiteContent } from "@/lib/site-content";
+
+export const metadata: Metadata = { title: "Librería Gratuita" };
 
 const RECURSOS = [
   { slug: "detox-emocional", name: "Detox Emocional", description: "Libera lo que ya no necesitas cargar." },

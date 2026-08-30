@@ -1,9 +1,12 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { createOrderAction } from "./actions";
 import { PlainBackLink } from "@/components/BackLink";
+
+export const metadata: Metadata = { title: "Datos de envío" };
 
 export default async function CheckoutPage({
   searchParams,

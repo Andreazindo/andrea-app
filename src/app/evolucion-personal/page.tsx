@@ -1,8 +1,11 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import { ZindoBrandCard } from "@/components/zindo/BrandCard";
 import { zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
 import { getSiteContent } from "@/lib/site-content";
+
+export const metadata: Metadata = { title: "Evolución Personal" };
 
 const CURSOS = [
   { slug: "redefiniendo-el-exito", name: "Redefiniendo el éxito" },

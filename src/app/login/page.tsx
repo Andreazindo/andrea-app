@@ -1,6 +1,9 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { loginAction } from "./actions";
 import { PlainBackLink } from "@/components/BackLink";
+
+export const metadata: Metadata = { title: "Iniciar sesión" };
 
 export default async function LoginPage({
   searchParams,

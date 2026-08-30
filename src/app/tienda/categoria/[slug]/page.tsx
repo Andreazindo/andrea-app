@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { cache } from "react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
@@ -6,7 +8,7 @@ import { ProductCard } from "@/components/zindo/ProductCard";
 import { zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
 
-async function getCategory(slug: string) {
+const getCategory = cache(async (slug: string) => {
   return prisma.category.findFirst({
     where: { slug },
     include: {
@@ -21,6 +23,16 @@ async function getCategory(slug: string) {
       },
     },
   });
+});
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const category = await getCategory(slug);
+  return { title: category?.name ?? "Tienda Wellness" };
 }
 
 export default async function TiendaCategoriaPage({

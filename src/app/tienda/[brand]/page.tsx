@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { cache } from "react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
@@ -6,7 +8,7 @@ import { ProductCard } from "@/components/zindo/ProductCard";
 import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
 
-async function getBrandWithCatalog(brandSlug: string) {
+const getBrandWithCatalog = cache(async (brandSlug: string) => {
   return prisma.brand.findUnique({
     where: { slug: brandSlug },
     include: {
@@ -25,6 +27,16 @@ async function getBrandWithCatalog(brandSlug: string) {
       },
     },
   });
+});
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ brand: string }>;
+}): Promise<Metadata> {
+  const { brand: brandSlug } = await params;
+  const brand = await getBrandWithCatalog(brandSlug);
+  return { title: brand?.name };
 }
 
 export default async function BrandPage({

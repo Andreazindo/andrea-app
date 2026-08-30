@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -7,6 +8,8 @@ import { isMercadoPagoConfigured } from "@/lib/payments/mercadopago";
 import { isPaypalConfigured } from "@/lib/payments/paypal";
 import { startMercadoPagoAction, startPaypalAction } from "./actions";
 import { PlainBackLink } from "@/components/BackLink";
+
+export const metadata: Metadata = { title: "Mi pedido" };
 
 const STATUS_LABELS: Record<string, string> = {
   PENDING_PAYMENT: "Pendiente de pago",

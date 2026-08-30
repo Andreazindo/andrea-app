@@ -1,8 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { PlainBackLink } from "@/components/BackLink";
+
+export const metadata: Metadata = { title: "Productos (Admin)" };
 
 export default async function ProductosAdminPage() {
   await requireAdmin("/admin/productos");

@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { updateProductAction, updateVariantAction, addVariantAction } from "./actions";
 import { PlainBackLink } from "@/components/BackLink";
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const product = await prisma.product.findUnique({ where: { id }, select: { name: true } });
+  return { title: product ? `${product.name} (Admin)` : "Producto (Admin)" };
+}
 
 const ERROR_MESSAGES: Record<string, string> = {
   "falta-nombre": "El nombre es obligatorio.",

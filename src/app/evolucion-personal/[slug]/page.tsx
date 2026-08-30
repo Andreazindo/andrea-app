@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ZindoPlaceholderPage } from "@/components/zindo/PlaceholderSection";
 
@@ -6,6 +7,11 @@ const SECCIONES: Record<string, string> = {
   webinars: "Webinars",
   testimonios: "Testimonios",
 };
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  return { title: SECCIONES[slug] };
+}
 
 export default async function EvolucionSeccionPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

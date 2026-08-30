@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { adminLoginAction } from "./actions";
 import { PlainBackLink } from "@/components/BackLink";
+
+export const metadata: Metadata = { title: "Acceso administrador" };
 
 export default async function AdminLoginPage({
   searchParams,
