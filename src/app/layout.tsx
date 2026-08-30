@@ -64,30 +64,28 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                   Contacto
                 </Link>
               </nav>
-              {session?.user && (
-                <Link
-                  href="/carrito"
-                  aria-label="Carrito"
-                  className="flex items-center justify-center rounded-full border p-2 hover:bg-white/60 flex-none"
-                  style={{ borderColor: zindoColors.sage }}
+              <Link
+                href="/carrito"
+                aria-label="Carrito"
+                className="flex items-center justify-center rounded-full border p-2 hover:bg-white/60 flex-none"
+                style={{ borderColor: zindoColors.sage }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke={zindoColors.green}
+                  strokeWidth={1.75}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-5 w-5"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke={zindoColors.green}
-                    strokeWidth={1.75}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5"
-                  >
-                    <path d="M6 6h15l-1.5 9h-12z" />
-                    <path d="M6 6 5 3H2" />
-                    <circle cx="9" cy="20" r="1" />
-                    <circle cx="18" cy="20" r="1" />
-                  </svg>
-                </Link>
-              )}
+                  <path d="M6 6h15l-1.5 9h-12z" />
+                  <path d="M6 6 5 3H2" />
+                  <circle cx="9" cy="20" r="1" />
+                  <circle cx="18" cy="20" r="1" />
+                </svg>
+              </Link>
             </div>
           </div>
         </header>
