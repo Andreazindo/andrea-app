@@ -16,9 +16,8 @@ export function ZindoPlaceholderPage({
       <section className="relative flex flex-col items-center justify-center py-16 px-4 text-center overflow-hidden">
         <Image src="/zindo/marble.jpg" alt="" fill className="object-cover" />
         <div className="relative z-10">
-          <ZindoBackLink href={backHref} label={backLabel} />
           <h1
-            className="mt-3 text-2xl sm:text-3xl uppercase tracking-[0.15em]"
+            className="text-2xl sm:text-3xl uppercase tracking-[0.15em]"
             style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
           >
             {title}
@@ -26,7 +25,11 @@ export function ZindoPlaceholderPage({
         </div>
       </section>
 
-      <div className="mx-auto max-w-2xl px-4 py-20 text-center">
+      <div className="mx-auto max-w-2xl px-4 pt-6 text-center">
+        <ZindoBackLink href={backHref} label={backLabel} />
+      </div>
+
+      <div className="mx-auto max-w-2xl px-4 py-14 text-center">
         <span
           className="inline-block text-[10px] uppercase tracking-[0.1em] font-semibold px-3 py-1 rounded-full mb-4"
           style={{ backgroundColor: zindoColors.sage, color: "#ffffff" }}

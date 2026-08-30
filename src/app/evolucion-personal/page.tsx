@@ -17,9 +17,8 @@ export default function EvolucionPersonalPage() {
       <section className="relative flex flex-col items-center justify-center py-16 px-4 text-center overflow-hidden">
         <Image src="/zindo/marble.jpg" alt="" fill className="object-cover" />
         <div className="relative z-10">
-          <ZindoBackLink href="/" label="Inicio" />
           <h1
-            className="mt-3 text-2xl sm:text-3xl uppercase tracking-[0.15em]"
+            className="text-2xl sm:text-3xl uppercase tracking-[0.15em]"
             style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
           >
             Evolución Personal
@@ -33,7 +32,11 @@ export default function EvolucionPersonalPage() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-5xl px-4 py-14 space-y-14">
+      <div className="mx-auto max-w-5xl px-4 pt-6">
+        <ZindoBackLink href="/" label="Inicio" />
+      </div>
+
+      <div className="mx-auto max-w-5xl px-4 py-10 space-y-14">
         <section>
           <h2
             className="text-xl sm:text-2xl uppercase tracking-[0.15em] mb-6"

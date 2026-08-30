@@ -43,13 +43,12 @@ export default async function BrandPage({
       <section className="relative flex flex-col items-center justify-center py-24 px-4 text-center overflow-hidden">
         <Image src="/zindo/marble.jpg" alt="" fill priority className="object-cover" />
         <div className="relative z-10">
-          <ZindoBackLink href="/tienda" label="Tienda Wellness" />
           <Image
             src="/zindo/logo.png"
             alt="Zindo"
             width={1080}
             height={1080}
-            className="mt-3 w-72 sm:w-96 mx-auto h-auto"
+            className="w-72 sm:w-96 mx-auto h-auto"
             priority
           />
           <p
@@ -69,7 +68,11 @@ export default async function BrandPage({
         </div>
       </section>
 
-      <div className="mx-auto max-w-5xl px-4 py-16 space-y-14">
+      <div className="mx-auto max-w-5xl px-4 pt-6">
+        <ZindoBackLink href="/tienda" label="Tienda Wellness" />
+      </div>
+
+      <div className="mx-auto max-w-5xl px-4 py-10 space-y-14">
         {brand.categories.map((category) => {
           const products = category.products;
           if (products.length === 0) return null;

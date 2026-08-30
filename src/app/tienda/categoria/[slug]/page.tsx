@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
@@ -34,17 +35,23 @@ export default async function TiendaCategoriaPage({
 
   return (
     <div>
-      <section className="mx-auto max-w-5xl px-4 pt-14 pb-6 text-center">
-        <ZindoBackLink href="/tienda" label="Tienda Wellness" />
-        <h1
-          className="mt-3 text-2xl sm:text-3xl uppercase tracking-[0.15em]"
-          style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
-        >
-          {category.name}
-        </h1>
+      <section className="relative flex flex-col items-center justify-center py-16 px-4 text-center overflow-hidden">
+        <Image src="/zindo/marble.jpg" alt="" fill className="object-cover" />
+        <div className="relative z-10">
+          <h1
+            className="text-2xl sm:text-3xl uppercase tracking-[0.15em]"
+            style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
+          >
+            {category.name}
+          </h1>
+        </div>
       </section>
 
-      <div className="mx-auto max-w-5xl px-4 pb-16">
+      <div className="mx-auto max-w-5xl px-4 pt-6">
+        <ZindoBackLink href="/tienda" label="Tienda Wellness" />
+      </div>
+
+      <div className="mx-auto max-w-5xl px-4 py-10">
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {category.products.map((product) => {
             const prices = product.variants.map((v) => v.priceCents);
