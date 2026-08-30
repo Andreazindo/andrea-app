@@ -25,14 +25,19 @@ export default async function ProductosAdminPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 space-y-10">
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold tracking-tight">Productos</h1>
-        <Link
-          href="/admin/productos/nuevo"
-          className="rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium hover:opacity-90"
-        >
-          + Nuevo producto
+      <div>
+        <Link href="/" className="text-sm text-black/60 dark:text-white/60 hover:underline">
+          ← Inicio
         </Link>
+        <div className="flex items-center justify-between gap-4 mt-1">
+          <h1 className="text-2xl font-bold tracking-tight">Productos</h1>
+          <Link
+            href="/admin/productos/nuevo"
+            className="rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium hover:opacity-90"
+          >
+            + Nuevo producto
+          </Link>
+        </div>
       </div>
 
       {brandNames.map((brandName) => {

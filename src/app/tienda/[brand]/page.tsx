@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
@@ -42,7 +43,21 @@ export default async function BrandPage({
       <section className="relative flex flex-col items-center justify-center py-24 px-4 text-center overflow-hidden">
         <Image src="/zindo/marble.jpg" alt="" fill priority className="object-cover" />
         <div className="relative z-10">
-          <Image src="/zindo/logo.png" alt="Zindo" width={1080} height={1080} className="w-72 sm:w-96 mx-auto h-auto" priority />
+          <Link
+            href="/tienda"
+            className="text-sm hover:underline"
+            style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.gold }}
+          >
+            ‹ Tienda Wellness
+          </Link>
+          <Image
+            src="/zindo/logo.png"
+            alt="Zindo"
+            width={1080}
+            height={1080}
+            className="mt-3 w-72 sm:w-96 mx-auto h-auto"
+            priority
+          />
           <p
             className="mt-6 text-sm sm:text-base tracking-[0.2em] uppercase"
             style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.green }}

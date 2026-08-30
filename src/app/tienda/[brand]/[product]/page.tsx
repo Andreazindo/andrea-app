@@ -42,8 +42,8 @@ export default async function ProductPage({
     <div className={zindoFontVars} style={{ backgroundColor: zindoColors.ivory, minHeight: "100%" }}>
       <div className="mx-auto max-w-5xl px-4 py-12">
         <nav className="text-sm mb-6" style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.green }}>
-          <Link href={`/tienda/${brand.slug}`} className="hover:underline">
-            {brand.name}
+          <Link href="/tienda" className="hover:underline">
+            ‹ Tienda Wellness
           </Link>
           <span className="mx-1">/</span>
           <span>{product.name}</span>

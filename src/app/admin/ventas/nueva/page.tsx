@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
@@ -38,7 +39,10 @@ export default async function NuevaVentaManualPage({
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-2xl font-bold tracking-tight mb-1">Registrar venta manual</h1>
+      <Link href="/" className="text-sm text-black/60 dark:text-white/60 hover:underline">
+        ← Inicio
+      </Link>
+      <h1 className="text-2xl font-bold tracking-tight mt-1 mb-1">Registrar venta manual</h1>
       <p className="text-sm text-black/60 dark:text-white/60 mb-6">
         Para ventas cerradas fuera del sistema (transferencia o efectivo) que quieres dejar registradas.
       </p>

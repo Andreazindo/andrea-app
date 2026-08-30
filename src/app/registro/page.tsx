@@ -15,7 +15,10 @@ export default async function RegistroPage({
 
   return (
     <div className="mx-auto max-w-sm px-4 py-16">
-      <h1 className="text-2xl font-bold tracking-tight mb-6">Crear cuenta</h1>
+      <Link href="/" className="text-sm text-black/60 dark:text-white/60 hover:underline">
+        ← Inicio
+      </Link>
+      <h1 className="text-2xl font-bold tracking-tight mt-1 mb-6">Crear cuenta</h1>
 
       {error && (
         <p className="mb-4 rounded-md bg-red-500/10 text-red-600 dark:text-red-400 text-sm px-3 py-2">

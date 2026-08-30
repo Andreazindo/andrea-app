@@ -36,7 +36,10 @@ export default async function PedidoPage({
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
-      <h1 className="text-2xl font-bold tracking-tight mb-1">
+      <Link href="/tienda" className="text-sm text-black/60 dark:text-white/60 hover:underline">
+        ← Tienda
+      </Link>
+      <h1 className="text-2xl font-bold tracking-tight mt-1 mb-1">
         Pedido #{order.id.slice(-8).toUpperCase()}
       </h1>
       <p className="text-sm text-black/60 dark:text-white/60 mb-6">

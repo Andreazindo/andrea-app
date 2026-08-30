@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ZindoBrandCard } from "@/components/zindo/BrandCard";
 import { zindoColors } from "@/components/zindo/theme";
@@ -26,8 +27,15 @@ export default async function TiendaPage() {
   return (
     <div>
       <section className="mx-auto max-w-5xl px-4 pt-14 pb-6 text-center">
+        <Link
+          href="/"
+          className="text-sm hover:underline"
+          style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.gold }}
+        >
+          ‹ Inicio
+        </Link>
         <h1
-          className="text-2xl sm:text-3xl uppercase tracking-[0.15em]"
+          className="mt-3 text-2xl sm:text-3xl uppercase tracking-[0.15em]"
           style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
         >
           Tienda Wellness

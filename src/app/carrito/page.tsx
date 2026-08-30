@@ -24,7 +24,10 @@ export default async function CarritoPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-2xl font-bold tracking-tight mb-6">Carrito</h1>
+      <Link href="/tienda" className="text-sm text-black/60 dark:text-white/60 hover:underline">
+        ← Tienda
+      </Link>
+      <h1 className="text-2xl font-bold tracking-tight mt-1 mb-6">Carrito</h1>
 
       {items.length === 0 ? (
         <div className="rounded-lg border border-black/10 dark:border-white/15 p-6 text-center">

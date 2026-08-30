@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { createProductAction } from "./actions";
@@ -27,7 +28,12 @@ export default async function NuevoProductoPage({
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">Nuevo producto</h1>
+      <div>
+        <Link href="/admin/productos" className="text-sm text-black/60 dark:text-white/60 hover:underline">
+          ← Productos
+        </Link>
+        <h1 className="text-2xl font-bold tracking-tight mt-1">Nuevo producto</h1>
+      </div>
 
       {error && (
         <p className="rounded-md bg-red-500/10 text-red-600 dark:text-red-400 text-sm px-3 py-2">

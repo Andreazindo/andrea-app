@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ZindoBrandCard } from "@/components/zindo/BrandCard";
 import { zindoColors } from "@/components/zindo/theme";
 
@@ -18,8 +19,15 @@ export default function LibreriaPage() {
       <section className="relative flex flex-col items-center justify-center py-16 px-4 text-center overflow-hidden">
         <Image src="/zindo/marble.jpg" alt="" fill className="object-cover" />
         <div className="relative z-10">
+          <Link
+            href="/"
+            className="text-sm hover:underline"
+            style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.gold }}
+          >
+            ‹ Inicio
+          </Link>
           <h1
-            className="text-2xl sm:text-3xl uppercase tracking-[0.15em]"
+            className="mt-3 text-2xl sm:text-3xl uppercase tracking-[0.15em]"
             style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
           >
             Librería Gratuita
