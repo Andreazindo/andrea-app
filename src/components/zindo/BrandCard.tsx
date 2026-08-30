@@ -12,7 +12,10 @@ export function ZindoBrandCard({
   description?: string | null;
   comingSoon?: boolean;
 }) {
-  const className = "block h-full rounded-lg bg-white/70 border p-6 transition-colors hover:border-[#C9A15B]";
+  const isInteractive = !comingSoon && Boolean(href);
+  const className = `zindo-fade-in block h-full rounded-lg bg-white/70 border p-6 transition-all duration-300 ease-out${
+    isInteractive ? " hover:border-[#C9A15B] hover:shadow-lg hover:-translate-y-0.5" : ""
+  }`;
   const style = { borderColor: zindoColors.sage, fontFamily: "var(--font-zindo-body)" };
 
   const content = (

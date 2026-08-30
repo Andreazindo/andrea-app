@@ -30,7 +30,7 @@ export function ProductCard({
   return (
     <Link
       href={href}
-      className="group flex h-full flex-col overflow-hidden rounded-lg bg-white/70 border transition-colors hover:border-[#C9A15B]"
+      className="zindo-fade-in group flex h-full flex-col overflow-hidden rounded-lg bg-white/70 border transition-all duration-300 ease-out hover:border-[#C9A15B] hover:shadow-lg hover:-translate-y-0.5"
       style={{ borderColor: zindoColors.sage }}
     >
       <div className="relative aspect-[4/5] w-full overflow-hidden" style={{ backgroundColor: zindoColors.ivory }}>
@@ -38,7 +38,7 @@ export function ProductCard({
           <img
             src={images[index].url}
             alt={name}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
             loading="lazy"
           />
         ) : (
