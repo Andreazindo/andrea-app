@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { ProductCard } from "@/components/zindo/ProductCard";
+import { ZindoSectionHeading } from "@/components/zindo/SectionHeading";
+import { ZindoMarbleFade } from "@/components/zindo/MarbleFade";
 import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
 
@@ -54,6 +56,7 @@ export default async function BrandPage({
     <div className={zindoFontVars} style={{ backgroundColor: zindoColors.ivory }}>
       <section className="relative flex flex-col items-center justify-center py-24 px-4 text-center overflow-hidden">
         <Image src="/zindo/marble.jpg" alt="" fill priority className="object-cover" />
+        <ZindoMarbleFade />
         <div className="relative z-10">
           <Image
             src="/zindo/logo.png"
@@ -90,12 +93,7 @@ export default async function BrandPage({
           if (products.length === 0) return null;
           return (
             <section key={category.id}>
-              <h2
-                className="text-xl sm:text-2xl uppercase tracking-[0.15em] mb-6"
-                style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
-              >
-                {category.name}
-              </h2>
+              <ZindoSectionHeading>{category.name}</ZindoSectionHeading>
               <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {products.map((product) => {
                   const prices = product.variants.map((v) => v.priceCents);

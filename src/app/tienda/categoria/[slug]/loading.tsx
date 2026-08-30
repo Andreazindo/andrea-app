@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ZindoMarbleFade } from "@/components/zindo/MarbleFade";
 import { zindoColors } from "@/components/zindo/theme";
 
 export default function Loading() {
@@ -6,6 +7,7 @@ export default function Loading() {
     <div>
       <section className="relative flex flex-col items-center justify-center py-16 px-4 text-center overflow-hidden">
         <Image src="/zindo/marble.jpg" alt="" fill className="object-cover" />
+        <ZindoMarbleFade />
         <div className="relative z-10 animate-pulse space-y-3">
           <div className="mx-auto h-9 w-24 rounded-full border" style={{ borderColor: zindoColors.sage }} />
           <div className="mx-auto h-7 w-48 rounded" style={{ backgroundColor: `${zindoColors.green}33` }} />

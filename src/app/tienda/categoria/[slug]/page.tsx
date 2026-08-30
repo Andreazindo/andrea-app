@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { ProductCard } from "@/components/zindo/ProductCard";
+import { ZindoMarbleFade } from "@/components/zindo/MarbleFade";
 import { zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
 
@@ -49,6 +50,7 @@ export default async function TiendaCategoriaPage({
     <div>
       <section className="relative flex flex-col items-center justify-center py-16 px-4 text-center overflow-hidden">
         <Image src="/zindo/marble.jpg" alt="" fill className="object-cover" />
+        <ZindoMarbleFade />
         <div className="relative z-10">
           <h1
             className="text-2xl sm:text-3xl uppercase tracking-[0.15em]"
