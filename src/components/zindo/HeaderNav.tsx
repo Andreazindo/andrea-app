@@ -62,7 +62,9 @@ export function HeaderNav({
     items.push({ type: "link", key: "contenido", href: "/admin/contenido", label: "Contenido" });
     items.push({ type: "link", key: "venta", href: "/admin/ventas/nueva", label: "Registrar venta" });
   }
-  items.push({ type: "link", key: "contacto", href: "/contacto", label: "Contacto" });
+  if (!isAdmin) {
+    items.push({ type: "link", key: "contacto", href: "/contacto", label: "Contacto" });
+  }
 
   return (
     <div className="relative flex items-center gap-3">
