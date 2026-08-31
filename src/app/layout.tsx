@@ -43,10 +43,21 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <main className="flex-1">{children}</main>
         {!isAdmin && <ZindoWhatsAppButton phone={contacto_whatsapp} />}
         <footer
-          className="border-t py-6 text-center text-xs"
+          className="border-t py-6 text-center text-xs space-y-2"
           style={{ borderColor: zindoColors.sage, color: zindoColors.ink, opacity: 0.6, fontFamily: "var(--font-zindo-body)" }}
         >
-          © {new Date().getFullYear()} Zindo
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            <Link href="/terminos" className="hover:underline">
+              Términos y Condiciones
+            </Link>
+            <Link href="/privacidad" className="hover:underline">
+              Aviso de Privacidad
+            </Link>
+            <Link href="/devoluciones" className="hover:underline">
+              Política de Devoluciones
+            </Link>
+          </div>
+          <p>© {new Date().getFullYear()} Zindo</p>
         </footer>
       </body>
     </html>

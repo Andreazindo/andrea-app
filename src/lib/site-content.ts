@@ -11,6 +11,9 @@ export const EDITABLE_CONTENT_KEYS = [
   "contacto_mail",
   "contacto_whatsapp",
   "contacto_redes",
+  "legal_terminos",
+  "legal_privacidad",
+  "legal_devoluciones",
 ] as const;
 
 export async function getSiteContent<K extends string>(keys: readonly K[]): Promise<Record<K, string>> {

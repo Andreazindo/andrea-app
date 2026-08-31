@@ -178,6 +178,49 @@ export default async function ContenidoAdminPage({
           </div>
         </section>
 
+        <section className={sectionClass}>
+          <h2 className="text-sm font-semibold">Legal</h2>
+          <p className="text-xs text-black/50 dark:text-white/50">
+            Formato Markdown simple: ## para subtítulos, **negrita**, listas con &quot;- &quot; o &quot;1. &quot;.
+          </p>
+          <div>
+            <label className={labelClass} htmlFor="legal_terminos">
+              Términos y Condiciones
+            </label>
+            <textarea
+              id="legal_terminos"
+              name="legal_terminos"
+              rows={10}
+              defaultValue={content.legal_terminos}
+              className={`${inputClass} font-mono text-xs`}
+            />
+          </div>
+          <div>
+            <label className={labelClass} htmlFor="legal_privacidad">
+              Aviso de Privacidad
+            </label>
+            <textarea
+              id="legal_privacidad"
+              name="legal_privacidad"
+              rows={10}
+              defaultValue={content.legal_privacidad}
+              className={`${inputClass} font-mono text-xs`}
+            />
+          </div>
+          <div>
+            <label className={labelClass} htmlFor="legal_devoluciones">
+              Política de Devoluciones
+            </label>
+            <textarea
+              id="legal_devoluciones"
+              name="legal_devoluciones"
+              rows={10}
+              defaultValue={content.legal_devoluciones}
+              className={`${inputClass} font-mono text-xs`}
+            />
+          </div>
+        </section>
+
         <button type="submit" className={primaryButtonClass}>
           Guardar contenido
         </button>
