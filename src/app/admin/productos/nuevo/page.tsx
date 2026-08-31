@@ -3,6 +3,13 @@ import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { createProductAction } from "./actions";
 import { PlainBackLink } from "@/components/BackLink";
+import {
+  AdminPageHeader,
+  AdminFlash,
+  adminInputClass as inputClass,
+  adminLabelClass as labelClass,
+  adminButtonPrimaryClass,
+} from "@/components/admin/ui";
 
 export const metadata: Metadata = { title: "Nuevo producto (Admin)" };
 
@@ -12,9 +19,6 @@ const ERROR_MESSAGES: Record<string, string> = {
   "categoria-invalida": "La categoría elegida no es válida.",
   "precio-invalido": "El precio debe ser un número mayor a 0.",
 };
-
-const inputClass = "w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm";
-const labelClass = "block text-sm font-medium mb-1";
 
 export default async function NuevoProductoPage({
   searchParams,
@@ -33,14 +37,12 @@ export default async function NuevoProductoPage({
     <div className="mx-auto max-w-2xl px-4 py-10 space-y-6">
       <div>
         <PlainBackLink href="/admin/productos" label="Productos" />
-        <h1 className="text-2xl font-bold tracking-tight mt-3">Nuevo producto</h1>
+        <div className="mt-3">
+          <AdminPageHeader title="Nuevo producto" />
+        </div>
       </div>
 
-      {error && (
-        <p className="rounded-md bg-red-500/10 text-red-600 dark:text-red-400 text-sm px-3 py-2">
-          {ERROR_MESSAGES[error] ?? "Revisa el formulario."}
-        </p>
-      )}
+      <AdminFlash error={error} errorMessages={ERROR_MESSAGES} />
 
       <form action={createProductAction} className="space-y-4">
         <div>
@@ -88,13 +90,10 @@ export default async function NuevoProductoPage({
           <input type="checkbox" name="trackInventory" defaultChecked />
           Controlar inventario
         </label>
-        <p className="text-xs text-black/50 dark:text-white/50">
+        <p className="text-xs text-[#1A1A1A]/50">
           Las fotos se agregan después: mándamelas por chat y yo las subo por ahora.
         </p>
-        <button
-          type="submit"
-          className="w-full rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-3 text-sm font-medium hover:opacity-90"
-        >
+        <button type="submit" className={`w-full ${adminButtonPrimaryClass}`}>
           Crear producto
         </button>
       </form>

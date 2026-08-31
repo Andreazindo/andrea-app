@@ -4,6 +4,7 @@ import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { PlainBackLink } from "@/components/BackLink";
+import { AdminPageHeader } from "@/components/admin/ui";
 
 export const metadata: Metadata = { title: "Productos (Admin)" };
 
@@ -32,10 +33,10 @@ export default async function ProductosAdminPage() {
       <div>
         <PlainBackLink href="/" label="Inicio" />
         <div className="flex items-center justify-between gap-4 mt-3">
-          <h1 className="text-2xl font-bold tracking-tight">Productos</h1>
+          <AdminPageHeader title="Productos" />
           <Link
             href="/admin/productos/nuevo"
-            className="rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium hover:opacity-90"
+            className="rounded-md bg-[#0D3B36] px-4 py-2 text-sm font-medium text-white hover:bg-[#0D3B36]/90 transition-colors"
           >
             + Nuevo producto
           </Link>
@@ -46,7 +47,7 @@ export default async function ProductosAdminPage() {
         const items = byBrand.get(brandName)!.slice().sort((a, b) => a.name.localeCompare(b.name));
         return (
           <section key={brandName} className="space-y-2">
-            <h2 className="text-sm font-semibold text-black/70 dark:text-white/70">{brandName}</h2>
+            <h2 className="text-sm font-semibold text-[#0D3B36]">{brandName}</h2>
             <div className="space-y-2">
               {items.map((product) => {
                 const prices = product.variants.map((v) => v.priceCents);
@@ -62,7 +63,7 @@ export default async function ProductosAdminPage() {
                   <Link
                     key={product.id}
                     href={`/admin/productos/${product.id}`}
-                    className="flex items-center gap-3 rounded-md border border-black/10 dark:border-white/15 px-3 py-2 hover:border-black/30 dark:hover:border-white/40"
+                    className="flex items-center gap-3 rounded-md border border-[#9CBA9D]/50 bg-white px-3 py-2 hover:border-[#C9A15B] transition-colors"
                   >
                     {thumb ? (
                       // eslint-disable-next-line @next/next/no-img-element

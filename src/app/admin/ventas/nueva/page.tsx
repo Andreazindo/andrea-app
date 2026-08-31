@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { registerManualSaleAction } from "./actions";
 import { PlainBackLink } from "@/components/BackLink";
+import { AdminPageHeader } from "@/components/admin/ui";
 
 export const metadata: Metadata = { title: "Registrar venta (Admin)" };
 
@@ -43,23 +44,25 @@ export default async function NuevaVentaManualPage({
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <PlainBackLink href="/" label="Inicio" />
-      <h1 className="text-2xl font-bold tracking-tight mt-3 mb-1">Registrar venta manual</h1>
-      <p className="text-sm text-black/60 dark:text-white/60 mb-6">
-        Para ventas cerradas fuera del sistema (transferencia o efectivo) que quieres dejar registradas.
-      </p>
+      <div className="mt-3 mb-6">
+        <AdminPageHeader
+          title="Registrar venta manual"
+          subtitle="Para ventas cerradas fuera del sistema (transferencia o efectivo) que quieres dejar registradas."
+        />
+      </div>
 
       {error && (
-        <p className="mb-6 rounded-md bg-red-500/10 text-red-600 dark:text-red-400 text-sm px-3 py-2">
+        <p className="mb-6 rounded-md bg-red-500/10 text-red-600 text-sm px-3 py-2">
           {ERROR_MESSAGES[error] ?? "No pudimos registrar la venta."}
           {producto ? ` (${producto})` : ""}
         </p>
       )}
 
       <form action={registerManualSaleAction} className="space-y-8">
-        <section className="rounded-lg border border-black/10 dark:border-white/15 p-4 space-y-4">
-          <h2 className="text-sm font-semibold">Cliente</h2>
+        <section className="rounded-xl border border-[#9CBA9D]/50 bg-white p-5 space-y-4 shadow-sm">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[#0D3B36]">Cliente</h2>
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="customerEmail">
+            <label className="block text-sm font-medium mb-1 text-[#1A1A1A]" htmlFor="customerEmail">
               Correo
             </label>
             <input
@@ -67,7 +70,7 @@ export default async function NuevaVentaManualPage({
               name="customerEmail"
               type="email"
               required
-              className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+              className="w-full rounded-md border border-[#9CBA9D]/60 bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#C9A15B]/50 focus:border-[#C9A15B]"
             />
           </div>
           <p className="text-xs text-black/50 dark:text-white/50">
@@ -75,119 +78,119 @@ export default async function NuevaVentaManualPage({
           </p>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="customerName">
+              <label className="block text-sm font-medium mb-1 text-[#1A1A1A]" htmlFor="customerName">
                 Nombre (cliente nuevo)
               </label>
               <input
                 id="customerName"
                 name="customerName"
-                className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                className="w-full rounded-md border border-[#9CBA9D]/60 bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#C9A15B]/50 focus:border-[#C9A15B]"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="customerPhone">
+              <label className="block text-sm font-medium mb-1 text-[#1A1A1A]" htmlFor="customerPhone">
                 Teléfono
               </label>
               <input
                 id="customerPhone"
                 name="customerPhone"
-                className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                className="w-full rounded-md border border-[#9CBA9D]/60 bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#C9A15B]/50 focus:border-[#C9A15B]"
               />
             </div>
           </div>
         </section>
 
-        <section className="rounded-lg border border-black/10 dark:border-white/15 p-4 space-y-4">
-          <h2 className="text-sm font-semibold">Envío (opcional)</h2>
+        <section className="rounded-xl border border-[#9CBA9D]/50 bg-white p-5 space-y-4 shadow-sm">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[#0D3B36]">Envío (opcional)</h2>
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="shippingAddressLine">
+            <label className="block text-sm font-medium mb-1 text-[#1A1A1A]" htmlFor="shippingAddressLine">
               Dirección
             </label>
             <input
               id="shippingAddressLine"
               name="shippingAddressLine"
-              className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+              className="w-full rounded-md border border-[#9CBA9D]/60 bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#C9A15B]/50 focus:border-[#C9A15B]"
             />
           </div>
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="shippingCity">
+              <label className="block text-sm font-medium mb-1 text-[#1A1A1A]" htmlFor="shippingCity">
                 Ciudad
               </label>
               <input
                 id="shippingCity"
                 name="shippingCity"
-                className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                className="w-full rounded-md border border-[#9CBA9D]/60 bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#C9A15B]/50 focus:border-[#C9A15B]"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="shippingState">
+              <label className="block text-sm font-medium mb-1 text-[#1A1A1A]" htmlFor="shippingState">
                 Estado
               </label>
               <input
                 id="shippingState"
                 name="shippingState"
-                className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                className="w-full rounded-md border border-[#9CBA9D]/60 bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#C9A15B]/50 focus:border-[#C9A15B]"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="shippingZip">
+              <label className="block text-sm font-medium mb-1 text-[#1A1A1A]" htmlFor="shippingZip">
                 C.P.
               </label>
               <input
                 id="shippingZip"
                 name="shippingZip"
-                className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                className="w-full rounded-md border border-[#9CBA9D]/60 bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#C9A15B]/50 focus:border-[#C9A15B]"
               />
             </div>
           </div>
         </section>
 
-        <section className="rounded-lg border border-black/10 dark:border-white/15 p-4 space-y-4">
-          <h2 className="text-sm font-semibold">Pago</h2>
+        <section className="rounded-xl border border-[#9CBA9D]/50 bg-white p-5 space-y-4 shadow-sm">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[#0D3B36]">Pago</h2>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="method">
+              <label className="block text-sm font-medium mb-1 text-[#1A1A1A]" htmlFor="method">
                 Método
               </label>
               <select
                 id="method"
                 name="method"
-                className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                className="w-full rounded-md border border-[#9CBA9D]/60 bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#C9A15B]/50 focus:border-[#C9A15B]"
               >
                 <option value="MANUAL_TRANSFER">Transferencia</option>
                 <option value="MANUAL_CASH">Efectivo</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="reference">
+              <label className="block text-sm font-medium mb-1 text-[#1A1A1A]" htmlFor="reference">
                 Referencia (opcional)
               </label>
               <input
                 id="reference"
                 name="reference"
                 placeholder="Folio, banco, nota..."
-                className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                className="w-full rounded-md border border-[#9CBA9D]/60 bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#C9A15B]/50 focus:border-[#C9A15B]"
               />
             </div>
           </div>
         </section>
 
         <section className="space-y-6">
-          <h2 className="text-sm font-semibold">Productos</h2>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[#0D3B36]">Productos</h2>
           {brands.map((brand) => {
             const hasProducts = brand.categories.some((c) => c.products.length > 0);
             if (!hasProducts) return null;
             return (
               <div key={brand.id}>
-                <h3 className="text-sm font-semibold text-black/70 dark:text-white/70 mb-2">{brand.name}</h3>
+                <h3 className="text-sm font-semibold text-[#0D3B36] mb-2">{brand.name}</h3>
                 <div className="space-y-2">
                   {brand.categories.flatMap((category) =>
                     category.products.flatMap((product) =>
                       product.variants.map((variant) => (
                         <div
                           key={variant.id}
-                          className="flex items-center justify-between gap-3 rounded-md border border-black/10 dark:border-white/15 px-3 py-2"
+                          className="flex items-center justify-between gap-3 rounded-md border border-[#9CBA9D]/50 bg-white px-3 py-2"
                         >
                           <div className="text-sm">
                             <span className="font-medium">{product.name}</span>
@@ -199,7 +202,7 @@ export default async function NuevaVentaManualPage({
                             name={`qty_${variant.id}`}
                             min={0}
                             defaultValue={0}
-                            className="w-20 rounded-md border border-black/15 dark:border-white/20 bg-transparent px-2 py-1 text-sm"
+                            className="w-20 rounded-md border border-[#9CBA9D]/60 bg-white px-2 py-1 text-sm text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#C9A15B]/50 focus:border-[#C9A15B]"
                           />
                         </div>
                       ))
@@ -213,7 +216,7 @@ export default async function NuevaVentaManualPage({
 
         <button
           type="submit"
-          className="w-full rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-3 text-sm font-medium hover:opacity-90"
+          className="w-full rounded-md bg-[#0D3B36] px-4 py-3 text-sm font-medium text-white hover:bg-[#0D3B36]/90 transition-colors"
         >
           Registrar venta
         </button>

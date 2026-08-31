@@ -4,6 +4,16 @@ import { prisma } from "@/lib/prisma";
 import { getSiteContent, EDITABLE_CONTENT_KEYS } from "@/lib/site-content";
 import { PlainBackLink } from "@/components/BackLink";
 import {
+  AdminPageHeader,
+  AdminFlash,
+  adminCardClass as sectionClass,
+  adminInputClass as inputClass,
+  adminLabelClass as labelClass,
+  adminButtonPrimaryClass as primaryButtonClass,
+  adminButtonSecondaryClass as secondaryButtonClass,
+  adminDangerLinkClass,
+} from "@/components/admin/ui";
+import {
   updateSiteContentAction,
   addSalesPointAction,
   updateSalesPointAction,
@@ -15,13 +25,6 @@ export const metadata: Metadata = { title: "Contenido (Admin)" };
 const ERROR_MESSAGES: Record<string, string> = {
   "punto-invalido": "Nombre y descripción son obligatorios.",
 };
-
-const inputClass = "w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm";
-const labelClass = "block text-sm font-medium mb-1";
-const sectionClass = "rounded-lg border border-black/10 dark:border-white/15 p-4 space-y-4";
-const primaryButtonClass = "rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium hover:opacity-90";
-const secondaryButtonClass =
-  "rounded-md border border-black/15 dark:border-white/20 px-4 py-2 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10";
 
 export default async function ContenidoAdminPage({
   searchParams,
@@ -40,26 +43,16 @@ export default async function ContenidoAdminPage({
     <div className="mx-auto max-w-3xl px-4 py-10 space-y-10">
       <div>
         <PlainBackLink href="/" label="Inicio" />
-        <h1 className="text-2xl font-bold tracking-tight mt-3 mb-1">Contenido del sitio</h1>
-        <p className="text-sm text-black/60 dark:text-white/60">
-          Textos de las páginas principales, sin tocar código.
-        </p>
+        <div className="mt-3">
+          <AdminPageHeader title="Contenido del sitio" subtitle="Textos de las páginas principales, sin tocar código." />
+        </div>
       </div>
 
-      {guardado && (
-        <p className="rounded-md bg-green-500/10 text-green-700 dark:text-green-400 text-sm px-3 py-2">
-          Cambios guardados.
-        </p>
-      )}
-      {error && (
-        <p className="rounded-md bg-red-500/10 text-red-600 dark:text-red-400 text-sm px-3 py-2">
-          {ERROR_MESSAGES[error] ?? "Revisa el formulario."}
-        </p>
-      )}
+      <AdminFlash guardado={guardado} error={error} errorMessages={ERROR_MESSAGES} />
 
       <form action={updateSiteContentAction} className="space-y-8">
         <section className={sectionClass}>
-          <h2 className="text-sm font-semibold">Inicio</h2>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[#0D3B36]">Inicio</h2>
           <div>
             <label className={labelClass} htmlFor="home_tagline">
               Frase del hero
@@ -87,7 +80,7 @@ export default async function ContenidoAdminPage({
         </section>
 
         <section className={sectionClass}>
-          <h2 className="text-sm font-semibold">Tienda Wellness</h2>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[#0D3B36]">Tienda Wellness</h2>
           <div>
             <label className={labelClass} htmlFor="tienda_tagline">
               Frase debajo del título
@@ -97,7 +90,7 @@ export default async function ContenidoAdminPage({
         </section>
 
         <section className={sectionClass}>
-          <h2 className="text-sm font-semibold">Evolución Personal</h2>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[#0D3B36]">Evolución Personal</h2>
           <div>
             <label className={labelClass} htmlFor="evolucion_tagline">
               Frase debajo del título
@@ -112,7 +105,7 @@ export default async function ContenidoAdminPage({
         </section>
 
         <section className={sectionClass}>
-          <h2 className="text-sm font-semibold">Librería Gratuita</h2>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[#0D3B36]">Librería Gratuita</h2>
           <div>
             <label className={labelClass} htmlFor="libreria_tagline">
               Frase debajo del título
@@ -127,7 +120,7 @@ export default async function ContenidoAdminPage({
         </section>
 
         <section className={sectionClass}>
-          <h2 className="text-sm font-semibold">Contacto</h2>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[#0D3B36]">Contacto</h2>
           <div>
             <label className={labelClass} htmlFor="contacto_tagline">
               Frase debajo del título
@@ -179,7 +172,7 @@ export default async function ContenidoAdminPage({
         </section>
 
         <section className={sectionClass}>
-          <h2 className="text-sm font-semibold">Legal</h2>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[#0D3B36]">Legal</h2>
           <p className="text-xs text-black/50 dark:text-white/50">
             Formato Markdown simple: ## para subtítulos, **negrita**, listas con &quot;- &quot; o &quot;1. &quot;.
           </p>
@@ -227,7 +220,7 @@ export default async function ContenidoAdminPage({
       </form>
 
       <section className="space-y-4">
-        <h2 className="text-sm font-semibold">Puntos de Venta</h2>
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-[#0D3B36]">Puntos de Venta</h2>
 
         {salesPoints.map((point) => (
           <div key={point.id} className={sectionClass}>
@@ -265,7 +258,7 @@ export default async function ContenidoAdminPage({
             </form>
             <form action={deleteSalesPointAction} className="flex justify-end">
               <input type="hidden" name="id" value={point.id} />
-              <button type="submit" className="text-xs text-red-600 dark:text-red-400 hover:underline">
+              <button type="submit" className={adminDangerLinkClass}>
                 Borrar &quot;{point.name}&quot;
               </button>
             </form>
@@ -273,7 +266,7 @@ export default async function ContenidoAdminPage({
         ))}
 
         <details className={sectionClass}>
-          <summary className="text-sm font-semibold cursor-pointer">+ Agregar punto de venta</summary>
+          <summary className="text-sm font-semibold cursor-pointer text-[#0D3B36]">+ Agregar punto de venta</summary>
           <form action={addSalesPointAction} className="mt-4 space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>

@@ -2,6 +2,16 @@ import type { Metadata } from "next";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { PlainBackLink } from "@/components/BackLink";
+import {
+  AdminPageHeader,
+  AdminFlash,
+  AdminSectionTitle,
+  adminCardClass as sectionClass,
+  adminInputClass as inputClass,
+  adminLabelClass as labelClass,
+  adminButtonSecondaryClass as secondaryButtonClass,
+  adminDangerLinkClass,
+} from "@/components/admin/ui";
 import { addContentBlockAction, updateContentBlockAction, deleteContentBlockAction } from "./actions";
 
 export const metadata: Metadata = { title: "Contenido multimedia (Admin)" };
@@ -27,12 +37,6 @@ const ERROR_MESSAGES: Record<string, string> = {
   "item-invalido": "Completa tipo, título y valor.",
 };
 
-const inputClass = "w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm";
-const labelClass = "block text-sm font-medium mb-1";
-const sectionClass = "rounded-lg border border-black/10 dark:border-white/15 p-4 space-y-3";
-const secondaryButtonClass =
-  "rounded-md border border-black/15 dark:border-white/20 px-4 py-2 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10";
-
 export default async function MultimediaAdminPage({
   searchParams,
 }: {
@@ -48,29 +52,22 @@ export default async function MultimediaAdminPage({
     <div className="mx-auto max-w-3xl px-4 py-10 space-y-10">
       <div>
         <PlainBackLink href="/" label="Inicio" />
-        <h1 className="text-2xl font-bold tracking-tight mt-3 mb-1">Contenido multimedia</h1>
-        <p className="text-sm text-black/60 dark:text-white/60">
-          Cursos, webinars, testimonios, entrevistas y recursos de Librería — sin tocar código.
-        </p>
+        <div className="mt-3">
+          <AdminPageHeader
+            title="Contenido multimedia"
+            subtitle="Cursos, webinars, testimonios, entrevistas y recursos de Librería — sin tocar código."
+          />
+        </div>
       </div>
 
-      {guardado && (
-        <p className="rounded-md bg-green-500/10 text-green-700 dark:text-green-400 text-sm px-3 py-2">
-          Cambios guardados.
-        </p>
-      )}
-      {error && (
-        <p className="rounded-md bg-red-500/10 text-red-600 dark:text-red-400 text-sm px-3 py-2">
-          {ERROR_MESSAGES[error] ?? "Revisa el formulario."}
-        </p>
-      )}
+      <AdminFlash guardado={guardado} error={error} errorMessages={ERROR_MESSAGES} />
 
       {SECTIONS.map((section) => {
         const items = bySection[section.key] ?? [];
         const defaultKind = section.key === "cursos_online" ? "COURSE" : "YOUTUBE";
         return (
           <section key={section.key} className="space-y-4">
-            <h2 className="text-sm font-semibold">{section.label}</h2>
+            <AdminSectionTitle>{section.label}</AdminSectionTitle>
 
             {items.map((item) => (
               <div key={item.id} className={sectionClass}>
@@ -142,7 +139,7 @@ export default async function MultimediaAdminPage({
                 </form>
                 <form action={deleteContentBlockAction} className="flex justify-end">
                   <input type="hidden" name="id" value={item.id} />
-                  <button type="submit" className="text-xs text-red-600 dark:text-red-400 hover:underline">
+                  <button type="submit" className={adminDangerLinkClass}>
                     Borrar &quot;{item.title}&quot;
                   </button>
                 </form>
@@ -150,7 +147,7 @@ export default async function MultimediaAdminPage({
             ))}
 
             <details className={sectionClass}>
-              <summary className="text-sm font-semibold cursor-pointer">+ Agregar a {section.label}</summary>
+              <summary className="text-sm font-semibold cursor-pointer text-[#0D3B36]">+ Agregar a {section.label}</summary>
               <form action={addContentBlockAction} className="mt-4 space-y-3">
                 <input type="hidden" name="section" value={section.key} />
                 <div className="grid grid-cols-2 gap-3">

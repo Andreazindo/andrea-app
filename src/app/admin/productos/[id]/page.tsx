@@ -4,6 +4,15 @@ import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { updateProductAction, updateVariantAction, addVariantAction } from "./actions";
 import { PlainBackLink } from "@/components/BackLink";
+import {
+  AdminPageHeader,
+  AdminSectionTitle,
+  adminCardClass as sectionClass,
+  adminInputClass as inputClass,
+  adminLabelClass as labelClass,
+  adminButtonPrimaryClass as primaryButtonClass,
+  adminButtonSecondaryClass as secondaryButtonClass,
+} from "@/components/admin/ui";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
@@ -15,13 +24,6 @@ const ERROR_MESSAGES: Record<string, string> = {
   "falta-nombre": "El nombre es obligatorio.",
   "variante-invalida": "Revisa el nombre y el precio de la variante (debe ser mayor a 0).",
 };
-
-const inputClass = "w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm";
-const labelClass = "block text-sm font-medium mb-1";
-const sectionClass = "rounded-lg border border-black/10 dark:border-white/15 p-4 space-y-4";
-const primaryButtonClass = "rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium hover:opacity-90";
-const secondaryButtonClass =
-  "rounded-md border border-black/15 dark:border-white/20 px-4 py-2 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10";
 
 export default async function EditarProductoPage({
   params,
@@ -52,27 +54,27 @@ export default async function EditarProductoPage({
     <div className="mx-auto max-w-3xl px-4 py-10 space-y-10">
       <div>
         <PlainBackLink href="/admin/productos" label="Productos" />
-        <h1 className="text-2xl font-bold tracking-tight mt-3">{product.name}</h1>
+        <div className="mt-3">
+          <AdminPageHeader title={product.name} />
+        </div>
       </div>
 
       {creado && (
-        <p className="rounded-md bg-green-500/10 text-green-700 dark:text-green-400 text-sm px-3 py-2">
+        <p className="rounded-md bg-[#0D3B36]/10 text-[#0D3B36] text-sm px-3 py-2 font-medium">
           Producto creado. Para las fotos, mándamelas por chat y yo las subo por ahora.
         </p>
       )}
       {guardado && (
-        <p className="rounded-md bg-green-500/10 text-green-700 dark:text-green-400 text-sm px-3 py-2">
-          Cambios guardados.
-        </p>
+        <p className="rounded-md bg-[#0D3B36]/10 text-[#0D3B36] text-sm px-3 py-2 font-medium">Cambios guardados.</p>
       )}
       {error && (
-        <p className="rounded-md bg-red-500/10 text-red-600 dark:text-red-400 text-sm px-3 py-2">
+        <p className="rounded-md bg-red-500/10 text-red-600 text-sm px-3 py-2">
           {ERROR_MESSAGES[error] ?? "Revisa el formulario."}
         </p>
       )}
 
       <section className={sectionClass}>
-        <h2 className="text-sm font-semibold">Datos del producto</h2>
+        <AdminSectionTitle>Datos del producto</AdminSectionTitle>
         <form action={updateProductAction} className="space-y-4">
           <input type="hidden" name="productId" value={product.id} />
           <div>
@@ -117,9 +119,9 @@ export default async function EditarProductoPage({
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-sm font-semibold">Fotos</h2>
+        <AdminSectionTitle>Fotos</AdminSectionTitle>
         {product.images.length === 0 ? (
-          <p className="text-sm text-black/50 dark:text-white/50">Sin fotos todavía.</p>
+          <p className="text-sm text-[#1A1A1A]/50">Sin fotos todavía.</p>
         ) : (
           <div className="grid grid-cols-4 gap-2">
             {product.images.map((img) => (
@@ -128,18 +130,18 @@ export default async function EditarProductoPage({
                 key={img.id}
                 src={img.url}
                 alt=""
-                className="aspect-square w-full rounded-md object-cover border border-black/10 dark:border-white/15"
+                className="aspect-square w-full rounded-md object-cover border border-[#9CBA9D]/50"
               />
             ))}
           </div>
         )}
-        <p className="text-xs text-black/50 dark:text-white/50">
+        <p className="text-xs text-[#1A1A1A]/50">
           Por ahora las fotos se suben manualmente — mándamelas por chat y las agrego.
         </p>
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-sm font-semibold">Precios / variantes</h2>
+        <AdminSectionTitle>Precios / variantes</AdminSectionTitle>
         {product.variants.map((variant) => (
           <form key={variant.id} action={updateVariantAction} className={sectionClass}>
             <input type="hidden" name="variantId" value={variant.id} />
@@ -187,7 +189,7 @@ export default async function EditarProductoPage({
         ))}
 
         <details className={sectionClass}>
-          <summary className="text-sm font-semibold cursor-pointer">+ Agregar variante</summary>
+          <summary className="text-sm font-semibold cursor-pointer text-[#0D3B36]">+ Agregar variante</summary>
           <form action={addVariantAction} className="mt-4 space-y-4">
             <input type="hidden" name="productId" value={product.id} />
             <div className="grid grid-cols-2 gap-4">

@@ -4,6 +4,7 @@ import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { PlainBackLink } from "@/components/BackLink";
+import { AdminPageHeader } from "@/components/admin/ui";
 
 export const metadata: Metadata = { title: "Pedidos (Admin)" };
 
@@ -54,14 +55,16 @@ export default async function PedidosAdminPage({
     <div className="mx-auto max-w-4xl px-4 py-10 space-y-6">
       <div>
         <PlainBackLink href="/" label="Inicio" />
-        <h1 className="text-2xl font-bold tracking-tight mt-3">Pedidos</h1>
+        <div className="mt-3">
+          <AdminPageHeader title="Pedidos" />
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-2 text-sm">
         <Link
           href="/admin/pedidos"
-          className={`rounded-full px-3 py-1 border ${
-            !status ? "bg-black text-white dark:bg-white dark:text-black" : "border-black/15 dark:border-white/20"
+          className={`rounded-full px-3 py-1 border transition-colors ${
+            !status ? "bg-[#0D3B36] text-white border-[#0D3B36]" : "border-[#9CBA9D] text-[#0D3B36] hover:bg-[#EEE7DF]"
           }`}
         >
           Todos
@@ -70,8 +73,8 @@ export default async function PedidosAdminPage({
           <Link
             key={s}
             href={`/admin/pedidos?status=${s}`}
-            className={`rounded-full px-3 py-1 border ${
-              status === s ? "bg-black text-white dark:bg-white dark:text-black" : "border-black/15 dark:border-white/20"
+            className={`rounded-full px-3 py-1 border transition-colors ${
+              status === s ? "bg-[#0D3B36] text-white border-[#0D3B36]" : "border-[#9CBA9D] text-[#0D3B36] hover:bg-[#EEE7DF]"
             }`}
           >
             {STATUS_LABELS[s]}
@@ -80,7 +83,7 @@ export default async function PedidosAdminPage({
       </div>
 
       {orders.length === 0 ? (
-        <p className="text-sm text-black/60 dark:text-white/60">No hay pedidos{status ? " con ese estatus" : ""} todavía.</p>
+        <p className="text-sm text-[#1A1A1A]/60">No hay pedidos{status ? " con ese estatus" : ""} todavía.</p>
       ) : (
         <div className="space-y-2">
           {orders.map((order) => {
@@ -89,22 +92,22 @@ export default async function PedidosAdminPage({
               <Link
                 key={order.id}
                 href={`/admin/pedidos/${order.id}`}
-                className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 rounded-md border border-black/10 dark:border-white/15 px-4 py-3 hover:border-black/30 dark:hover:border-white/40"
+                className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 rounded-md border border-[#9CBA9D]/50 bg-white px-4 py-3 hover:border-[#C9A15B] transition-colors"
               >
-                <span className="text-sm font-mono text-black/50 dark:text-white/50 flex-none">
+                <span className="text-sm font-mono text-[#1A1A1A]/50 flex-none">
                   #{order.id.slice(-8).toUpperCase()}
                 </span>
                 <span className="text-sm flex-1">
-                  <span className="font-medium">{order.user.name}</span>
-                  <span className="text-black/50 dark:text-white/50"> · {order.user.email}</span>
+                  <span className="font-medium text-[#1A1A1A]">{order.user.name}</span>
+                  <span className="text-[#1A1A1A]/50"> · {order.user.email}</span>
                 </span>
-                <span className="text-xs text-black/50 dark:text-white/50">
+                <span className="text-xs text-[#1A1A1A]/50">
                   {payment ? payment.method.replace("_", " ") : "sin pago registrado"}
                 </span>
                 <span className={`text-xs font-medium px-2 py-1 rounded-full flex-none ${STATUS_COLORS[order.status]}`}>
                   {STATUS_LABELS[order.status] ?? order.status}
                 </span>
-                <span className="text-sm font-semibold flex-none">{formatCents(order.totalCents)}</span>
+                <span className="text-sm font-semibold text-[#0D3B36] flex-none">{formatCents(order.totalCents)}</span>
               </Link>
             );
           })}

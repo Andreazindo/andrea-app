@@ -6,6 +6,15 @@ import { formatCents } from "@/lib/money";
 import { PlainBackLink } from "@/components/BackLink";
 import { updateOrderStatusAction, updateOrderShippingAction } from "./actions";
 import { whatsappLinkForOrder } from "@/lib/order-messages";
+import {
+  AdminPageHeader,
+  AdminSectionTitle,
+  adminCardClass as sectionClass,
+  adminInputClass as inputClass,
+  adminLabelClass as labelClass,
+  adminButtonPrimaryClass,
+  adminButtonSecondaryClass,
+} from "@/components/admin/ui";
 
 const STATUS_LABELS: Record<string, string> = {
   PENDING_PAYMENT: "Pendiente de pago",
@@ -27,10 +36,6 @@ const ERROR_MESSAGES: Record<string, string> = {
   "estatus-invalido": "Elige un estatus válido.",
   "envio-invalido": "Completa nombre, teléfono, dirección, ciudad, estado y C.P.",
 };
-
-const sectionClass = "rounded-lg border border-black/10 dark:border-white/15 p-4 space-y-3";
-const inputClass = "w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm";
-const labelClass = "block text-sm font-medium mb-1";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
@@ -62,50 +67,40 @@ export default async function PedidoAdminPage({
     <div className="mx-auto max-w-3xl px-4 py-10 space-y-8">
       <div>
         <PlainBackLink href="/admin/pedidos" label="Pedidos" />
-        <h1 className="text-2xl font-bold tracking-tight mt-3">Pedido #{order.id.slice(-8).toUpperCase()}</h1>
-        <p className="text-sm text-black/60 dark:text-white/60">
-          {new Date(order.createdAt).toLocaleString("es-MX")}
-        </p>
+        <div className="mt-3">
+          <AdminPageHeader title={`Pedido #${order.id.slice(-8).toUpperCase()}`} subtitle={new Date(order.createdAt).toLocaleString("es-MX")} />
+        </div>
       </div>
 
       {guardado && (
-        <p className="rounded-md bg-green-500/10 text-green-700 dark:text-green-400 text-sm px-3 py-2">
-          Cambios guardados.
-        </p>
+        <p className="rounded-md bg-[#0D3B36]/10 text-[#0D3B36] text-sm px-3 py-2 font-medium">Cambios guardados.</p>
       )}
       {error && (
-        <p className="rounded-md bg-red-500/10 text-red-600 dark:text-red-400 text-sm px-3 py-2">
+        <p className="rounded-md bg-red-500/10 text-red-600 text-sm px-3 py-2">
           {ERROR_MESSAGES[error] ?? "Revisa el formulario."}
         </p>
       )}
 
       <section className={sectionClass}>
-        <h2 className="text-sm font-semibold">Estatus</h2>
+        <AdminSectionTitle>Estatus</AdminSectionTitle>
         <form action={updateOrderStatusAction} className="flex items-center gap-3">
           <input type="hidden" name="orderId" value={order.id} />
-          <select
-            name="status"
-            defaultValue={order.status}
-            className="rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
-          >
+          <select name="status" defaultValue={order.status} className={inputClass}>
             {Object.entries(STATUS_LABELS).map(([value, label]) => (
               <option key={value} value={value}>
                 {label}
               </option>
             ))}
           </select>
-          <button
-            type="submit"
-            className="rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium hover:opacity-90"
-          >
+          <button type="submit" className={adminButtonPrimaryClass}>
             Guardar
           </button>
         </form>
       </section>
 
       <section className={sectionClass}>
-        <h2 className="text-sm font-semibold">Cliente</h2>
-        <p className="text-sm">
+        <AdminSectionTitle>Cliente</AdminSectionTitle>
+        <p className="text-sm text-[#1A1A1A]">
           {order.user.name} · {order.user.email}
           {order.user.phone && ` · ${order.user.phone}`}
         </p>
@@ -120,7 +115,7 @@ export default async function PedidoAdminPage({
       </section>
 
       <section className={sectionClass}>
-        <h2 className="text-sm font-semibold">Envío</h2>
+        <AdminSectionTitle>Envío</AdminSectionTitle>
         <form action={updateOrderShippingAction} className="space-y-3">
           <input type="hidden" name="orderId" value={order.id} />
           <div className="grid grid-cols-2 gap-3">
@@ -198,17 +193,14 @@ export default async function PedidoAdminPage({
               className={inputClass}
             />
           </div>
-          <button
-            type="submit"
-            className="rounded-md border border-black/15 dark:border-white/20 px-4 py-2 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10"
-          >
+          <button type="submit" className={adminButtonSecondaryClass}>
             Guardar envío
           </button>
         </form>
       </section>
 
       <section className={sectionClass}>
-        <h2 className="text-sm font-semibold">Productos</h2>
+        <AdminSectionTitle>Productos</AdminSectionTitle>
         <ul className="space-y-1 text-sm">
           {order.items.map((item) => (
             <li key={item.id} className="flex justify-between">
@@ -219,20 +211,20 @@ export default async function PedidoAdminPage({
             </li>
           ))}
         </ul>
-        <div className="flex justify-between border-t border-black/10 dark:border-white/15 pt-3 text-sm">
-          <span>Envío</span>
-          <span>{formatCents(order.shippingCents)}</span>
+        <div className="flex justify-between border-t border-[#9CBA9D]/40 pt-3 text-sm text-[#1A1A1A]">
+          <span className="text-[#1A1A1A]">Envío</span>
+          <span className="text-[#1A1A1A]">{formatCents(order.shippingCents)}</span>
         </div>
-        <div className="flex justify-between text-base font-semibold">
+        <div className="flex justify-between text-base font-semibold text-[#0D3B36]">
           <span>Total</span>
           <span>{formatCents(order.totalCents)}</span>
         </div>
       </section>
 
       <section className={sectionClass}>
-        <h2 className="text-sm font-semibold">Pagos</h2>
+        <AdminSectionTitle>Pagos</AdminSectionTitle>
         {order.payments.length === 0 ? (
-          <p className="text-sm text-black/50 dark:text-white/50">Sin pagos registrados.</p>
+          <p className="text-sm text-[#1A1A1A]/50">Sin pagos registrados.</p>
         ) : (
           <ul className="space-y-2 text-sm">
             {order.payments.map((payment) => (
@@ -241,7 +233,7 @@ export default async function PedidoAdminPage({
                   {PAYMENT_METHOD_LABELS[payment.method] ?? payment.method} · {formatCents(payment.amountCents)} ·{" "}
                   <span className="font-medium">{payment.status}</span>
                 </span>
-                <span className="text-xs text-black/50 dark:text-white/50">
+                <span className="text-xs text-[#1A1A1A]/50">
                   {new Date(payment.createdAt).toLocaleString("es-MX")}
                   {payment.externalId && ` · ID: ${payment.externalId}`}
                   {payment.recordedByUser && ` · Registrado por ${payment.recordedByUser.name}`}
