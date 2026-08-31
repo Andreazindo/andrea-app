@@ -4,8 +4,6 @@ import { ZindoPlaceholderPage } from "@/components/zindo/PlaceholderSection";
 
 const SECCIONES: Record<string, string> = {
   "journal-365": "Journal 365",
-  webinars: "Webinars",
-  testimonios: "Testimonios",
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

@@ -97,6 +97,13 @@ export default async function EvolucionPersonalPage() {
                 description="Historias reales de transformación."
               />
             </li>
+            <li>
+              <ZindoBrandCard
+                href="/evolucion-personal/entrevistas"
+                name="Entrevistas"
+                description="Conversaciones sobre bienestar y desarrollo personal."
+              />
+            </li>
           </ul>
         </section>
 

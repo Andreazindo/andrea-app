@@ -4,8 +4,6 @@ import { ZindoPlaceholderPage } from "@/components/zindo/PlaceholderSection";
 
 const RECURSOS: Record<string, string> = {
   "detox-emocional": "Detox Emocional",
-  "21-dias-de-gratitud": "21 Días de Gratitud",
-  meditaciones: "Meditaciones",
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

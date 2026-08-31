@@ -16,6 +16,7 @@ const RECURSOS = [
     description: "Un reto diario para entrenar la mirada agradecida.",
   },
   { slug: "meditaciones", name: "Meditaciones", description: "Audios guiados para pausar y respirar." },
+  { slug: "mas-recursos", name: "Más Recursos", description: "Afirmaciones y contenido extra para tu bienestar." },
 ];
 
 export default async function LibreriaPage() {
