@@ -54,6 +54,9 @@ export default async function CheckoutPage({
           <span>Total</span>
           <span>{formatCents(total)}</span>
         </div>
+        <p className="mt-3 text-xs text-black/60 dark:text-white/60">
+          El costo de envío no está incluido. Te lo confirmamos por WhatsApp según tu dirección, antes de despachar tu pedido.
+        </p>
       </div>
 
       <form action={createOrderAction} className="space-y-4">
@@ -91,6 +94,21 @@ export default async function CheckoutPage({
             required
             className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
           />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1" htmlFor="shippingCountry">
+            País
+          </label>
+          <select
+            id="shippingCountry"
+            name="shippingCountry"
+            required
+            defaultValue="MX"
+            className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+          >
+            <option value="MX">México</option>
+            <option value="US">Estados Unidos</option>
+          </select>
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>

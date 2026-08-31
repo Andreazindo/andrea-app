@@ -16,6 +16,7 @@ export async function createOrderAction(formData: FormData) {
   const shippingCity = String(formData.get("shippingCity") ?? "").trim();
   const shippingState = String(formData.get("shippingState") ?? "").trim();
   const shippingZip = String(formData.get("shippingZip") ?? "").trim();
+  const shippingCountry = String(formData.get("shippingCountry") ?? "").trim();
 
   if (
     !shippingName ||
@@ -23,7 +24,8 @@ export async function createOrderAction(formData: FormData) {
     !shippingAddressLine ||
     !shippingCity ||
     !shippingState ||
-    !shippingZip
+    !shippingZip ||
+    !shippingCountry
   ) {
     redirect("/checkout?error=datos-incompletos");
   }
@@ -62,6 +64,7 @@ export async function createOrderAction(formData: FormData) {
       shippingCity,
       shippingState,
       shippingZip,
+      shippingCountry,
       items: {
         create: cart.items.map((item) => ({
           productVariantId: item.productVariantId,

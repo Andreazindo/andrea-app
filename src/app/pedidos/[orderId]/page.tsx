@@ -71,7 +71,11 @@ export default async function PedidoPage({
         <p>{order.shippingPhone}</p>
         <p>{order.shippingAddressLine}</p>
         <p>
-          {order.shippingCity}, {order.shippingState}, {order.shippingZip}
+          {order.shippingCity}, {order.shippingState}, {order.shippingZip},{" "}
+          {order.shippingCountry === "US" ? "Estados Unidos" : "México"}
+        </p>
+        <p className="mt-3 text-xs text-black/60 dark:text-white/60">
+          El costo de envío se confirma por WhatsApp según tu dirección, no está incluido en el total pagado.
         </p>
       </div>
 
