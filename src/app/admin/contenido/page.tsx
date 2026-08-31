@@ -246,6 +246,43 @@ export default async function ContenidoAdminPage({
                   />
                 </div>
               </div>
+              <div>
+                <label className={labelClass} htmlFor={`address-${point.id}`}>
+                  Dirección (se convierte en enlace a Google Maps)
+                </label>
+                <input
+                  id={`address-${point.id}`}
+                  name="address"
+                  defaultValue={point.address ?? ""}
+                  placeholder="Calle, número, colonia, ciudad"
+                  className={inputClass}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className={labelClass} htmlFor={`contactInfo-${point.id}`}>
+                    Contacto (teléfono/WhatsApp)
+                  </label>
+                  <input
+                    id={`contactInfo-${point.id}`}
+                    name="contactInfo"
+                    defaultValue={point.contactInfo ?? ""}
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label className={labelClass} htmlFor={`website-${point.id}`}>
+                    Página web
+                  </label>
+                  <input
+                    id={`website-${point.id}`}
+                    name="website"
+                    defaultValue={point.website ?? ""}
+                    placeholder="https://..."
+                    className={inputClass}
+                  />
+                </div>
+              </div>
               <div className="flex items-center justify-between">
                 <label className="flex items-center gap-2 text-sm">
                   <input type="checkbox" name="active" defaultChecked={point.active} />
@@ -280,6 +317,31 @@ export default async function ContenidoAdminPage({
                   Descripción (ciudad, dirección)
                 </label>
                 <input id="new-point-description" name="description" required className={inputClass} />
+              </div>
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="new-point-address">
+                Dirección (se convierte en enlace a Google Maps)
+              </label>
+              <input
+                id="new-point-address"
+                name="address"
+                placeholder="Calle, número, colonia, ciudad"
+                className={inputClass}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass} htmlFor="new-point-contact">
+                  Contacto (teléfono/WhatsApp)
+                </label>
+                <input id="new-point-contact" name="contactInfo" className={inputClass} />
+              </div>
+              <div>
+                <label className={labelClass} htmlFor="new-point-website">
+                  Página web
+                </label>
+                <input id="new-point-website" name="website" placeholder="https://..." className={inputClass} />
               </div>
             </div>
             <button type="submit" className={secondaryButtonClass}>

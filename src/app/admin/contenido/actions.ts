@@ -27,11 +27,21 @@ export async function addSalesPointAction(formData: FormData) {
 
   const name = String(formData.get("name") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
+  const address = String(formData.get("address") ?? "").trim();
+  const contactInfo = String(formData.get("contactInfo") ?? "").trim();
+  const website = String(formData.get("website") ?? "").trim();
   if (!name || !description) redirect("/admin/contenido?error=punto-invalido");
 
   const maxPosition = await prisma.salesPoint.aggregate({ _max: { position: true } });
   await prisma.salesPoint.create({
-    data: { name, description, position: (maxPosition._max.position ?? -1) + 1 },
+    data: {
+      name,
+      description,
+      address: address || null,
+      contactInfo: contactInfo || null,
+      website: website || null,
+      position: (maxPosition._max.position ?? -1) + 1,
+    },
   });
 
   redirect("/admin/contenido?guardado=1");
@@ -43,10 +53,23 @@ export async function updateSalesPointAction(formData: FormData) {
   const id = String(formData.get("id") ?? "");
   const name = String(formData.get("name") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
+  const address = String(formData.get("address") ?? "").trim();
+  const contactInfo = String(formData.get("contactInfo") ?? "").trim();
+  const website = String(formData.get("website") ?? "").trim();
   const active = formData.get("active") === "on";
   if (!name || !description) redirect("/admin/contenido?error=punto-invalido");
 
-  await prisma.salesPoint.update({ where: { id }, data: { name, description, active } });
+  await prisma.salesPoint.update({
+    where: { id },
+    data: {
+      name,
+      description,
+      address: address || null,
+      contactInfo: contactInfo || null,
+      website: website || null,
+      active,
+    },
+  });
 
   redirect("/admin/contenido?guardado=1");
 }

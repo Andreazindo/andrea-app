@@ -273,6 +273,9 @@ model SalesPoint {
   id          String   @id @default(cuid())
   name        String
   description String
+  address     String?
+  contactInfo String?
+  website     String?
   position    Int      @default(0)
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())

@@ -8,6 +8,7 @@ import { ZindoBackLink } from "@/components/BackLink";
 import { getSiteContent } from "@/lib/site-content";
 import { prisma } from "@/lib/prisma";
 import { MailIcon, WhatsappIcon } from "@/components/zindo/ContactIcons";
+import { ZindoSalesPointCard } from "@/components/zindo/SalesPointCard";
 
 export const metadata: Metadata = { title: "Contacto" };
 
@@ -84,7 +85,13 @@ export default async function ContactoPage() {
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {puntosDeVenta.map((punto) => (
                 <li key={punto.id}>
-                  <ZindoBrandCard name={punto.name} description={punto.description} />
+                  <ZindoSalesPointCard
+                    name={punto.name}
+                    description={punto.description}
+                    address={punto.address}
+                    contactInfo={punto.contactInfo}
+                    website={punto.website}
+                  />
                 </li>
               ))}
             </ul>
