@@ -12,6 +12,25 @@ export const metadata: Metadata = { title: "Contacto" };
 
 const CONTENT_KEYS = ["contacto_tagline", "contacto_mail", "contacto_whatsapp", "contacto_redes"] as const;
 
+function parseRedes(raw: string): { name: string; description: string; href?: string }[] {
+  const lines = raw
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (lines.length === 0) {
+    return [{ name: "Redes Sociales", description: "Muy pronto encontrarás aquí nuestras redes sociales." }];
+  }
+
+  return lines.map((line) => {
+    const separatorIndex = line.indexOf(":");
+    if (separatorIndex === -1) return { name: line, description: line };
+    const name = line.slice(0, separatorIndex).trim();
+    const href = line.slice(separatorIndex + 1).trim();
+    return { name, description: href, href };
+  });
+}
+
 export default async function ContactoPage() {
   const [content, puntosDeVenta] = await Promise.all([
     getSiteContent(CONTENT_KEYS),
@@ -31,9 +50,7 @@ export default async function ContactoPage() {
             : `https://wa.me/${content.contacto_whatsapp.replace(/\D/g, "")}`,
         }
       : { name: "WhatsApp", description: "Muy pronto encontrarás aquí nuestro número de WhatsApp." },
-    content.contacto_redes
-      ? { name: "Redes Sociales", description: content.contacto_redes }
-      : { name: "Redes Sociales", description: "Muy pronto encontrarás aquí nuestras redes sociales." },
+    ...parseRedes(content.contacto_redes),
   ];
 
   return (

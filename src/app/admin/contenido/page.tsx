@@ -165,13 +165,13 @@ export default async function ContenidoAdminPage({
           </div>
           <div>
             <label className={labelClass} htmlFor="contacto_redes">
-              Redes sociales
+              Redes sociales (una por línea, formato &quot;Nombre: enlace&quot;)
             </label>
             <textarea
               id="contacto_redes"
               name="contacto_redes"
-              rows={3}
-              placeholder="Instagram: @zindo&#10;Facebook: /zindo"
+              rows={4}
+              placeholder={"Instagram: https://instagram.com/zindo\nTikTok: https://tiktok.com/@zindo"}
               defaultValue={content.contacto_redes}
               className={inputClass}
             />
