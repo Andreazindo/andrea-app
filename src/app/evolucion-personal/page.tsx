@@ -60,7 +60,7 @@ export default async function EvolucionPersonalPage() {
             </div>
             <div className="space-y-4" style={{ fontFamily: "var(--font-zindo-body)" }}>
               {ANDREA_BIO.map((paragraph, i) => (
-                <p key={i} className="text-sm leading-relaxed" style={{ color: zindoColors.ink, opacity: 0.85 }}>
+                <p key={i} className="text-sm leading-relaxed text-justify" style={{ color: zindoColors.ink, opacity: 0.85 }}>
                   {paragraph}
                 </p>
               ))}
