@@ -6,11 +6,9 @@ import { formatCents } from "@/lib/money";
 import { getAvailableStock } from "@/lib/inventory";
 import { addToCartAction } from "@/app/carrito/actions";
 import { ProductGallery } from "@/components/zindo/ProductGallery";
-import { FavoriteButton } from "@/components/zindo/FavoriteButton";
+import { LikeButton } from "@/components/zindo/LikeButton";
 import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
-import { getFavoritedProductIds } from "@/lib/favorites";
-import { auth } from "@/lib/auth";
 
 type Params = { brand: string; product: string };
 
@@ -68,8 +66,6 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
   );
 
   const path = `/tienda/${brandSlug}/${productSlug}`;
-  const [session, favoritedIds] = await Promise.all([auth(), getFavoritedProductIds([product.id])]);
-  const canFavorite = Boolean(session?.user?.id);
 
   return (
     <div className={zindoFontVars} style={{ backgroundColor: zindoColors.ivory, minHeight: "100%" }}>
@@ -94,13 +90,12 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
               >
                 {product.name}
               </h1>
-              <FavoriteButton
+              <LikeButton
                 productId={product.id}
-                initialFavorited={favoritedIds.has(product.id)}
-                canFavorite={canFavorite}
+                initialCount={product.likesCount}
                 path={path}
                 size="lg"
-                className="flex-none flex items-center justify-center rounded-full border border-[#9CBA9D] p-2 hover:bg-white/60 transition-colors"
+                className="flex-none flex items-center gap-1 rounded-full border border-[#9CBA9D] p-2 hover:bg-white/60 transition-colors"
               />
             </div>
             {product.description && (

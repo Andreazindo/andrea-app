@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { zindoColors } from "@/components/zindo/theme";
-import { FavoriteButton } from "@/components/zindo/FavoriteButton";
+import { LikeButton } from "@/components/zindo/LikeButton";
 
 export function ProductCard({
   href,
@@ -12,8 +12,7 @@ export function ProductCard({
   priceLabel,
   images,
   productId,
-  isFavorited = false,
-  canFavorite = false,
+  likesCount = 0,
 }: {
   href: string;
   name: string;
@@ -21,8 +20,7 @@ export function ProductCard({
   priceLabel: string;
   images: { id: string; url: string }[];
   productId?: string;
-  isFavorited?: boolean;
-  canFavorite?: boolean;
+  likesCount?: number;
 }) {
   const [index, setIndex] = useState(0);
   const hasImages = images.length > 0;
@@ -56,12 +54,11 @@ export function ProductCard({
         )}
 
         {productId && (
-          <FavoriteButton
+          <LikeButton
             productId={productId}
-            initialFavorited={isFavorited}
-            canFavorite={canFavorite}
+            initialCount={likesCount}
             path={href}
-            className="absolute top-2 right-2 z-10 flex items-center justify-center rounded-full bg-white/80 w-8 h-8 hover:bg-white transition-colors"
+            className="absolute top-2 right-2 z-10 flex items-center gap-1 rounded-full bg-white/80 px-2.5 py-1.5 hover:bg-white transition-colors"
           />
         )}
 

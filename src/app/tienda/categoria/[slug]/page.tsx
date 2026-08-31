@@ -8,8 +8,6 @@ import { ProductCard } from "@/components/zindo/ProductCard";
 import { ZindoMarbleFade } from "@/components/zindo/MarbleFade";
 import { zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
-import { getFavoritedProductIds } from "@/lib/favorites";
-import { auth } from "@/lib/auth";
 
 const getCategory = cache(async (slug: string) => {
   return prisma.category.findFirst({
@@ -47,12 +45,6 @@ export default async function TiendaCategoriaPage({
   const category = await getCategory(slug);
 
   if (!category || category.products.length === 0) notFound();
-
-  const [session, favoritedIds] = await Promise.all([
-    auth(),
-    getFavoritedProductIds(category.products.map((p) => p.id)),
-  ]);
-  const canFavorite = Boolean(session?.user?.id);
 
   return (
     <div>
@@ -92,8 +84,7 @@ export default async function TiendaCategoriaPage({
                   priceLabel={priceLabel}
                   images={product.images}
                   productId={product.id}
-                  isFavorited={favoritedIds.has(product.id)}
-                  canFavorite={canFavorite}
+                  likesCount={product.likesCount}
                 />
               </li>
             );
