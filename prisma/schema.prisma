@@ -280,3 +280,29 @@ model SalesPoint {
 
   @@index([position])
 }
+
+enum ContentBlockKind {
+  YOUTUBE
+  DRIVE
+  LINK
+  COURSE
+}
+
+// Ítems editables desde /admin/contenido-multimedia para las secciones
+// "Próximamente": Cursos Online, Webinars, Testimonios, Entrevistas y los
+// recursos de Librería Gratuita. "section" agrupa los ítems por página;
+// "value" guarda el youtubeId / driveId / URL / slug según "kind".
+model ContentBlock {
+  id          String           @id @default(cuid())
+  section     String
+  kind        ContentBlockKind
+  title       String
+  description String?
+  value       String
+  position    Int              @default(0)
+  active      Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([section, position])
+}

@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { ZindoContentPage } from "@/components/zindo/ContentPage";
-import { ZindoVideoEmbed } from "@/components/zindo/MediaEmbed";
+import { ZindoContentBlock } from "@/components/zindo/MediaEmbed";
+import { getContentBlocks } from "@/lib/content-blocks";
 
 export const metadata: Metadata = { title: "Entrevistas" };
 
-export default function EntrevistasPage() {
+export default async function EntrevistasPage() {
+  const blocks = await getContentBlocks("entrevistas");
+
   return (
     <ZindoContentPage
       title="Entrevistas"
@@ -12,12 +15,9 @@ export default function EntrevistasPage() {
       backHref="/evolucion-personal"
       backLabel="Evolución Personal"
     >
-      <ZindoVideoEmbed title="Rompe el ciclo del estrés · Entrevista ZINDO (Junio 2024)" youtubeId="vrwqoaoYK9M" />
-      <ZindoVideoEmbed
-        title="Cómo el mindfulness puede ayudarte a impulsar tu negocio · Entrevista ZINDO (Julio 2024)"
-        youtubeId="EcF42DckzF8"
-      />
-      <ZindoVideoEmbed title="Del burnout al bienestar · Entrevista ZINDO (Julio 2024)" youtubeId="zWlRtFdybg4" />
+      {blocks.map((block) => (
+        <ZindoContentBlock key={block.id} block={block} />
+      ))}
     </ZindoContentPage>
   );
 }

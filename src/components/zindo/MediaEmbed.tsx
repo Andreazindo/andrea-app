@@ -59,3 +59,16 @@ export function ZindoLinkCard({ title, description, href }: { title: string; des
     </a>
   );
 }
+
+export function ZindoContentBlock({
+  block,
+}: {
+  block: { kind: string; title: string; description: string | null; value: string };
+}) {
+  if (block.kind === "YOUTUBE") return <ZindoVideoEmbed title={block.title} youtubeId={block.value} />;
+  if (block.kind === "DRIVE") return <ZindoVideoEmbed title={block.title} driveId={block.value} />;
+  if (block.kind === "LINK") {
+    return <ZindoLinkCard title={block.title} description={block.description ?? undefined} href={block.value} />;
+  }
+  return null;
+}

@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { ZindoContentPage } from "@/components/zindo/ContentPage";
-import { ZindoLinkCard } from "@/components/zindo/MediaEmbed";
+import { ZindoContentBlock } from "@/components/zindo/MediaEmbed";
+import { getContentBlocks } from "@/lib/content-blocks";
 
 export const metadata: Metadata = { title: "21 Días de Gratitud" };
 
-export default function VeintiunDiasGratitudPage() {
+export default async function VeintiunDiasGratitudPage() {
+  const blocks = await getContentBlocks("libreria_21dias");
+
   return (
     <ZindoContentPage
       title="21 Días de Gratitud"
@@ -12,11 +15,9 @@ export default function VeintiunDiasGratitudPage() {
       backHref="/libreria"
       backLabel="Librería Gratuita"
     >
-      <ZindoLinkCard
-        title="Frases del reto"
-        description="Una frase por día para acompañar tus 21 días de gratitud."
-        href="https://drive.google.com/drive/folders/1-qxUGEH74WFaMr5i3caF1DHw9At1WI8v"
-      />
+      {blocks.map((block) => (
+        <ZindoContentBlock key={block.id} block={block} />
+      ))}
     </ZindoContentPage>
   );
 }

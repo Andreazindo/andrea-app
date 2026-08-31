@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { ZindoContentPage } from "@/components/zindo/ContentPage";
-import { ZindoVideoEmbed } from "@/components/zindo/MediaEmbed";
+import { ZindoContentBlock } from "@/components/zindo/MediaEmbed";
+import { getContentBlocks } from "@/lib/content-blocks";
 
 export const metadata: Metadata = { title: "Más Recursos" };
 
-export default function MasRecursosPage() {
+export default async function MasRecursosPage() {
+  const blocks = await getContentBlocks("libreria_mas_recursos");
+
   return (
     <ZindoContentPage
       title="Más Recursos"
@@ -12,12 +15,9 @@ export default function MasRecursosPage() {
       backHref="/libreria"
       backLabel="Librería Gratuita"
     >
-      <ZindoVideoEmbed
-        title="Afirmaciones Positivas ZINDO · &ldquo;Yo Soy&rdquo; · Crecimiento Personal y Bienestar"
-        youtubeId="EhrC1Eghl_E"
-      />
-      <ZindoVideoEmbed title="Reel · Mente Maestra" driveId="10nueSwBzWB0A5REeTFjx_m7aFuoJhpAr" />
-      <ZindoVideoEmbed title="Reel · Aprender a ganar aunque pierdas" driveId="1ywwTo20lznmjL-pCYOlu83BBpQt7PXJj" />
+      {blocks.map((block) => (
+        <ZindoContentBlock key={block.id} block={block} />
+      ))}
     </ZindoContentPage>
   );
 }

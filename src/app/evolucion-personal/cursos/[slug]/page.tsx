@@ -1,24 +1,25 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import { ZindoPlaceholderPage } from "@/components/zindo/PlaceholderSection";
+import { prisma } from "@/lib/prisma";
 
-const CURSOS: Record<string, string> = {
-  "redefiniendo-el-exito": "Redefiniendo el éxito",
-  "cambio-consciente": "Cambio Consciente",
-  "vida-en-calma": "Vida en Calma",
-  "mente-maestra": "Mente Maestra",
-  "observa-crea": "Observa, crea",
-};
+const getCurso = cache(async (slug: string) => {
+  return prisma.contentBlock.findFirst({
+    where: { section: "cursos_online", kind: "COURSE", value: slug, active: true },
+  });
+});
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  return { title: CURSOS[slug] };
+  const curso = await getCurso(slug);
+  return { title: curso?.title };
 }
 
 export default async function CursoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const nombre = CURSOS[slug];
-  if (!nombre) notFound();
+  const curso = await getCurso(slug);
+  if (!curso) notFound();
 
-  return <ZindoPlaceholderPage title={nombre} backHref="/evolucion-personal" backLabel="Evolución Personal" />;
+  return <ZindoPlaceholderPage title={curso.title} backHref="/evolucion-personal/cursos" backLabel="Cursos Online" />;
 }

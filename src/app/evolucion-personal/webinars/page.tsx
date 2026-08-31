@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { ZindoContentPage } from "@/components/zindo/ContentPage";
-import { ZindoVideoEmbed } from "@/components/zindo/MediaEmbed";
+import { ZindoContentBlock } from "@/components/zindo/MediaEmbed";
+import { getContentBlocks } from "@/lib/content-blocks";
 
 export const metadata: Metadata = { title: "Webinars" };
 
-export default function WebinarsPage() {
+export default async function WebinarsPage() {
+  const blocks = await getContentBlocks("webinars");
+
   return (
     <ZindoContentPage
       title="Webinars"
@@ -12,7 +15,9 @@ export default function WebinarsPage() {
       backHref="/evolucion-personal"
       backLabel="Evolución Personal"
     >
-      <ZindoVideoEmbed title="¿Cómo ganarle la batalla al estrés y a la ansiedad?" driveId="1cN_cP38e6JJHb-fIio0A5hbGIWT0sJtC" />
+      {blocks.map((block) => (
+        <ZindoContentBlock key={block.id} block={block} />
+      ))}
     </ZindoContentPage>
   );
 }
