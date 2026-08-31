@@ -8,14 +8,17 @@ export function ZindoContentPage({
   subtitle,
   backHref,
   backLabel,
+  wide,
   children,
 }: {
   title: string;
   subtitle?: string;
   backHref: string;
   backLabel: string;
+  wide?: boolean;
   children: React.ReactNode;
 }) {
+  const maxWidth = wide ? "max-w-5xl" : "max-w-2xl";
   return (
     <div>
       <section className="relative flex flex-col items-center justify-center py-16 px-4 text-center overflow-hidden">
@@ -39,11 +42,11 @@ export function ZindoContentPage({
         </div>
       </section>
 
-      <div className="mx-auto max-w-2xl px-4 pt-6">
+      <div className={`mx-auto ${maxWidth} px-4 pt-6`}>
         <ZindoBackLink href={backHref} label={backLabel} />
       </div>
 
-      <div className="mx-auto max-w-2xl px-4 py-10 space-y-8" style={{ fontFamily: "var(--font-zindo-body)" }}>
+      <div className={`mx-auto ${maxWidth} px-4 py-10 space-y-8`} style={{ fontFamily: "var(--font-zindo-body)" }}>
         {children}
       </div>
     </div>

@@ -19,14 +19,6 @@ const ANDREA_BIO = [
   "Después de todo lo que ha vivido y aprendido, hoy sabe que está aquí para ser y compartir.",
 ];
 
-const CURSOS = [
-  { slug: "redefiniendo-el-exito", name: "Redefiniendo el éxito" },
-  { slug: "cambio-consciente", name: "Cambio Consciente" },
-  { slug: "vida-en-calma", name: "Vida en Calma" },
-  { slug: "mente-maestra", name: "Mente Maestra" },
-  { slug: "observa-crea", name: "Observa, crea" },
-];
-
 export default async function EvolucionPersonalPage() {
   const content = await getSiteContent(["evolucion_tagline"] as const);
 
@@ -57,18 +49,34 @@ export default async function EvolucionPersonalPage() {
 
       <div className="mx-auto max-w-5xl px-4 py-10 space-y-14">
         <section>
-          <ZindoSectionHeading>Cursos Online</ZindoSectionHeading>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {CURSOS.map((curso) => (
-              <li key={curso.slug}>
-                <ZindoBrandCard href={`/evolucion-personal/cursos/${curso.slug}`} name={curso.name} />
-              </li>
-            ))}
-          </ul>
+          <ZindoSectionHeading>Sobre Andrea</ZindoSectionHeading>
+          <div className="grid grid-cols-1 sm:grid-cols-[240px_1fr] gap-10 items-start">
+            <div className="mx-auto sm:mx-0 w-48 sm:w-full max-w-[240px]">
+              <div className="bg-white p-3 shadow-md" style={{ border: `1px solid ${zindoColors.gold}` }}>
+                <div className="relative aspect-[3/4] overflow-hidden">
+                  <Image src="/zindo/andrea.jpg" alt="Andrea Domínguez, creadora de ZINDO" fill className="object-cover" />
+                </div>
+              </div>
+            </div>
+            <div className="space-y-4" style={{ fontFamily: "var(--font-zindo-body)" }}>
+              {ANDREA_BIO.map((paragraph, i) => (
+                <p key={i} className="text-sm leading-relaxed" style={{ color: zindoColors.ink, opacity: 0.85 }}>
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <li>
+              <ZindoBrandCard
+                href="/evolucion-personal/cursos"
+                name="Cursos Online"
+                description="Programas para tu desarrollo personal, a tu ritmo."
+              />
+            </li>
             <li>
               <ZindoBrandCard
                 href="/tienda/zindo/programa-acompanamiento"
@@ -105,24 +113,6 @@ export default async function EvolucionPersonalPage() {
               />
             </li>
           </ul>
-        </section>
-
-        <section>
-          <ZindoSectionHeading>Sobre Andrea</ZindoSectionHeading>
-          <div className="grid grid-cols-1 sm:grid-cols-[220px_1fr] gap-8 items-start rounded-lg bg-white/70 border p-6 sm:p-8" style={{ borderColor: zindoColors.sage }}>
-            <div className="mx-auto sm:mx-0 w-40 sm:w-full max-w-[220px]">
-              <div className="relative aspect-[3/4] overflow-hidden rounded-lg">
-                <Image src="/zindo/andrea.jpg" alt="Andrea Domínguez, creadora de ZINDO" fill className="object-cover" />
-              </div>
-            </div>
-            <div className="space-y-4" style={{ fontFamily: "var(--font-zindo-body)" }}>
-              {ANDREA_BIO.map((paragraph, i) => (
-                <p key={i} className="text-sm leading-relaxed" style={{ color: zindoColors.ink, opacity: 0.85 }}>
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </div>
         </section>
       </div>
     </div>
