@@ -7,27 +7,34 @@ import { zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
 import { getSiteContent } from "@/lib/site-content";
 import { prisma } from "@/lib/prisma";
+import { MailIcon, WhatsappIcon, iconForPlatform } from "@/components/zindo/ContactIcons";
 
 export const metadata: Metadata = { title: "Contacto" };
 
 const CONTENT_KEYS = ["contacto_tagline", "contacto_mail", "contacto_whatsapp", "contacto_redes"] as const;
 
-function parseRedes(raw: string): { name: string; description: string; href?: string }[] {
+function parseRedes(raw: string): { name: string; description: string; href?: string; icon: React.ReactNode }[] {
   const lines = raw
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean);
 
   if (lines.length === 0) {
-    return [{ name: "Redes Sociales", description: "Muy pronto encontrarás aquí nuestras redes sociales." }];
+    return [
+      {
+        name: "Redes Sociales",
+        description: "Muy pronto encontrarás aquí nuestras redes sociales.",
+        icon: iconForPlatform("redes"),
+      },
+    ];
   }
 
   return lines.map((line) => {
     const separatorIndex = line.indexOf(":");
-    if (separatorIndex === -1) return { name: line, description: line };
+    if (separatorIndex === -1) return { name: line, description: line, icon: iconForPlatform(line) };
     const name = line.slice(0, separatorIndex).trim();
     const href = line.slice(separatorIndex + 1).trim();
-    return { name, description: href, href };
+    return { name, description: href, href, icon: iconForPlatform(name) };
   });
 }
 
@@ -39,8 +46,8 @@ export default async function ContactoPage() {
 
   const canales = [
     content.contacto_mail
-      ? { name: "Mail", description: content.contacto_mail, href: `mailto:${content.contacto_mail}` }
-      : { name: "Mail", description: "Muy pronto encontrarás aquí nuestro correo de contacto." },
+      ? { name: "Mail", description: content.contacto_mail, href: `mailto:${content.contacto_mail}`, icon: <MailIcon /> }
+      : { name: "Mail", description: "Muy pronto encontrarás aquí nuestro correo de contacto.", icon: <MailIcon /> },
     content.contacto_whatsapp
       ? {
           name: "WhatsApp",
@@ -48,8 +55,9 @@ export default async function ContactoPage() {
           href: content.contacto_whatsapp.startsWith("http")
             ? content.contacto_whatsapp
             : `https://wa.me/${content.contacto_whatsapp.replace(/\D/g, "")}`,
+          icon: <WhatsappIcon />,
         }
-      : { name: "WhatsApp", description: "Muy pronto encontrarás aquí nuestro número de WhatsApp." },
+      : { name: "WhatsApp", description: "Muy pronto encontrarás aquí nuestro número de WhatsApp.", icon: <WhatsappIcon /> },
     ...parseRedes(content.contacto_redes),
   ];
 
@@ -88,6 +96,8 @@ export default async function ContactoPage() {
                   description={canal.description}
                   href={canal.href}
                   comingSoon={!canal.href}
+                  icon={canal.icon}
+                  ctaLabel="Ir →"
                 />
               </li>
             ))}

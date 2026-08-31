@@ -59,7 +59,14 @@ export default async function HomePage() {
         <ZindoSectionHeading>Explora ZINDO</ZindoSectionHeading>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {pillars.map((pillar) => (
-            <ZindoBrandCard key={pillar.href} href={pillar.href} name={pillar.name} description={pillar.description} icon={pillar.icon} />
+            <ZindoBrandCard
+              key={pillar.href}
+              href={pillar.href}
+              name={pillar.name}
+              description={pillar.description}
+              icon={pillar.icon}
+              ctaLabel={null}
+            />
           ))}
         </div>
       </section>
