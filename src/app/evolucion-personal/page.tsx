@@ -9,6 +9,16 @@ import { getSiteContent } from "@/lib/site-content";
 
 export const metadata: Metadata = { title: "Evolución Personal" };
 
+const ANDREA_BIO = [
+  "Andrea Domínguez es Licenciada en Comunicación Social por la UAM Xochimilco y durante más de una década desarrolló su carrera en el mundo de la publicidad. Después de casi 40 años viviendo sin saber realmente quién era, sin un camino propio y muchas veces desde la supervivencia y las expectativas de los demás, decidió transformar profundamente la manera en la que quería vivir y contribuir al mundo.",
+  "Su propia experiencia la llevó a dedicar su vida al desarrollo personal y a la creación de herramientas que ayuden a las personas a conocerse, cuestionar las historias que las han definido y, sobre todo, recordar que su realidad no tiene por qué estar determinada por su pasado ni por las circunstancias externas.",
+  "Cuenta con un Diplomado en Aplicación Psicoterapéutica del Mindfulness y diversas certificaciones relacionadas con el desarrollo psicosocial y el acompañamiento pedagógico. A lo largo de los años ha estudiado e integrado diferentes filosofías y herramientas de desarrollo personal, construyendo una mirada propia, práctica y profundamente humana.",
+  "Es creadora de ZINDO, una metodología de desarrollo personal basada en la responsabilidad consciente, el poder de la mente y la capacidad creadora de cada persona. Su propósito es acompañar a quienes están listas para dejar de identificarse con lo que ocurre afuera y comenzar a vivir desde su propio poder interior.",
+  "Hoy, su trabajo integra acompañamientos y proyectos de bienestar que parten de una misma filosofía: el autocuidado como una forma consciente de relacionarnos con nuestro cuerpo, nuestra mente y nuestro corazón.",
+  "Andrea no busca decirle a nadie quién debe ser. Busca crear espacios y compartir herramientas para que cada persona pueda descubrirlo por sí misma.",
+  "Después de todo lo que ha vivido y aprendido, hoy sabe que está aquí para ser y compartir.",
+];
+
 const CURSOS = [
   { slug: "redefiniendo-el-exito", name: "Redefiniendo el éxito" },
   { slug: "cambio-consciente", name: "Cambio Consciente" },
@@ -88,6 +98,24 @@ export default async function EvolucionPersonalPage() {
               />
             </li>
           </ul>
+        </section>
+
+        <section>
+          <ZindoSectionHeading>Sobre Andrea</ZindoSectionHeading>
+          <div className="grid grid-cols-1 sm:grid-cols-[220px_1fr] gap-8 items-start rounded-lg bg-white/70 border p-6 sm:p-8" style={{ borderColor: zindoColors.sage }}>
+            <div className="mx-auto sm:mx-0 w-40 sm:w-full max-w-[220px]">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-lg">
+                <Image src="/zindo/andrea.jpg" alt="Andrea Domínguez, creadora de ZINDO" fill className="object-cover" />
+              </div>
+            </div>
+            <div className="space-y-4" style={{ fontFamily: "var(--font-zindo-body)" }}>
+              {ANDREA_BIO.map((paragraph, i) => (
+                <p key={i} className="text-sm leading-relaxed" style={{ color: zindoColors.ink, opacity: 0.85 }}>
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </div>
         </section>
       </div>
     </div>
