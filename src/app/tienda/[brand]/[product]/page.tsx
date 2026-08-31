@@ -6,8 +6,11 @@ import { formatCents } from "@/lib/money";
 import { getAvailableStock } from "@/lib/inventory";
 import { addToCartAction } from "@/app/carrito/actions";
 import { ProductGallery } from "@/components/zindo/ProductGallery";
+import { FavoriteButton } from "@/components/zindo/FavoriteButton";
 import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
+import { getFavoritedProductIds } from "@/lib/favorites";
+import { auth } from "@/lib/auth";
 
 type Params = { brand: string; product: string };
 
@@ -64,6 +67,10 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
     }))
   );
 
+  const path = `/tienda/${brandSlug}/${productSlug}`;
+  const [session, favoritedIds] = await Promise.all([auth(), getFavoritedProductIds([product.id])]);
+  const canFavorite = Boolean(session?.user?.id);
+
   return (
     <div className={zindoFontVars} style={{ backgroundColor: zindoColors.ivory, minHeight: "100%" }}>
       <div className="mx-auto max-w-5xl px-4 py-12">
@@ -80,12 +87,22 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           </div>
 
           <div>
-            <h1
-              className="text-2xl sm:text-3xl uppercase tracking-[0.1em]"
-              style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
-            >
-              {product.name}
-            </h1>
+            <div className="flex items-start justify-between gap-3">
+              <h1
+                className="text-2xl sm:text-3xl uppercase tracking-[0.1em]"
+                style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
+              >
+                {product.name}
+              </h1>
+              <FavoriteButton
+                productId={product.id}
+                initialFavorited={favoritedIds.has(product.id)}
+                canFavorite={canFavorite}
+                path={path}
+                size="lg"
+                className="flex-none flex items-center justify-center rounded-full border border-[#9CBA9D] p-2 hover:bg-white/60 transition-colors"
+              />
+            </div>
             {product.description && (
               <p className="mt-3" style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink }}>
                 {product.description}

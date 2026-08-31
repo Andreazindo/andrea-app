@@ -4,6 +4,30 @@ import { useState } from "react";
 import Link from "next/link";
 import { zindoColors } from "@/components/zindo/theme";
 
+function FavoritesIcon() {
+  return (
+    <Link
+      href="/favoritos"
+      aria-label="Favoritos"
+      className="flex items-center justify-center rounded-full border p-2 hover:bg-white/60 flex-none"
+      style={{ borderColor: zindoColors.sage }}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={zindoColors.green}
+        strokeWidth={1.75}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-5 w-5"
+      >
+        <path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 2.5 5 6 5c2 0 3.5 1 4 2.5C10.5 6 12 5 14 5c3.5 0 5.5 3.5 3.5 7.5C19 16.65 12 21 12 21z" />
+      </svg>
+    </Link>
+  );
+}
+
 function CartIcon() {
   return (
     <Link
@@ -100,6 +124,7 @@ export function HeaderNav({
         })}
       </nav>
 
+      {!isAdmin && <FavoritesIcon />}
       <CartIcon />
 
       <button

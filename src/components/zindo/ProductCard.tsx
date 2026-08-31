@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { zindoColors } from "@/components/zindo/theme";
+import { FavoriteButton } from "@/components/zindo/FavoriteButton";
 
 export function ProductCard({
   href,
@@ -10,12 +11,18 @@ export function ProductCard({
   description,
   priceLabel,
   images,
+  productId,
+  isFavorited = false,
+  canFavorite = false,
 }: {
   href: string;
   name: string;
   description?: string | null;
   priceLabel: string;
   images: { id: string; url: string }[];
+  productId?: string;
+  isFavorited?: boolean;
+  canFavorite?: boolean;
 }) {
   const [index, setIndex] = useState(0);
   const hasImages = images.length > 0;
@@ -46,6 +53,16 @@ export function ProductCard({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/zindo/monograma.png" alt="" className="w-16 opacity-40" />
           </div>
+        )}
+
+        {productId && (
+          <FavoriteButton
+            productId={productId}
+            initialFavorited={isFavorited}
+            canFavorite={canFavorite}
+            path={href}
+            className="absolute top-2 right-2 z-10 flex items-center justify-center rounded-full bg-white/80 w-8 h-8 hover:bg-white transition-colors"
+          />
         )}
 
         {showControls && (

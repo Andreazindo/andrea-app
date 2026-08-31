@@ -9,6 +9,8 @@ import { ZindoSectionHeading } from "@/components/zindo/SectionHeading";
 import { ZindoMarbleFade } from "@/components/zindo/MarbleFade";
 import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
+import { getFavoritedProductIds } from "@/lib/favorites";
+import { auth } from "@/lib/auth";
 
 const getBrandWithCatalog = cache(async (brandSlug: string) => {
   return prisma.brand.findUnique({
@@ -51,6 +53,10 @@ export default async function BrandPage({
   const brand = await getBrandWithCatalog(brandSlug);
 
   if (!brand || !brand.active) notFound();
+
+  const allProductIds = brand.categories.flatMap((c) => c.products.map((p) => p.id));
+  const [session, favoritedIds] = await Promise.all([auth(), getFavoritedProductIds(allProductIds)]);
+  const canFavorite = Boolean(session?.user?.id);
 
   return (
     <div className={zindoFontVars} style={{ backgroundColor: zindoColors.ivory }}>
@@ -111,6 +117,9 @@ export default async function BrandPage({
                         description={product.description}
                         priceLabel={priceLabel}
                         images={product.images}
+                        productId={product.id}
+                        isFavorited={favoritedIds.has(product.id)}
+                        canFavorite={canFavorite}
                       />
                     </li>
                   );

@@ -74,8 +74,9 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  variants ProductVariant[]
-  images   ProductImage[]
+  variants  ProductVariant[]
+  images    ProductImage[]
+  favorites Favorite[]
 
   @@unique([brandId, slug])
 }
@@ -143,9 +144,10 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  cart    Cart?
-  orders  Order[]
-  payments Payment[] @relation("RecordedByAdmin")
+  cart      Cart?
+  orders    Order[]
+  payments  Payment[]  @relation("RecordedByAdmin")
+  favorites Favorite[]
 }
 
 // ---------- Carrito ----------
@@ -276,4 +278,17 @@ model SalesPoint {
   updatedAt   DateTime @updatedAt
 
   @@index([position])
+}
+
+// ---------- Favoritos ----------
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
 }

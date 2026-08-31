@@ -3,6 +3,8 @@ import Link from "next/link";
 import { auth, signOut } from "@/lib/auth";
 import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
 import { HeaderNav } from "@/components/zindo/HeaderNav";
+import { ZindoWhatsAppButton } from "@/components/zindo/WhatsAppButton";
+import { getSiteContent } from "@/lib/site-content";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,6 +22,8 @@ async function logoutAction() {
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const session = await auth();
+  const isAdmin = session?.user?.role === "ADMIN" || session?.user?.role === "OWNER";
+  const { contacto_whatsapp } = await getSiteContent(["contacto_whatsapp"] as const);
 
   return (
     <html lang="es" className={`${zindoFontVars} h-full antialiased`}>
@@ -33,14 +37,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/zindo/monograma.png" alt="Zindo" className="h-9 w-auto" />
             </Link>
-            <HeaderNav
-              userName={session?.user?.name ?? null}
-              isAdmin={session?.user?.role === "ADMIN" || session?.user?.role === "OWNER"}
-              logoutAction={logoutAction}
-            />
+            <HeaderNav userName={session?.user?.name ?? null} isAdmin={isAdmin} logoutAction={logoutAction} />
           </div>
         </header>
         <main className="flex-1">{children}</main>
+        {!isAdmin && <ZindoWhatsAppButton phone={contacto_whatsapp} />}
         <footer
           className="border-t py-6 text-center text-xs"
           style={{ borderColor: zindoColors.sage, color: zindoColors.ink, opacity: 0.6, fontFamily: "var(--font-zindo-body)" }}
