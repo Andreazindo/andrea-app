@@ -4,6 +4,7 @@ import { ZindoSectionHeading } from "@/components/zindo/SectionHeading";
 import { ZindoMarbleFade } from "@/components/zindo/MarbleFade";
 import { zindoColors } from "@/components/zindo/theme";
 import { getSiteContent } from "@/lib/site-content";
+import { EvolucionIcon, TiendaIcon, LibreriaIcon, ContactoIcon } from "@/components/zindo/PillarIcons";
 
 const CONTENT_KEYS = [
   "home_tagline",
@@ -19,10 +20,10 @@ export default async function HomePage() {
   const content = await getSiteContent(CONTENT_KEYS);
 
   const pillars = [
-    { href: "/evolucion-personal", name: "Evolución Personal", description: content.evolucion_tagline },
-    { href: "/tienda", name: "Tienda Wellness", description: content.tienda_tagline },
-    { href: "/libreria", name: "Librería Gratuita", description: content.libreria_tagline },
-    { href: "/contacto", name: "Contacto", description: content.contacto_tagline },
+    { href: "/evolucion-personal", name: "Evolución Personal", description: content.evolucion_tagline, icon: <EvolucionIcon /> },
+    { href: "/tienda", name: "Tienda Wellness", description: content.tienda_tagline, icon: <TiendaIcon /> },
+    { href: "/libreria", name: "Librería Gratuita", description: content.libreria_tagline, icon: <LibreriaIcon /> },
+    { href: "/contacto", name: "Contacto", description: content.contacto_tagline, icon: <ContactoIcon /> },
   ];
 
   return (
@@ -58,7 +59,7 @@ export default async function HomePage() {
         <ZindoSectionHeading>Explora ZINDO</ZindoSectionHeading>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {pillars.map((pillar) => (
-            <ZindoBrandCard key={pillar.href} href={pillar.href} name={pillar.name} description={pillar.description} />
+            <ZindoBrandCard key={pillar.href} href={pillar.href} name={pillar.name} description={pillar.description} icon={pillar.icon} />
           ))}
         </div>
       </section>
