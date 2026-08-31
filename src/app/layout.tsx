@@ -57,7 +57,12 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
               Política de Devoluciones
             </Link>
           </div>
-          <p>© {new Date().getFullYear()} Zindo</p>
+          <p>
+            © {new Date().getFullYear()}{" "}
+            <Link href="/admin/login" className="no-underline">
+              Zindo
+            </Link>
+          </p>
         </footer>
       </body>
     </html>
