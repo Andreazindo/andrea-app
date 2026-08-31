@@ -15,9 +15,14 @@ export function ZindoVideoEmbed({
 
   return (
     <div className="text-left">
-      <p className="mb-2 text-sm font-medium" style={{ color: zindoColors.ink }}>
-        {title}
-      </p>
+      <div className="mb-3 border-l-[3px] pl-3.5" style={{ borderColor: zindoColors.gold }}>
+        <p
+          className="text-base leading-snug"
+          style={{ color: zindoColors.green, fontFamily: "var(--font-zindo-heading)", fontWeight: 500 }}
+        >
+          {title}
+        </p>
+      </div>
       <div className="relative aspect-video overflow-hidden rounded-lg border" style={{ borderColor: zindoColors.sage }}>
         <iframe
           src={src}
