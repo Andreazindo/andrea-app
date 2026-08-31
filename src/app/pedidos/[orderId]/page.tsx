@@ -38,9 +38,22 @@ export default async function PedidoPage({
   const isStaff = session.user.role === "ADMIN" || session.user.role === "OWNER";
   if (!order || (!isOwner && !isStaff)) notFound();
 
+  const isConfirmed = ["PAID", "PROCESSING", "SHIPPED"].includes(order.status);
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <PlainBackLink href="/tienda" label="Tienda" />
+
+      {isConfirmed && (
+        <div className="mt-4 mb-2 rounded-lg bg-green-500/10 p-4">
+          <p className="font-semibold text-green-700 dark:text-green-400">¡Pedido confirmado! 🌿</p>
+          <p className="mt-1 text-sm text-green-700/90 dark:text-green-400/90">
+            Gracias, {order.shippingName}. Te contactamos por WhatsApp para confirmar el costo y tiempo de envío.
+            Gracias por darte este espacio de bienestar 💛
+          </p>
+        </div>
+      )}
+
       <h1 className="text-2xl font-bold tracking-tight mt-3 mb-1">
         Pedido #{order.id.slice(-8).toUpperCase()}
       </h1>

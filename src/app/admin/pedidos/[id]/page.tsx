@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { PlainBackLink } from "@/components/BackLink";
 import { updateOrderStatusAction, updateOrderShippingAction } from "./actions";
+import { whatsappLinkForOrder } from "@/lib/order-messages";
 
 const STATUS_LABELS: Record<string, string> = {
   PENDING_PAYMENT: "Pendiente de pago",
@@ -108,6 +109,14 @@ export default async function PedidoAdminPage({
           {order.user.name} · {order.user.email}
           {order.user.phone && ` · ${order.user.phone}`}
         </p>
+        <a
+          href={whatsappLinkForOrder(order)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block rounded-md bg-[#25D366] text-white px-4 py-2 text-sm font-medium hover:opacity-90"
+        >
+          Enviar confirmación por WhatsApp
+        </a>
       </section>
 
       <section className={sectionClass}>
