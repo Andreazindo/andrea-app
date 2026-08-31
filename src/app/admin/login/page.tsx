@@ -24,7 +24,7 @@ export default async function AdminLoginPage({
       )}
 
       <form action={adminLoginAction} className="space-y-4">
-        <input type="hidden" name="callbackUrl" value={callbackUrl ?? "/admin/productos"} />
+        <input type="hidden" name="callbackUrl" value={callbackUrl ?? "/admin"} />
         <div>
           <label className="block text-sm font-medium mb-1" htmlFor="email">
             Correo
