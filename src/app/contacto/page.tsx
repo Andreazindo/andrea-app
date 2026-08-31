@@ -7,36 +7,11 @@ import { zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
 import { getSiteContent } from "@/lib/site-content";
 import { prisma } from "@/lib/prisma";
-import { MailIcon, WhatsappIcon, iconForPlatform } from "@/components/zindo/ContactIcons";
+import { MailIcon, WhatsappIcon } from "@/components/zindo/ContactIcons";
 
 export const metadata: Metadata = { title: "Contacto" };
 
-const CONTENT_KEYS = ["contacto_tagline", "contacto_mail", "contacto_whatsapp", "contacto_redes"] as const;
-
-function parseRedes(raw: string): { name: string; description: string; href?: string; icon: React.ReactNode }[] {
-  const lines = raw
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  if (lines.length === 0) {
-    return [
-      {
-        name: "Redes Sociales",
-        description: "Muy pronto encontrarás aquí nuestras redes sociales.",
-        icon: iconForPlatform("redes"),
-      },
-    ];
-  }
-
-  return lines.map((line) => {
-    const separatorIndex = line.indexOf(":");
-    if (separatorIndex === -1) return { name: line, description: line, icon: iconForPlatform(line) };
-    const name = line.slice(0, separatorIndex).trim();
-    const href = line.slice(separatorIndex + 1).trim();
-    return { name, description: href, href, icon: iconForPlatform(name) };
-  });
-}
+const CONTENT_KEYS = ["contacto_tagline", "contacto_mail", "contacto_whatsapp"] as const;
 
 export default async function ContactoPage() {
   const [content, puntosDeVenta] = await Promise.all([
@@ -58,7 +33,6 @@ export default async function ContactoPage() {
           icon: <WhatsappIcon />,
         }
       : { name: "WhatsApp", description: "Muy pronto encontrarás aquí nuestro número de WhatsApp.", icon: <WhatsappIcon /> },
-    ...parseRedes(content.contacto_redes),
   ];
 
   return (
@@ -88,7 +62,7 @@ export default async function ContactoPage() {
 
       <div className="mx-auto max-w-5xl px-4 py-10 space-y-14">
         <section>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-xl mx-auto">
             {canales.map((canal) => (
               <li key={canal.name}>
                 <ZindoBrandCard
