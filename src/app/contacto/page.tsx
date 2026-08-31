@@ -8,7 +8,7 @@ import { ZindoBackLink } from "@/components/BackLink";
 import { getSiteContent } from "@/lib/site-content";
 import { prisma } from "@/lib/prisma";
 import { MailIcon, WhatsappIcon } from "@/components/zindo/ContactIcons";
-import { ZindoSalesPointCard } from "@/components/zindo/SalesPointCard";
+import { ZindoSalesPointCard, salesPointToText } from "@/components/zindo/SalesPointCard";
 
 export const metadata: Metadata = { title: "Contacto" };
 
@@ -82,6 +82,18 @@ export default async function ContactoPage() {
         {puntosDeVenta.length > 0 && (
           <section>
             <ZindoSectionHeading>Puntos de Venta</ZindoSectionHeading>
+            <div className="text-center -mt-2 mb-6">
+              <a
+                href={`data:text/plain;charset=utf-8,${encodeURIComponent(
+                  puntosDeVenta.map((p) => salesPointToText(p)).join("\n\n---\n\n")
+                )}`}
+                download="zindo-puntos-de-venta.txt"
+                className="text-sm hover:underline"
+                style={{ color: zindoColors.gold }}
+              >
+                Descargar todos los puntos de venta ⬇
+              </a>
+            </div>
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {puntosDeVenta.map((punto) => (
                 <li key={punto.id}>

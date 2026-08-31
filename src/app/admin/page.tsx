@@ -169,6 +169,19 @@ export default async function AdminDashboardPage() {
           </Link>
         </div>
       </section>
+
+      <section className="space-y-3">
+        <AdminSectionTitle>Respaldo de datos</AdminSectionTitle>
+        <a
+          href="/api/admin/export"
+          className={`${adminCardClass} !space-y-1 block hover:border-[#C9A15B] transition-colors`}
+        >
+          <p className="font-medium text-[#0D3B36]">Exportar todos los datos (JSON) ⬇</p>
+          <p className="text-xs text-[#1A1A1A]/60">
+            Productos, pedidos, clientes, contenido, puntos de venta y multimedia en un solo archivo.
+          </p>
+        </a>
+      </section>
     </div>
   );
 }
