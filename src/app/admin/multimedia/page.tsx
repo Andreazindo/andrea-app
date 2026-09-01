@@ -5,7 +5,6 @@ import { PlainBackLink } from "@/components/BackLink";
 import {
   AdminPageHeader,
   AdminFlash,
-  AdminSectionTitle,
   adminCardClass as sectionClass,
   adminInputClass as inputClass,
   adminLabelClass as labelClass,
@@ -68,9 +67,15 @@ export default async function MultimediaAdminPage({
         const defaultKind =
           section.key === "cursos_online" ? "COURSE" : section.key === "libreria_21dias" ? "IMAGE" : "YOUTUBE";
         return (
-          <section key={section.key} className="space-y-4">
-            <AdminSectionTitle>{section.label}</AdminSectionTitle>
+          <details key={section.key} className="rounded-xl border border-[#9CBA9D]/50 bg-white p-5 shadow-sm">
+            <summary className="text-sm font-semibold uppercase tracking-wide text-[#0D3B36] cursor-pointer select-none">
+              {section.label}{" "}
+              <span className="ml-1 text-xs font-normal normal-case text-[#1A1A1A]/50">
+                ({items.length} {items.length === 1 ? "elemento" : "elementos"})
+              </span>
+            </summary>
 
+            <div className="mt-4 space-y-4">
             {items.map((item) => (
               <div key={item.id} className={sectionClass}>
                 <form action={updateContentBlockAction} className="space-y-3">
@@ -194,7 +199,8 @@ export default async function MultimediaAdminPage({
                 </button>
               </form>
             </details>
-          </section>
+            </div>
+          </details>
         );
       })}
     </div>
