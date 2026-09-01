@@ -50,6 +50,9 @@ export function HeaderNav({
 
   const items: NavItem[] = [];
   if (userName) {
+    if (!isAdmin) {
+      items.push({ type: "link", key: "cuenta", href: "/cuenta", label: "Mi cuenta" });
+    }
     items.push({ type: "label", key: "user", label: userName });
     items.push({ type: "logout", key: "logout" });
   } else {
