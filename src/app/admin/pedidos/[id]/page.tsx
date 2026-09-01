@@ -59,6 +59,7 @@ export default async function PedidoAdminPage({
     include: {
       user: { select: { name: true, email: true, phone: true } },
       items: true,
+      coupon: { select: { code: true } },
       payments: { orderBy: { createdAt: "desc" }, include: { recordedByUser: { select: { name: true } } } },
     },
   });
@@ -254,7 +255,13 @@ export default async function PedidoAdminPage({
             </li>
           ))}
         </ul>
-        <div className="flex justify-between border-t border-[#9CBA9D]/40 pt-3 text-sm text-[#1A1A1A]">
+        {order.discountCents > 0 && (
+          <div className="flex justify-between border-t border-[#9CBA9D]/40 pt-3 text-sm text-green-700">
+            <span>Descuento{order.coupon ? ` (${order.coupon.code})` : ""}</span>
+            <span>-{formatCents(order.discountCents)}</span>
+          </div>
+        )}
+        <div className={`flex justify-between text-sm text-[#1A1A1A] ${order.discountCents > 0 ? "" : "border-t border-[#9CBA9D]/40 pt-3"}`}>
           <span className="text-[#1A1A1A]">Envío</span>
           <span className="text-[#1A1A1A]">{formatCents(order.shippingCents)}</span>
         </div>

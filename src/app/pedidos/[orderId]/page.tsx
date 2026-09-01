@@ -72,7 +72,13 @@ export default async function PedidoPage({
             </li>
           ))}
         </ul>
-        <div className="mt-3 pt-3 border-t border-black/10 dark:border-white/15 flex justify-between font-semibold">
+        {order.discountCents > 0 && (
+          <div className="mt-3 pt-3 border-t border-black/10 dark:border-white/15 flex justify-between text-sm text-green-700 dark:text-green-400">
+            <span>Descuento</span>
+            <span>-{formatCents(order.discountCents)}</span>
+          </div>
+        )}
+        <div className={`flex justify-between font-semibold ${order.discountCents > 0 ? "mt-1" : "mt-3 pt-3 border-t border-black/10 dark:border-white/15"}`}>
           <span>Total</span>
           <span>{formatCents(order.totalCents)}</span>
         </div>
