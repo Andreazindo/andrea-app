@@ -7,12 +7,28 @@ import { zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
 import { getSiteContent } from "@/lib/site-content";
 import { prisma } from "@/lib/prisma";
-import { MailIcon, WhatsappIcon } from "@/components/zindo/ContactIcons";
+import { MailIcon, WhatsappIcon, iconForPlatform } from "@/components/zindo/ContactIcons";
 import { ZindoSalesPointCard, salesPointToText } from "@/components/zindo/SalesPointCard";
 
 export const metadata: Metadata = { title: "Contacto" };
 
-const CONTENT_KEYS = ["contacto_tagline", "contacto_mail", "contacto_whatsapp"] as const;
+const CONTENT_KEYS = ["contacto_tagline", "contacto_mail", "contacto_whatsapp", "contacto_redes"] as const;
+
+function parseRedesSociales(raw: string): { name: string; href: string }[] {
+  return raw
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const sepIndex = line.indexOf(":");
+      if (sepIndex === -1) return null;
+      const name = line.slice(0, sepIndex).trim();
+      const href = line.slice(sepIndex + 1).trim();
+      if (!name || !href) return null;
+      return { name, href };
+    })
+    .filter((entry): entry is { name: string; href: string } => entry !== null);
+}
 
 export default async function ContactoPage() {
   const [content, puntosDeVenta] = await Promise.all([
@@ -20,7 +36,11 @@ export default async function ContactoPage() {
     prisma.salesPoint.findMany({ where: { active: true }, orderBy: { position: "asc" } }),
   ]);
 
-  const canales = [
+  const redesSociales = parseRedesSociales(content.contacto_redes);
+
+  type Canal = { name: string; description?: string; href?: string; icon: React.ReactNode };
+
+  const canales: Canal[] = [
     content.contacto_mail
       ? { name: "Mail", description: content.contacto_mail, href: `mailto:${content.contacto_mail}`, icon: <MailIcon /> }
       : { name: "Mail", description: "Muy pronto encontrarás aquí nuestro correo de contacto.", icon: <MailIcon /> },
@@ -34,6 +54,11 @@ export default async function ContactoPage() {
           icon: <WhatsappIcon />,
         }
       : { name: "WhatsApp", description: "Muy pronto encontrarás aquí nuestro número de WhatsApp.", icon: <WhatsappIcon /> },
+    ...redesSociales.map((red): Canal => ({
+      name: red.name,
+      href: red.href,
+      icon: iconForPlatform(red.name),
+    })),
   ];
 
   return (
