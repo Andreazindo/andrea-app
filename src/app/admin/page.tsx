@@ -28,6 +28,15 @@ const STATUS_DOT: Record<string, string> = {
   REFUNDED: "bg-red-400",
 };
 
+function lowStockWhatsappLink(lowStock: { stock: number; name: string; product: { name: string } }[]): string {
+  const lines = [
+    `Alerta de inventario bajo — ${new Date().toLocaleDateString("es-MX")}`,
+    "",
+    ...lowStock.map((v) => `- ${v.product.name} — ${v.name}: ${v.stock === 0 ? "Agotado" : `${v.stock} disponibles`}`),
+  ];
+  return `https://wa.me/?text=${encodeURIComponent(lines.join("\n"))}`;
+}
+
 function StatCard({ label, value, accent = "#0D3B36" }: { label: string; value: string | number; accent?: string }) {
   return (
     <div className={`${adminCardClass} border-l-4`} style={{ borderLeftColor: accent }}>
@@ -160,7 +169,17 @@ export default async function AdminDashboardPage() {
 
       {lowStock.length > 0 && (
         <section className="space-y-3">
-          <AdminSectionTitle>Bajo inventario</AdminSectionTitle>
+          <div className="flex items-center justify-between">
+            <AdminSectionTitle>Bajo inventario</AdminSectionTitle>
+            <a
+              href={lowStockWhatsappLink(lowStock)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-[#25D366] hover:underline"
+            >
+              Enviar alerta por WhatsApp
+            </a>
+          </div>
           <ul className="divide-y divide-[#9CBA9D]/30 rounded-xl border border-[#9CBA9D]/50 bg-white overflow-hidden shadow-sm">
             {lowStock.map((variant) => (
               <li key={variant.id} className="flex items-center justify-between gap-3 px-4 py-3 text-sm">
