@@ -61,6 +61,13 @@ export default async function PedidoPage({
         Estatus: <span className="font-medium">{STATUS_LABELS[order.status] ?? order.status}</span>
       </p>
 
+      {order.isGift && (
+        <div className="mb-6 rounded-lg bg-amber-500/10 p-4 text-sm">
+          <p className="font-semibold text-amber-700 dark:text-amber-400">🎁 Marcado como regalo</p>
+          {order.giftMessage && <p className="mt-1 text-amber-700/90 dark:text-amber-400/90">"{order.giftMessage}"</p>}
+        </div>
+      )}
+
       <div className="rounded-lg border border-black/10 dark:border-white/15 p-4 mb-6">
         <ul className="space-y-1 text-sm">
           {order.items.map((item) => (

@@ -21,7 +21,7 @@ const SECTIONS = [
   { key: "webinars", label: "Webinars", valueHelp: "ID de YouTube o de Google Drive" },
   { key: "testimonios", label: "Testimonios", valueHelp: "ID de YouTube o de Google Drive" },
   { key: "entrevistas", label: "Entrevistas", valueHelp: "ID de YouTube o de Google Drive" },
-  { key: "libreria_21dias", label: "Librería · 21 Días de Gratitud", valueHelp: "Enlace o ID" },
+  { key: "libreria_21dias", label: "Librería · 21 Días de Gratitud", valueHelp: "URL de la imagen (ej. /zindo/21-dias-gratitud/01.webp)" },
   { key: "libreria_meditaciones", label: "Librería · Meditaciones", valueHelp: "ID de YouTube o de Google Drive" },
   { key: "libreria_mas_recursos", label: "Librería · Más Recursos", valueHelp: "ID de YouTube/Drive o enlace" },
 ] as const;
@@ -31,6 +31,7 @@ const KIND_LABELS: Record<string, string> = {
   DRIVE: "Google Drive",
   LINK: "Enlace",
   COURSE: "Curso",
+  IMAGE: "Imagen",
 };
 
 const ERROR_MESSAGES: Record<string, string> = {
@@ -64,7 +65,8 @@ export default async function MultimediaAdminPage({
 
       {SECTIONS.map((section) => {
         const items = bySection[section.key] ?? [];
-        const defaultKind = section.key === "cursos_online" ? "COURSE" : "YOUTUBE";
+        const defaultKind =
+          section.key === "cursos_online" ? "COURSE" : section.key === "libreria_21dias" ? "IMAGE" : "YOUTUBE";
         return (
           <section key={section.key} className="space-y-4">
             <AdminSectionTitle>{section.label}</AdminSectionTitle>

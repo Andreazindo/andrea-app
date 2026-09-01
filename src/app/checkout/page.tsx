@@ -207,6 +207,25 @@ export default async function CheckoutPage({
             className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
           />
         </div>
+        <div className="rounded-lg border border-black/10 dark:border-white/15 p-4 space-y-3">
+          <label className="flex items-center gap-2 text-sm font-medium">
+            <input type="checkbox" name="isGift" value="1" />
+            🎁 Es un regalo
+          </label>
+          <div>
+            <label className="block text-sm font-medium mb-1" htmlFor="giftMessage">
+              Mensaje para incluir (opcional)
+            </label>
+            <textarea
+              id="giftMessage"
+              name="giftMessage"
+              rows={3}
+              placeholder="Ej. ¡Feliz cumpleaños! Con cariño, ..."
+              className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+            />
+          </div>
+        </div>
+
         <button
           type="submit"
           className="w-full rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-3 text-sm font-medium hover:opacity-90"

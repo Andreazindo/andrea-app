@@ -83,6 +83,13 @@ export default async function PedidoAdminPage({
         </p>
       )}
 
+      {order.isGift && (
+        <div className="rounded-md bg-[#C9A15B]/10 border border-[#C9A15B]/40 px-3 py-2 text-sm">
+          <p className="font-semibold text-[#0D3B36]">🎁 Este pedido es un regalo</p>
+          {order.giftMessage && <p className="mt-1 text-[#1A1A1A]/80">Mensaje: "{order.giftMessage}"</p>}
+        </div>
+      )}
+
       <section className={sectionClass}>
         <AdminSectionTitle>Estatus</AdminSectionTitle>
         <form action={updateOrderStatusAction} className="flex items-center gap-3">

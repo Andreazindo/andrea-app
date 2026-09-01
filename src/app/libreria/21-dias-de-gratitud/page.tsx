@@ -6,18 +6,17 @@ import { getContentBlocks } from "@/lib/content-blocks";
 
 export const metadata: Metadata = { title: "21 Días de Gratitud" };
 
-const gratitudeImages = Array.from({ length: 21 }, (_, i) => {
-  const day = String(i + 1).padStart(2, "0");
-  return {
-    url: `/zindo/21-dias-gratitud/${day}.webp`,
-    alt: `Día ${i + 1} — 21 Días de Gratitud`,
-    label: `Día ${i + 1}`,
-    filename: `zindo-gratitud-dia-${day}.webp`,
-  };
-});
-
 export default async function VeintiunDiasGratitudPage() {
   const blocks = await getContentBlocks("libreria_21dias");
+  const imageBlocks = blocks.filter((b) => b.kind === "IMAGE");
+  const otherBlocks = blocks.filter((b) => b.kind !== "IMAGE");
+
+  const gratitudeImages = imageBlocks.map((b) => ({
+    url: b.value,
+    alt: `${b.title} — 21 Días de Gratitud`,
+    label: b.title,
+    filename: `zindo-gratitud-${b.title.toLowerCase().replace(/\s+/g, "-")}.webp`,
+  }));
 
   return (
     <ZindoContentPage
@@ -27,8 +26,8 @@ export default async function VeintiunDiasGratitudPage() {
       backLabel="Librería Gratuita"
       wide
     >
-      <GratitudeGallery images={gratitudeImages} />
-      {blocks.map((block) => (
+      {gratitudeImages.length > 0 && <GratitudeGallery images={gratitudeImages} />}
+      {otherBlocks.map((block) => (
         <ZindoContentBlock key={block.id} block={block} />
       ))}
     </ZindoContentPage>

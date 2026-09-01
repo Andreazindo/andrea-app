@@ -23,6 +23,8 @@ export async function createOrderAction(formData: FormData) {
   const shippingZip = String(formData.get("shippingZip") ?? "").trim();
   const shippingCountry = String(formData.get("shippingCountry") ?? "").trim();
   const couponCode = String(formData.get("couponCode") ?? "").trim().toUpperCase();
+  const isGift = formData.get("isGift") === "1";
+  const giftMessage = isGift ? String(formData.get("giftMessage") ?? "").trim() || null : null;
 
   if (
     !shippingName ||
@@ -97,6 +99,8 @@ export async function createOrderAction(formData: FormData) {
         shippingState,
         shippingZip,
         shippingCountry,
+        isGift,
+        giftMessage,
         items: {
           create: cart.items.map((item) => ({
             productVariantId: item.productVariantId,

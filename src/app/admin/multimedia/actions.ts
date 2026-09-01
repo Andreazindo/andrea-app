@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 
-const VALID_KINDS = ["YOUTUBE", "DRIVE", "LINK", "COURSE"] as const;
+const VALID_KINDS = ["YOUTUBE", "DRIVE", "LINK", "COURSE", "IMAGE"] as const;
 
 export async function addContentBlockAction(formData: FormData) {
   await requireAdmin("/admin/multimedia");

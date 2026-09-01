@@ -98,6 +98,7 @@ export default async function PedidosAdminPage({
                   #{order.id.slice(-8).toUpperCase()}
                 </span>
                 <span className="text-sm flex-1">
+                  {order.isGift && <span title="Es un regalo">🎁 </span>}
                   <span className="font-medium text-[#1A1A1A]">{order.user.name}</span>
                   <span className="text-[#1A1A1A]/50"> · {order.user.email}</span>
                 </span>
