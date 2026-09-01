@@ -167,6 +167,9 @@ export default async function AdminDashboardPage() {
           <Link href="/admin/resenas" className={`${adminCardClass} !space-y-0 hover:border-[#C9A15B] transition-colors font-medium text-[#0D3B36]`}>
             Reseñas
           </Link>
+          <Link href="/admin/reportes" className={`${adminCardClass} !space-y-0 hover:border-[#C9A15B] transition-colors font-medium text-[#0D3B36]`}>
+            Reportes
+          </Link>
           <Link href="/admin/contenido" className={`${adminCardClass} !space-y-0 hover:border-[#C9A15B] transition-colors font-medium text-[#0D3B36]`}>
             Contenido
           </Link>
