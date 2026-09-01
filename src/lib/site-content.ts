@@ -11,6 +11,8 @@ export const EDITABLE_CONTENT_KEYS = [
   "contacto_mail",
   "contacto_whatsapp",
   "contacto_redes",
+  "comunidad_tagline",
+  "comunidad_whatsapp_link",
   "legal_terminos",
   "legal_privacidad",
   "legal_devoluciones",

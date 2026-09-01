@@ -178,6 +178,43 @@ export default async function ContenidoAdminPage({
         </details>
 
         <details className={sectionClass}>
+          <summary className={summaryClass}>Comunidad</summary>
+          <div className="mt-4 space-y-4">
+            <p className="text-xs text-[#1A1A1A]/50">
+              Grupo de WhatsApp donde la comunidad ZINDO puede platicar, compartir avances y hacer preguntas.
+            </p>
+            <div>
+              <label className={labelClass} htmlFor="comunidad_tagline">
+                Frase de invitación
+              </label>
+              <textarea
+                id="comunidad_tagline"
+                name="comunidad_tagline"
+                rows={2}
+                defaultValue={content.comunidad_tagline}
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="comunidad_whatsapp_link">
+                Enlace de invitación al grupo de WhatsApp
+              </label>
+              <input
+                id="comunidad_whatsapp_link"
+                name="comunidad_whatsapp_link"
+                placeholder="https://chat.whatsapp.com/..."
+                defaultValue={content.comunidad_whatsapp_link}
+                className={inputClass}
+              />
+              <p className="mt-1 text-xs text-[#1A1A1A]/50">
+                Créalo desde WhatsApp: grupo nuevo → Ajustes del grupo → Invitar por enlace → copiar y pegar aquí. Si lo dejas
+                vacío, la página de Comunidad muestra &quot;Muy pronto&quot;.
+              </p>
+            </div>
+          </div>
+        </details>
+
+        <details className={sectionClass}>
           <summary className={summaryClass}>Legal</summary>
           <div className="mt-4 space-y-4">
             <p className="text-xs text-[#1A1A1A]/50">

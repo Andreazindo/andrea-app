@@ -73,6 +73,7 @@ export function HeaderNav({
     items.push({ type: "link", key: "venta", href: "/admin/ventas/nueva", label: "Registrar venta" });
   } else {
     items.push({ type: "link", key: "tienda", href: "/tienda", label: "Tienda" });
+    items.push({ type: "link", key: "comunidad", href: "/comunidad", label: "Comunidad" });
     items.push({ type: "link", key: "contacto", href: "/contacto", label: "Contacto" });
   }
 
