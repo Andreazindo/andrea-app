@@ -16,8 +16,11 @@ export async function createMercadoPagoPreference(params: {
   orderId: string;
   items: { title: string; quantity: number; unitPriceCents: number }[];
   appUrl: string;
+  returnPath?: string;
 }) {
   const preference = new Preference(getClient());
+
+  const returnUrl = `${params.appUrl}${params.returnPath ?? `/pedidos/${params.orderId}/mercadopago/retorno`}`;
 
   const response = await preference.create({
     body: {
@@ -30,9 +33,9 @@ export async function createMercadoPagoPreference(params: {
       })),
       external_reference: params.orderId,
       back_urls: {
-        success: `${params.appUrl}/pedidos/${params.orderId}/mercadopago/retorno`,
-        pending: `${params.appUrl}/pedidos/${params.orderId}/mercadopago/retorno`,
-        failure: `${params.appUrl}/pedidos/${params.orderId}/mercadopago/retorno`,
+        success: returnUrl,
+        pending: returnUrl,
+        failure: returnUrl,
       },
       auto_return: "approved",
       notification_url: `${params.appUrl}/api/webhooks/mercadopago`,

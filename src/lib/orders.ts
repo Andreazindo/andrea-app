@@ -58,6 +58,12 @@ export async function markOrderPaid(params: {
           }
         }
       }
+    } else if (order.shippingCents > 0 && !order.shippingPaidAt) {
+      // Pago adicional sobre un pedido ya pagado: se asume que es el cobro de envío cotizado después.
+      await tx.order.update({
+        where: { id: orderId },
+        data: { shippingPaidAt: new Date(), shippingPaymentUrl: null },
+      });
     }
 
     return { alreadyProcessed: false as const };

@@ -3,6 +3,8 @@
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
+import { createMercadoPagoPreference, isMercadoPagoConfigured } from "@/lib/payments/mercadopago";
+import { getAppUrl } from "@/lib/app-url";
 
 const VALID_STATUSES = ["PENDING_PAYMENT", "PAID", "PROCESSING", "SHIPPED", "CANCELLED", "REFUNDED"] as const;
 
@@ -50,6 +52,50 @@ export async function updateOrderShippingAction(formData: FormData) {
       shippingState,
       shippingZip,
       shippingCountry: shippingCountry || "MX",
+    },
+  });
+
+  redirect(`/admin/pedidos/${id}?guardado=1`);
+}
+
+export async function updateOrderShippingCostAction(formData: FormData) {
+  await requireAdmin("/admin/pedidos");
+
+  const id = String(formData.get("orderId") ?? "");
+  const shippingPriceRaw = String(formData.get("shippingPrice") ?? "").trim();
+  const shippingCents = Math.round(Number(shippingPriceRaw) * 100);
+
+  const order = await prisma.order.findUnique({ where: { id } });
+  if (!order || !shippingPriceRaw || Number.isNaN(shippingCents) || shippingCents < 0) {
+    redirect(`/admin/pedidos/${id}?error=envio-costo-invalido`);
+  }
+
+  let shippingPaymentUrl: string | null = null;
+
+  if (shippingCents > 0 && isMercadoPagoConfigured()) {
+    const appUrl = await getAppUrl();
+    const preference = await createMercadoPagoPreference({
+      orderId: order.id,
+      items: [
+        {
+          title: `Envío — Pedido #${order.id.slice(-8).toUpperCase()}`,
+          quantity: 1,
+          unitPriceCents: shippingCents,
+        },
+      ],
+      appUrl,
+      returnPath: `/pedidos/${order.id}/mercadopago/envio-retorno`,
+    });
+    shippingPaymentUrl = preference.sandbox_init_point ?? preference.init_point ?? null;
+  }
+
+  await prisma.order.update({
+    where: { id },
+    data: {
+      shippingCents,
+      totalCents: order.subtotalCents + shippingCents,
+      shippingPaymentUrl,
+      shippingPaidAt: null,
     },
   });
 

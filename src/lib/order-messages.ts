@@ -30,15 +30,43 @@ Cualquier duda, aquí estamos.
 Con cariño, tu equipo ZINDO 🌱`;
 }
 
-export function whatsappLinkForOrder(order: OrderForMessage): string {
+function whatsappNumber(order: OrderForMessage): string {
   const digits = order.shippingPhone.replace(/\D/g, "");
-  const withCountry =
-    order.shippingCountry === "US"
-      ? digits.startsWith("1") && digits.length === 11
-        ? digits
-        : `1${digits}`
-      : digits.startsWith("52")
+  return order.shippingCountry === "US"
+    ? digits.startsWith("1") && digits.length === 11
       ? digits
-      : `52${digits}`;
-  return `https://wa.me/${withCountry}?text=${encodeURIComponent(buildWhatsappConfirmationMessage(order))}`;
+      : `1${digits}`
+    : digits.startsWith("52")
+    ? digits
+    : `52${digits}`;
+}
+
+export function whatsappLinkForOrder(order: OrderForMessage): string {
+  return `https://wa.me/${whatsappNumber(order)}?text=${encodeURIComponent(buildWhatsappConfirmationMessage(order))}`;
+}
+
+export function buildWhatsappShippingQuoteMessage(
+  order: OrderForMessage,
+  shippingCostFormatted: string,
+  shippingPaymentUrl: string
+): string {
+  return `¡Hola ${order.shippingName}! 🌿
+
+Ya tenemos el costo de envío de tu pedido #${orderNumber(order)}: ${shippingCostFormatted}.
+
+Puedes pagarlo aquí de forma segura con Mercado Pago:
+${shippingPaymentUrl}
+
+En cuanto se confirme el pago preparamos tu envío. ¡Gracias por tu confianza! 💛
+Equipo ZINDO 🌱`;
+}
+
+export function whatsappShippingQuoteLink(
+  order: OrderForMessage,
+  shippingCostFormatted: string,
+  shippingPaymentUrl: string
+): string {
+  return `https://wa.me/${whatsappNumber(order)}?text=${encodeURIComponent(
+    buildWhatsappShippingQuoteMessage(order, shippingCostFormatted, shippingPaymentUrl)
+  )}`;
 }

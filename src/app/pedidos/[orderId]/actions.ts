@@ -1,19 +1,11 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { createMercadoPagoPreference } from "@/lib/payments/mercadopago";
 import { createPaypalOrder } from "@/lib/payments/paypal";
-
-async function getAppUrl(): Promise<string> {
-  if (process.env.NEXT_PUBLIC_APP_URL) return process.env.NEXT_PUBLIC_APP_URL;
-  const h = await headers();
-  const host = h.get("host") ?? "localhost:3000";
-  const protocol = host.startsWith("localhost") ? "http" : "https";
-  return `${protocol}://${host}`;
-}
+import { getAppUrl } from "@/lib/app-url";
 
 async function loadOwnedPendingOrder(orderId: string, userId: string) {
   const order = await prisma.order.findUnique({

@@ -204,6 +204,9 @@ model Order {
   shippingZip         String
   shippingCountry     String @default("MX")
 
+  shippingPaymentUrl String?
+  shippingPaidAt     DateTime?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

@@ -4,8 +4,8 @@ import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { PlainBackLink } from "@/components/BackLink";
-import { updateOrderStatusAction, updateOrderShippingAction } from "./actions";
-import { whatsappLinkForOrder } from "@/lib/order-messages";
+import { updateOrderStatusAction, updateOrderShippingAction, updateOrderShippingCostAction } from "./actions";
+import { whatsappLinkForOrder, whatsappShippingQuoteLink } from "@/lib/order-messages";
 import {
   AdminPageHeader,
   AdminSectionTitle,
@@ -35,6 +35,7 @@ const PAYMENT_METHOD_LABELS: Record<string, string> = {
 const ERROR_MESSAGES: Record<string, string> = {
   "estatus-invalido": "Elige un estatus válido.",
   "envio-invalido": "Completa nombre, teléfono, dirección, ciudad, estado y C.P.",
+  "envio-costo-invalido": "Ingresa un costo de envío válido.",
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
@@ -197,6 +198,48 @@ export default async function PedidoAdminPage({
             Guardar envío
           </button>
         </form>
+      </section>
+
+      <section className={sectionClass}>
+        <AdminSectionTitle>Costo de envío</AdminSectionTitle>
+        <p className="text-sm text-[#1A1A1A]/70">
+          {order.shippingCents > 0
+            ? order.shippingPaidAt
+              ? `Envío pagado el ${new Date(order.shippingPaidAt).toLocaleString("es-MX")}.`
+              : "Cotizado, pendiente de pago."
+            : "Aún no se ha cotizado el envío."}
+        </p>
+        <form action={updateOrderShippingCostAction} className="flex items-end gap-3">
+          <input type="hidden" name="orderId" value={order.id} />
+          <div>
+            <label className={labelClass} htmlFor="shippingPrice">
+              Costo de envío (MXN)
+            </label>
+            <input
+              id="shippingPrice"
+              name="shippingPrice"
+              type="number"
+              step="0.01"
+              min="0"
+              defaultValue={(order.shippingCents / 100).toFixed(2)}
+              required
+              className={inputClass}
+            />
+          </div>
+          <button type="submit" className={adminButtonSecondaryClass}>
+            Guardar y generar liga de pago
+          </button>
+        </form>
+        {order.shippingCents > 0 && !order.shippingPaidAt && order.shippingPaymentUrl && (
+          <a
+            href={whatsappShippingQuoteLink(order, formatCents(order.shippingCents), order.shippingPaymentUrl)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-md bg-[#25D366] text-white px-4 py-2 text-sm font-medium hover:opacity-90"
+          >
+            Enviar cotización de envío por WhatsApp
+          </a>
+        )}
       </section>
 
       <section className={sectionClass}>
