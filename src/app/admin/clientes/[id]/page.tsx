@@ -5,7 +5,9 @@ import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { PlainBackLink } from "@/components/BackLink";
-import { updateCustomerAction } from "./actions";
+import { updateCustomerAction, resetCustomerPasswordAction } from "./actions";
+import { getAppUrl } from "@/lib/app-url";
+import { whatsappTempPasswordLink } from "@/lib/order-messages";
 import {
   AdminPageHeader,
   AdminSectionTitle,
@@ -14,6 +16,7 @@ import {
   adminInputClass as inputClass,
   adminLabelClass as labelClass,
   adminButtonPrimaryClass,
+  adminButtonSecondaryClass,
 } from "@/components/admin/ui";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -41,11 +44,11 @@ export default async function ClienteAdminPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string; guardado?: string; creado?: string }>;
+  searchParams: Promise<{ error?: string; guardado?: string; creado?: string; tempPassword?: string }>;
 }) {
   await requireAdmin("/admin/clientes");
   const { id } = await params;
-  const { error, guardado, creado } = await searchParams;
+  const { error, guardado, creado, tempPassword } = await searchParams;
 
   const customer = await prisma.user.findFirst({
     where: { id, role: "CUSTOMER" },
@@ -57,6 +60,8 @@ export default async function ClienteAdminPage({
     },
   });
   if (!customer) notFound();
+
+  const appUrl = tempPassword ? await getAppUrl() : null;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 space-y-8">
@@ -73,6 +78,32 @@ export default async function ClienteAdminPage({
         </p>
       )}
       <AdminFlash guardado={guardado} error={error} errorMessages={ERROR_MESSAGES} />
+
+      {tempPassword && appUrl && (
+        <div className="rounded-md bg-[#C9A15B]/10 border border-[#C9A15B]/40 text-sm px-3 py-3 space-y-2">
+          <p className="text-[#0D3B36]">
+            Contraseña temporal generada: <span className="font-mono font-semibold">{tempPassword}</span>
+            <br />
+            Cópiala ahora — no se volverá a mostrar. Compártela con el cliente por un medio seguro.
+          </p>
+          {customer.phone && (
+            <a
+              href={whatsappTempPasswordLink({
+                phone: customer.phone,
+                name: customer.name,
+                email: customer.email,
+                tempPassword,
+                loginUrl: `${appUrl}/login`,
+              })}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block rounded-md bg-[#25D366] text-white px-4 py-2 text-sm font-medium hover:opacity-90"
+            >
+              Enviar por WhatsApp
+            </a>
+          )}
+        </div>
+      )}
 
       <section className={sectionClass}>
         <AdminSectionTitle>Datos del cliente</AdminSectionTitle>
@@ -98,6 +129,12 @@ export default async function ClienteAdminPage({
           </div>
           <button type="submit" className={adminButtonPrimaryClass}>
             Guardar cambios
+          </button>
+        </form>
+        <form action={resetCustomerPasswordAction}>
+          <input type="hidden" name="customerId" value={customer.id} />
+          <button type="submit" className={adminButtonSecondaryClass}>
+            Restablecer contraseña
           </button>
         </form>
       </section>

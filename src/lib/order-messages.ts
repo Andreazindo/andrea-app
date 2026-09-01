@@ -70,3 +70,39 @@ export function whatsappShippingQuoteLink(
     buildWhatsappShippingQuoteMessage(order, shippingCostFormatted, shippingPaymentUrl)
   )}`;
 }
+
+function whatsappNumberFromPhone(phone: string): string {
+  const digits = phone.replace(/\D/g, "");
+  return digits.startsWith("52") ? digits : `52${digits}`;
+}
+
+export function buildWhatsappTempPasswordMessage(params: {
+  name: string;
+  email: string;
+  tempPassword: string;
+  loginUrl: string;
+}): string {
+  return `¡Hola ${params.name}! 🌿
+
+Te generamos una contraseña temporal para tu cuenta en ZINDO:
+
+Correo: ${params.email}
+Contraseña temporal: ${params.tempPassword}
+
+Inicia sesión aquí: ${params.loginUrl}
+
+Guárdala en un lugar seguro. Si necesitas otra más adelante, solo escríbenos.
+Equipo ZINDO 🌱`;
+}
+
+export function whatsappTempPasswordLink(params: {
+  phone: string;
+  name: string;
+  email: string;
+  tempPassword: string;
+  loginUrl: string;
+}): string {
+  return `https://wa.me/${whatsappNumberFromPhone(params.phone)}?text=${encodeURIComponent(
+    buildWhatsappTempPasswordMessage(params)
+  )}`;
+}
