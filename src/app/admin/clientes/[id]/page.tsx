@@ -41,11 +41,11 @@ export default async function ClienteAdminPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string; guardado?: string }>;
+  searchParams: Promise<{ error?: string; guardado?: string; creado?: string }>;
 }) {
   await requireAdmin("/admin/clientes");
   const { id } = await params;
-  const { error, guardado } = await searchParams;
+  const { error, guardado, creado } = await searchParams;
 
   const customer = await prisma.user.findFirst({
     where: { id, role: "CUSTOMER" },
@@ -67,6 +67,11 @@ export default async function ClienteAdminPage({
         </div>
       </div>
 
+      {creado && (
+        <p className="rounded-md bg-[#0D3B36]/10 text-[#0D3B36] text-sm px-3 py-2 font-medium">
+          Cliente creado. Ya puedes registrarle una venta manual desde &ldquo;Registrar venta&rdquo;.
+        </p>
+      )}
       <AdminFlash guardado={guardado} error={error} errorMessages={ERROR_MESSAGES} />
 
       <section className={sectionClass}>

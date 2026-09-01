@@ -3,17 +3,32 @@ import type { Metadata } from "next";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { PlainBackLink } from "@/components/BackLink";
-import { AdminPageHeader, adminInputClass, adminButtonSecondaryClass } from "@/components/admin/ui";
+import { createCustomerAction } from "./actions";
+import {
+  AdminPageHeader,
+  AdminFlash,
+  adminCardClass as sectionClass,
+  adminInputClass,
+  adminInputClass as inputClass,
+  adminLabelClass as labelClass,
+  adminButtonSecondaryClass,
+  adminButtonPrimaryClass,
+} from "@/components/admin/ui";
 
 export const metadata: Metadata = { title: "Clientes (Admin)" };
+
+const ERROR_MESSAGES: Record<string, string> = {
+  "datos-invalidos": "Completa nombre y correo.",
+  "correo-en-uso": "Ese correo ya está en uso por otra cuenta.",
+};
 
 export default async function ClientesAdminPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; error?: string }>;
 }) {
   await requireAdmin("/admin/clientes");
-  const { q } = await searchParams;
+  const { q, error } = await searchParams;
   const query = (q ?? "").trim();
 
   const customers = await prisma.user.findMany({
@@ -42,18 +57,49 @@ export default async function ClientesAdminPage({
         </div>
       </div>
 
-      <form className="flex gap-2">
-        <input
-          type="text"
-          name="q"
-          defaultValue={query}
-          placeholder="Buscar por nombre, correo o teléfono…"
-          className={adminInputClass}
-        />
-        <button type="submit" className={adminButtonSecondaryClass}>
-          Buscar
-        </button>
-      </form>
+      <AdminFlash error={error} errorMessages={ERROR_MESSAGES} />
+
+      <div className="flex flex-col sm:flex-row gap-2 sm:items-start sm:justify-between">
+        <form className="flex gap-2 flex-1">
+          <input
+            type="text"
+            name="q"
+            defaultValue={query}
+            placeholder="Buscar por nombre, correo o teléfono…"
+            className={adminInputClass}
+          />
+          <button type="submit" className={adminButtonSecondaryClass}>
+            Buscar
+          </button>
+        </form>
+      </div>
+
+      <details className={sectionClass}>
+        <summary className="text-sm font-semibold cursor-pointer text-[#0D3B36]">+ Nuevo cliente</summary>
+        <form action={createCustomerAction} className="space-y-3 mt-4">
+          <div>
+            <label className={labelClass} htmlFor="new-name">
+              Nombre
+            </label>
+            <input id="new-name" name="name" required className={inputClass} />
+          </div>
+          <div>
+            <label className={labelClass} htmlFor="new-email">
+              Correo
+            </label>
+            <input id="new-email" name="email" type="email" required className={inputClass} />
+          </div>
+          <div>
+            <label className={labelClass} htmlFor="new-phone">
+              Teléfono
+            </label>
+            <input id="new-phone" name="phone" className={inputClass} />
+          </div>
+          <button type="submit" className={adminButtonPrimaryClass}>
+            Crear cliente
+          </button>
+        </form>
+      </details>
 
       {customers.length === 0 ? (
         <p className="text-sm text-[#1A1A1A]/60">No hay clientes{query ? " que coincidan con la búsqueda" : ""} todavía.</p>
