@@ -46,7 +46,7 @@ export default async function AdminDashboardPage() {
   startOfMonth.setDate(1);
   startOfMonth.setHours(0, 0, 0, 0);
 
-  const [totalAgg, monthAgg, statusGroups, recentOrders, lowStock, productCount, customerCount] =
+  const [totalAgg, monthAgg, statusGroups, recentOrders, unconfirmedOrders, lowStock, productCount, customerCount] =
     await Promise.all([
       prisma.order.aggregate({
         where: { status: { in: [...PAID_STATUSES] } },
@@ -62,6 +62,11 @@ export default async function AdminDashboardPage() {
       prisma.order.findMany({
         orderBy: { createdAt: "desc" },
         take: 8,
+        include: { user: { select: { name: true, email: true } } },
+      }),
+      prisma.order.findMany({
+        where: { status: { in: [...PAID_STATUSES] }, whatsappConfirmedAt: null },
+        orderBy: { createdAt: "desc" },
         include: { user: { select: { name: true, email: true } } },
       }),
       prisma.productVariant.findMany({
@@ -130,6 +135,28 @@ export default async function AdminDashboardPage() {
           </ul>
         )}
       </section>
+
+      {unconfirmedOrders.length > 0 && (
+        <section className="space-y-3">
+          <AdminSectionTitle>Pedidos pagados sin confirmar por WhatsApp</AdminSectionTitle>
+          <ul className="divide-y divide-[#9CBA9D]/30 rounded-xl border border-[#C9A15B]/50 bg-white overflow-hidden shadow-sm">
+            {unconfirmedOrders.map((order) => (
+              <li key={order.id}>
+                <Link
+                  href={`/admin/pedidos/${order.id}`}
+                  className="flex items-center justify-between gap-3 px-4 py-3 text-sm hover:bg-[#EEE7DF]/60 transition-colors"
+                >
+                  <span className="min-w-0">
+                    <span className="font-medium text-[#0D3B36]">#{order.id.slice(-8).toUpperCase()}</span>{" "}
+                    <span className="text-[#1A1A1A]/60">· {order.user.name ?? order.user.email}</span>
+                  </span>
+                  <span className="font-semibold text-[#0D3B36]">{formatCents(order.totalCents)}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {lowStock.length > 0 && (
         <section className="space-y-3">

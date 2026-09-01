@@ -58,6 +58,15 @@ export async function updateOrderShippingAction(formData: FormData) {
   redirect(`/admin/pedidos/${id}?guardado=1`);
 }
 
+export async function markWhatsappConfirmedAction(formData: FormData) {
+  await requireAdmin("/admin/pedidos");
+
+  const id = String(formData.get("orderId") ?? "");
+  await prisma.order.update({ where: { id }, data: { whatsappConfirmedAt: new Date() } });
+
+  redirect(`/admin/pedidos/${id}?guardado=1`);
+}
+
 export async function updateOrderShippingCostAction(formData: FormData) {
   await requireAdmin("/admin/pedidos");
 

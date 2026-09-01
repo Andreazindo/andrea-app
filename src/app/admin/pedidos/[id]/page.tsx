@@ -4,7 +4,7 @@ import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { PlainBackLink } from "@/components/BackLink";
-import { updateOrderStatusAction, updateOrderShippingAction, updateOrderShippingCostAction } from "./actions";
+import { updateOrderStatusAction, updateOrderShippingAction, updateOrderShippingCostAction, markWhatsappConfirmedAction } from "./actions";
 import { whatsappLinkForOrder, whatsappShippingQuoteLink } from "@/lib/order-messages";
 import {
   AdminPageHeader,
@@ -106,14 +106,28 @@ export default async function PedidoAdminPage({
           {order.user.name} · {order.user.email}
           {order.user.phone && ` · ${order.user.phone}`}
         </p>
-        <a
-          href={whatsappLinkForOrder(order)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block rounded-md bg-[#25D366] text-white px-4 py-2 text-sm font-medium hover:opacity-90"
-        >
-          Enviar confirmación por WhatsApp
-        </a>
+        <div className="flex items-center gap-3 flex-wrap">
+          <a
+            href={whatsappLinkForOrder(order)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-md bg-[#25D366] text-white px-4 py-2 text-sm font-medium hover:opacity-90"
+          >
+            Enviar confirmación por WhatsApp
+          </a>
+          {order.whatsappConfirmedAt ? (
+            <span className="text-xs text-[#1A1A1A]/50">
+              Confirmado el {new Date(order.whatsappConfirmedAt).toLocaleString("es-MX")}
+            </span>
+          ) : (
+            <form action={markWhatsappConfirmedAction}>
+              <input type="hidden" name="orderId" value={order.id} />
+              <button type="submit" className={adminButtonSecondaryClass}>
+                Marcar como confirmado
+              </button>
+            </form>
+          )}
+        </div>
       </section>
 
       <section className={sectionClass}>
