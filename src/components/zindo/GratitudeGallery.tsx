@@ -3,7 +3,11 @@
 import { useState } from "react";
 import { zindoColors } from "@/components/zindo/theme";
 
-export function GratitudeGallery({ images }: { images: { url: string; alt: string }[] }) {
+export function GratitudeGallery({
+  images,
+}: {
+  images: { url: string; alt: string; label: string; filename: string }[];
+}) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
@@ -15,11 +19,17 @@ export function GratitudeGallery({ images }: { images: { url: string; alt: strin
             type="button"
             onClick={() => setOpenIndex(i)}
             aria-label={`Ver ${img.alt}`}
-            className="aspect-square overflow-hidden rounded-lg border transition-opacity hover:opacity-90"
+            className="relative aspect-square overflow-hidden rounded-lg border transition-opacity hover:opacity-90"
             style={{ borderColor: zindoColors.sage }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={img.url} alt={img.alt} className="h-full w-full object-cover" loading="lazy" />
+            <span
+              className="absolute bottom-1.5 left-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white"
+              style={{ backgroundColor: "#0D3B36cc" }}
+            >
+              {img.label}
+            </span>
           </button>
         ))}
       </div>
@@ -63,13 +73,23 @@ export function GratitudeGallery({ images }: { images: { url: string; alt: strin
               ›
             </button>
           )}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={images[openIndex].url}
-            alt={images[openIndex].alt}
-            className="max-h-full max-w-full rounded-lg object-contain"
-            onClick={(e) => e.stopPropagation()}
-          />
+          <div className="flex flex-col items-center gap-3" onClick={(e) => e.stopPropagation()}>
+            <p className="text-sm font-semibold uppercase tracking-wide text-white">{images[openIndex].label}</p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={images[openIndex].url}
+              alt={images[openIndex].alt}
+              className="max-h-[70vh] max-w-full rounded-lg object-contain"
+            />
+            <a
+              href={images[openIndex].url}
+              download={images[openIndex].filename}
+              className="text-sm font-medium hover:underline"
+              style={{ color: zindoColors.gold }}
+            >
+              Descargar imagen ⬇
+            </a>
+          </div>
         </div>
       )}
     </div>
