@@ -61,6 +61,7 @@ export function HeaderNav({
     items.push({ type: "link", key: "dashboard", href: "/admin", label: "Dashboard" });
     items.push({ type: "link", key: "productos", href: "/admin/productos", label: "Productos" });
     items.push({ type: "link", key: "pedidos", href: "/admin/pedidos", label: "Pedidos" });
+    items.push({ type: "link", key: "clientes", href: "/admin/clientes", label: "Clientes" });
     items.push({ type: "link", key: "contenido", href: "/admin/contenido", label: "Contenido" });
     items.push({ type: "link", key: "multimedia", href: "/admin/multimedia", label: "Multimedia" });
     items.push({ type: "link", key: "venta", href: "/admin/ventas/nueva", label: "Registrar venta" });
