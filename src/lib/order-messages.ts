@@ -106,3 +106,31 @@ export function whatsappTempPasswordLink(params: {
     buildWhatsappTempPasswordMessage(params)
   )}`;
 }
+
+export function buildWhatsappAbandonedCartMessage(params: {
+  name: string;
+  itemsSummary: string;
+  cartUrl: string;
+}): string {
+  return `¡Hola ${params.name}! 🌿
+
+Vimos que dejaste esto en tu carrito de ZINDO:
+${params.itemsSummary}
+
+Sigue esperándote por si quieres completar tu compra:
+${params.cartUrl}
+
+Cualquier duda, aquí estamos.
+Equipo ZINDO 🌱`;
+}
+
+export function whatsappAbandonedCartLink(params: {
+  phone: string;
+  name: string;
+  itemsSummary: string;
+  cartUrl: string;
+}): string {
+  return `https://wa.me/${whatsappNumberFromPhone(params.phone)}?text=${encodeURIComponent(
+    buildWhatsappAbandonedCartMessage(params)
+  )}`;
+}

@@ -3,8 +3,12 @@ import type { Metadata } from "next";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
+import { getAppUrl } from "@/lib/app-url";
+import { whatsappAbandonedCartLink } from "@/lib/order-messages";
 import { PlainBackLink } from "@/components/BackLink";
 import { AdminPageHeader, AdminSectionTitle, adminCardClass } from "@/components/admin/ui";
+
+const ABANDONED_CART_HOURS = 24;
 
 export const metadata: Metadata = { title: "Dashboard (Admin)" };
 
@@ -55,7 +59,7 @@ export default async function AdminDashboardPage() {
   startOfMonth.setDate(1);
   startOfMonth.setHours(0, 0, 0, 0);
 
-  const [totalAgg, monthAgg, statusGroups, recentOrders, unconfirmedOrders, lowStock, productCount, customerCount] =
+  const [totalAgg, monthAgg, statusGroups, recentOrders, unconfirmedOrders, abandonedCartsRaw, lowStock, productCount, customerCount, appUrl] =
     await Promise.all([
       prisma.order.aggregate({
         where: { status: { in: [...PAID_STATUSES] } },
@@ -78,6 +82,13 @@ export default async function AdminDashboardPage() {
         orderBy: { createdAt: "desc" },
         include: { user: { select: { name: true, email: true } } },
       }),
+      prisma.cart.findMany({
+        where: { items: { some: {} } },
+        include: {
+          user: { select: { name: true, phone: true } },
+          items: { include: { productVariant: { include: { product: true } } } },
+        },
+      }),
       prisma.productVariant.findMany({
         where: { trackInventory: true, active: true, stock: { lte: 3 } },
         include: { product: { select: { name: true } } },
@@ -86,7 +97,19 @@ export default async function AdminDashboardPage() {
       }),
       prisma.product.count({ where: { active: true } }),
       prisma.user.count({ where: { role: "CUSTOMER" } }),
+      getAppUrl(),
     ]);
+
+  const abandonedCutoff = new Date(Date.now() - ABANDONED_CART_HOURS * 60 * 60 * 1000);
+  const abandonedCarts = abandonedCartsRaw
+    .map((cart) => ({
+      ...cart,
+      lastActivity: cart.items.reduce((max, item) => (item.createdAt > max ? item.createdAt : max), cart.items[0].createdAt),
+      valueCents: cart.items.reduce((sum, item) => sum + item.productVariant.priceCents * item.quantity, 0),
+    }))
+    .filter((cart) => cart.lastActivity < abandonedCutoff)
+    .sort((a, b) => b.lastActivity.getTime() - a.lastActivity.getTime())
+    .slice(0, 15);
 
   const pendingCount = statusGroups.find((g) => g.status === "PENDING_PAYMENT")?._count ?? 0;
 
@@ -163,6 +186,50 @@ export default async function AdminDashboardPage() {
                 </Link>
               </li>
             ))}
+          </ul>
+        </section>
+      )}
+
+      {abandonedCarts.length > 0 && (
+        <section className="space-y-3">
+          <div className="flex items-center justify-between">
+            <AdminSectionTitle>Carritos abandonados</AdminSectionTitle>
+            <span className="text-xs text-[#1A1A1A]/50">Más de {ABANDONED_CART_HOURS}h sin comprar</span>
+          </div>
+          <ul className="divide-y divide-[#9CBA9D]/30 rounded-xl border border-[#9CBA9D]/50 bg-white overflow-hidden shadow-sm">
+            {abandonedCarts.map((cart) => {
+              const itemsSummary = cart.items
+                .map((item) => `${item.quantity}× ${item.productVariant.product.name} (${item.productVariant.name})`)
+                .join(", ");
+              return (
+                <li key={cart.id} className="flex items-center justify-between gap-3 px-4 py-3 text-sm">
+                  <span className="min-w-0">
+                    <span className="font-medium text-[#0D3B36]">{cart.user.name}</span>
+                    <span className="block text-xs text-[#1A1A1A]/60 truncate max-w-xs">{itemsSummary}</span>
+                  </span>
+                  <span className="flex-none flex items-center gap-3">
+                    <span className="font-semibold text-[#0D3B36]">{formatCents(cart.valueCents)}</span>
+                    {cart.user.phone ? (
+                      <a
+                        href={whatsappAbandonedCartLink({
+                          phone: cart.user.phone,
+                          name: cart.user.name,
+                          itemsSummary,
+                          cartUrl: `${appUrl}/carrito`,
+                        })}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-medium text-[#25D366] hover:underline"
+                      >
+                        Recordar
+                      </a>
+                    ) : (
+                      <span className="text-xs text-[#1A1A1A]/40">Sin teléfono</span>
+                    )}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         </section>
       )}
