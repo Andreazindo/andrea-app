@@ -4,9 +4,14 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { createOrderAction } from "./actions";
-import { PlainBackLink } from "@/components/BackLink";
+import { ZindoContentPage } from "@/components/zindo/ContentPage";
+import { zindoColors } from "@/components/zindo/theme";
 
 export const metadata: Metadata = { title: "Datos de envío" };
+
+const inputClass = "w-full rounded-md border bg-white px-3 py-2 text-sm";
+const inputStyle = { borderColor: zindoColors.sage, color: zindoColors.ink };
+const labelClass = "block text-sm font-medium mb-1";
 
 function computeDiscountCents(coupon: { type: string; value: number }, subtotalCents: number): number {
   if (coupon.type === "PERCENT") return Math.round((subtotalCents * coupon.value) / 100);
@@ -49,24 +54,23 @@ export default async function CheckoutPage({
   const total = subtotal - discount;
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
-      <PlainBackLink href="/carrito" label="Carrito" />
-      <h1 className="text-2xl font-bold tracking-tight mt-3 mb-6">Datos de envío</h1>
-
+    <ZindoContentPage title="Datos de envío" backHref="/carrito" backLabel="Carrito">
       {error === "datos-incompletos" && (
-        <p className="mb-4 rounded-md bg-red-500/10 text-red-600 dark:text-red-400 text-sm px-3 py-2">
+        <p className="mb-4 rounded-md bg-red-500/10 text-red-600 text-sm px-3 py-2">
           Completa todos los campos para continuar.
         </p>
       )}
       {error === "cupon-invalido" && (
-        <p className="mb-4 rounded-md bg-red-500/10 text-red-600 dark:text-red-400 text-sm px-3 py-2">
+        <p className="mb-4 rounded-md bg-red-500/10 text-red-600 text-sm px-3 py-2">
           Ese código de descuento ya no es válido, quítalo para continuar.
         </p>
       )}
 
-      <div className="rounded-lg border border-black/10 dark:border-white/15 p-4 mb-6">
-        <h2 className="text-sm font-semibold mb-3">Resumen</h2>
-        <ul className="space-y-1 text-sm">
+      <div className="rounded-lg bg-white/70 border p-4 mb-6" style={{ borderColor: zindoColors.sage }}>
+        <h2 className="text-sm font-semibold mb-3" style={{ color: zindoColors.green }}>
+          Resumen
+        </h2>
+        <ul className="space-y-1 text-sm" style={{ color: zindoColors.ink }}>
           {items.map((item) => (
             <li key={item.id} className="flex justify-between">
               <span>
@@ -77,21 +81,26 @@ export default async function CheckoutPage({
           ))}
         </ul>
 
-        <form method="GET" className="mt-3 pt-3 border-t border-black/10 dark:border-white/15 flex gap-2">
+        <form method="GET" className="mt-3 pt-3 border-t flex gap-2" style={{ borderColor: zindoColors.sage }}>
           <input
             type="text"
             name="coupon"
             defaultValue={appliedCoupon?.code ?? couponCodeParam ?? ""}
             placeholder="Código de descuento"
-            className="flex-1 rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+            className={`flex-1 ${inputClass}`}
+            style={inputStyle}
           />
-          <button type="submit" className="rounded-md border border-black/15 dark:border-white/20 px-3 py-2 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10">
+          <button
+            type="submit"
+            className="rounded-md border px-3 py-2 text-sm font-medium hover:bg-white transition-colors"
+            style={{ borderColor: zindoColors.sage, color: zindoColors.green }}
+          >
             Aplicar
           </button>
         </form>
-        {couponError && <p className="mt-2 text-xs text-red-600 dark:text-red-400">{couponError}</p>}
+        {couponError && <p className="mt-2 text-xs text-red-600">{couponError}</p>}
         {appliedCoupon && (
-          <p className="mt-2 text-xs text-green-700 dark:text-green-400">
+          <p className="mt-2 text-xs" style={{ color: zindoColors.green }}>
             Código {appliedCoupon.code} aplicado.{" "}
             <a href="/checkout" className="underline">
               Quitar
@@ -100,22 +109,22 @@ export default async function CheckoutPage({
         )}
 
         {appliedCoupon && (
-          <div className="mt-3 pt-3 border-t border-black/10 dark:border-white/15 flex justify-between text-sm">
+          <div className="mt-3 pt-3 border-t flex justify-between text-sm" style={{ borderColor: zindoColors.sage, color: zindoColors.ink }}>
             <span>Subtotal</span>
             <span>{formatCents(subtotal)}</span>
           </div>
         )}
         {appliedCoupon && (
-          <div className="flex justify-between text-sm text-green-700 dark:text-green-400">
+          <div className="flex justify-between text-sm" style={{ color: zindoColors.green }}>
             <span>Descuento</span>
             <span>-{formatCents(discount)}</span>
           </div>
         )}
-        <div className="mt-3 pt-3 border-t border-black/10 dark:border-white/15 flex justify-between font-semibold">
+        <div className="mt-3 pt-3 border-t flex justify-between font-semibold" style={{ borderColor: zindoColors.sage, color: zindoColors.green }}>
           <span>Total</span>
           <span>{formatCents(total)}</span>
         </div>
-        <p className="mt-3 text-xs text-black/60 dark:text-white/60">
+        <p className="mt-3 text-xs" style={{ color: zindoColors.ink, opacity: 0.6 }}>
           El costo de envío no está incluido. Te lo confirmamos por WhatsApp según tu dirección, antes de despachar tu pedido.
         </p>
       </div>
@@ -123,7 +132,7 @@ export default async function CheckoutPage({
       <form action={createOrderAction} className="space-y-4">
         {appliedCoupon && <input type="hidden" name="couponCode" value={appliedCoupon.code} />}
         <div>
-          <label className="block text-sm font-medium mb-1" htmlFor="shippingName">
+          <label className={labelClass} style={{ color: zindoColors.ink }} htmlFor="shippingName">
             Nombre completo
           </label>
           <input
@@ -131,89 +140,58 @@ export default async function CheckoutPage({
             name="shippingName"
             required
             defaultValue={session.user.name ?? ""}
-            className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+            className={inputClass}
+            style={inputStyle}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1" htmlFor="shippingPhone">
+          <label className={labelClass} style={{ color: zindoColors.ink }} htmlFor="shippingPhone">
             Teléfono
           </label>
-          <input
-            id="shippingPhone"
-            name="shippingPhone"
-            type="tel"
-            required
-            className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
-          />
+          <input id="shippingPhone" name="shippingPhone" type="tel" required className={inputClass} style={inputStyle} />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1" htmlFor="shippingAddressLine">
+          <label className={labelClass} style={{ color: zindoColors.ink }} htmlFor="shippingAddressLine">
             Dirección
           </label>
-          <input
-            id="shippingAddressLine"
-            name="shippingAddressLine"
-            required
-            className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
-          />
+          <input id="shippingAddressLine" name="shippingAddressLine" required className={inputClass} style={inputStyle} />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1" htmlFor="shippingCountry">
+          <label className={labelClass} style={{ color: zindoColors.ink }} htmlFor="shippingCountry">
             País
           </label>
-          <select
-            id="shippingCountry"
-            name="shippingCountry"
-            required
-            defaultValue="MX"
-            className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
-          >
+          <select id="shippingCountry" name="shippingCountry" required defaultValue="MX" className={inputClass} style={inputStyle}>
             <option value="MX">México</option>
             <option value="US">Estados Unidos</option>
           </select>
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="shippingCity">
+            <label className={labelClass} style={{ color: zindoColors.ink }} htmlFor="shippingCity">
               Ciudad
             </label>
-            <input
-              id="shippingCity"
-              name="shippingCity"
-              required
-              className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
-            />
+            <input id="shippingCity" name="shippingCity" required className={inputClass} style={inputStyle} />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="shippingState">
+            <label className={labelClass} style={{ color: zindoColors.ink }} htmlFor="shippingState">
               Estado
             </label>
-            <input
-              id="shippingState"
-              name="shippingState"
-              required
-              className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
-            />
+            <input id="shippingState" name="shippingState" required className={inputClass} style={inputStyle} />
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1" htmlFor="shippingZip">
+          <label className={labelClass} style={{ color: zindoColors.ink }} htmlFor="shippingZip">
             Código postal
           </label>
-          <input
-            id="shippingZip"
-            name="shippingZip"
-            required
-            className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
-          />
+          <input id="shippingZip" name="shippingZip" required className={inputClass} style={inputStyle} />
         </div>
-        <div className="rounded-lg border border-black/10 dark:border-white/15 p-4 space-y-3">
-          <label className="flex items-center gap-2 text-sm font-medium">
+        <div className="rounded-lg bg-white/70 border p-4 space-y-3" style={{ borderColor: zindoColors.sage }}>
+          <label className="flex items-center gap-2 text-sm font-medium" style={{ color: zindoColors.ink }}>
             <input type="checkbox" name="isGift" value="1" />
             🎁 Es un regalo
           </label>
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="giftMessage">
+            <label className={labelClass} style={{ color: zindoColors.ink }} htmlFor="giftMessage">
               Mensaje para incluir (opcional)
             </label>
             <textarea
@@ -221,18 +199,20 @@ export default async function CheckoutPage({
               name="giftMessage"
               rows={3}
               placeholder="Ej. ¡Feliz cumpleaños! Con cariño, ..."
-              className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+              className={inputClass}
+              style={inputStyle}
             />
           </div>
         </div>
 
         <button
           type="submit"
-          className="w-full rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-3 text-sm font-medium hover:opacity-90"
+          className="w-full rounded-md px-4 py-3 text-sm font-medium text-white hover:opacity-90"
+          style={{ backgroundColor: zindoColors.green }}
         >
           Continuar al pago
         </button>
       </form>
-    </div>
+    </ZindoContentPage>
   );
 }

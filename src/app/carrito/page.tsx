@@ -5,7 +5,8 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatCents } from "@/lib/money";
 import { updateCartItemAction, removeCartItemAction } from "@/app/carrito/actions";
-import { PlainBackLink } from "@/components/BackLink";
+import { ZindoContentPage } from "@/components/zindo/ContentPage";
+import { zindoColors } from "@/components/zindo/theme";
 
 export const metadata: Metadata = { title: "Carrito" };
 
@@ -27,14 +28,11 @@ export default async function CarritoPage() {
   const total = items.reduce((sum, item) => sum + item.productVariant.priceCents * item.quantity, 0);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <PlainBackLink href="/tienda" label="Tienda" />
-      <h1 className="text-2xl font-bold tracking-tight mt-3 mb-6">Carrito</h1>
-
+    <ZindoContentPage title="Carrito" backHref="/tienda" backLabel="Tienda">
       {items.length === 0 ? (
-        <div className="rounded-lg border border-black/10 dark:border-white/15 p-6 text-center">
-          <p className="text-black/60 dark:text-white/60">Tu carrito está vacío.</p>
-          <Link href="/tienda" className="mt-3 inline-block text-sm font-medium hover:underline">
+        <div className="rounded-lg bg-white/70 border p-6 text-center" style={{ borderColor: zindoColors.sage }}>
+          <p style={{ color: zindoColors.ink, opacity: 0.7 }}>Tu carrito está vacío.</p>
+          <Link href="/tienda" className="mt-3 inline-block text-sm font-medium hover:underline" style={{ color: zindoColors.gold }}>
             Ir a la tienda →
           </Link>
         </div>
@@ -44,15 +42,22 @@ export default async function CarritoPage() {
             {items.map((item) => (
               <li
                 key={item.id}
-                className="rounded-lg border border-black/10 dark:border-white/15 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+                className="rounded-lg bg-white/70 border p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+                style={{ borderColor: zindoColors.sage }}
               >
                 <div>
-                  <p className="text-xs text-black/50 dark:text-white/50">
+                  <p className="text-xs" style={{ color: zindoColors.ink, opacity: 0.55 }}>
                     {item.productVariant.product.brand.name}
                   </p>
-                  <p className="font-medium">{item.productVariant.product.name}</p>
-                  <p className="text-sm text-black/60 dark:text-white/60">{item.productVariant.name}</p>
-                  <p className="mt-1 text-sm">{formatCents(item.productVariant.priceCents)} c/u</p>
+                  <p className="font-medium" style={{ color: zindoColors.ink }}>
+                    {item.productVariant.product.name}
+                  </p>
+                  <p className="text-sm" style={{ color: zindoColors.ink, opacity: 0.7 }}>
+                    {item.productVariant.name}
+                  </p>
+                  <p className="mt-1 text-sm" style={{ color: zindoColors.ink, opacity: 0.85 }}>
+                    {formatCents(item.productVariant.priceCents)} c/u
+                  </p>
                 </div>
                 <div className="flex items-center gap-3">
                   <form action={updateCartItemAction} className="flex items-center gap-2">
@@ -62,25 +67,24 @@ export default async function CarritoPage() {
                       name="quantity"
                       min={0}
                       defaultValue={item.quantity}
-                      className="w-16 rounded-md border border-black/15 dark:border-white/20 bg-transparent px-2 py-1 text-sm"
+                      className="w-16 rounded-md border bg-white px-2 py-1 text-sm"
+                      style={{ borderColor: zindoColors.sage, color: zindoColors.ink }}
                     />
                     <button
                       type="submit"
-                      className="rounded-md border border-black/15 dark:border-white/20 px-3 py-1 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10"
+                      className="rounded-md border px-3 py-1 text-sm font-medium hover:bg-white transition-colors"
+                      style={{ borderColor: zindoColors.sage, color: zindoColors.green }}
                     >
                       Actualizar
                     </button>
                   </form>
                   <form action={removeCartItemAction}>
                     <input type="hidden" name="itemId" value={item.id} />
-                    <button
-                      type="submit"
-                      className="text-sm text-red-600 dark:text-red-400 hover:underline"
-                    >
+                    <button type="submit" className="text-sm text-red-600 hover:underline">
                       Quitar
                     </button>
                   </form>
-                  <span className="font-semibold w-24 text-right">
+                  <span className="font-semibold w-24 text-right" style={{ color: zindoColors.green }}>
                     {formatCents(item.productVariant.priceCents * item.quantity)}
                   </span>
                 </div>
@@ -88,19 +92,24 @@ export default async function CarritoPage() {
             ))}
           </ul>
 
-          <div className="mt-6 flex items-center justify-between border-t border-black/10 dark:border-white/15 pt-4">
-            <span className="text-lg font-semibold">Total</span>
-            <span className="text-lg font-semibold">{formatCents(total)}</span>
+          <div className="mt-6 flex items-center justify-between border-t pt-4" style={{ borderColor: zindoColors.sage }}>
+            <span className="text-lg font-semibold" style={{ color: zindoColors.green }}>
+              Total
+            </span>
+            <span className="text-lg font-semibold" style={{ color: zindoColors.green }}>
+              {formatCents(total)}
+            </span>
           </div>
 
           <Link
             href="/checkout"
-            className="mt-6 block w-full text-center rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-3 text-sm font-medium hover:opacity-90"
+            className="mt-6 block w-full text-center rounded-md px-4 py-3 text-sm font-medium text-white hover:opacity-90"
+            style={{ backgroundColor: zindoColors.green }}
           >
             Continuar al pago
           </Link>
         </>
       )}
-    </div>
+    </ZindoContentPage>
   );
 }

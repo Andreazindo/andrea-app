@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getMercadoPagoPayment } from "@/lib/payments/mercadopago";
 import { markOrderPaid } from "@/lib/orders";
+import { zindoColors } from "@/components/zindo/theme";
 
 export default async function MercadoPagoRetornoPage({
   params,
@@ -45,21 +46,27 @@ export default async function MercadoPagoRetornoPage({
   const refreshed = await prisma.order.findUnique({ where: { id: orderId } });
 
   return (
-    <div className="mx-auto max-w-lg px-4 py-16 text-center">
+    <div className="mx-auto max-w-lg px-4 py-16 text-center" style={{ fontFamily: "var(--font-zindo-body)" }}>
       {refreshed?.status === "PAID" ? (
         <>
-          <h1 className="text-2xl font-bold tracking-tight mb-2">¡Pago recibido!</h1>
-          <p className="text-black/60 dark:text-white/60 mb-6">Tu pedido está confirmado.</p>
+          <h1 className="text-2xl tracking-tight mb-2" style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}>
+            ¡Pago recibido!
+          </h1>
+          <p className="mb-6" style={{ color: zindoColors.ink, opacity: 0.7 }}>
+            Tu pedido está confirmado.
+          </p>
         </>
       ) : (
         <>
-          <h1 className="text-2xl font-bold tracking-tight mb-2">Pago en proceso</h1>
-          <p className="text-black/60 dark:text-white/60 mb-6">
+          <h1 className="text-2xl tracking-tight mb-2" style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}>
+            Pago en proceso
+          </h1>
+          <p className="mb-6" style={{ color: zindoColors.ink, opacity: 0.7 }}>
             {errorMessage ?? "Estamos confirmando tu pago con Mercado Pago."}
           </p>
         </>
       )}
-      <Link href={`/pedidos/${orderId}`} className="text-sm font-medium hover:underline">
+      <Link href={`/pedidos/${orderId}`} className="text-sm font-medium hover:underline" style={{ color: zindoColors.gold }}>
         Ver mi pedido
       </Link>
     </div>
