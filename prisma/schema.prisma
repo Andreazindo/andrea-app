@@ -388,6 +388,9 @@ model ContentBlock {
   title       String
   description String?
   value       String
+  // Solo usados por los cursos (section "cursos_online") por ahora.
+  imageUrl    String?
+  priceCents  Int?
   position    Int              @default(0)
   active      Boolean          @default(true)
   createdAt   DateTime         @default(now())

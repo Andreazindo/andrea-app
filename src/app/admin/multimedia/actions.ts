@@ -14,6 +14,9 @@ export async function addContentBlockAction(formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
   const value = String(formData.get("value") ?? "").trim();
+  const imageUrl = String(formData.get("imageUrl") ?? "").trim();
+  const priceInput = String(formData.get("price") ?? "").trim();
+  const priceCents = priceInput ? Math.round(Number(priceInput) * 100) : null;
 
   if (!section || !VALID_KINDS.includes(kind as (typeof VALID_KINDS)[number]) || !title || !value) {
     redirect("/admin/multimedia?error=item-invalido");
@@ -31,6 +34,8 @@ export async function addContentBlockAction(formData: FormData) {
       title,
       description: description || null,
       value,
+      imageUrl: imageUrl || null,
+      priceCents: priceCents !== null && !Number.isNaN(priceCents) ? priceCents : null,
       position: (maxPosition._max.position ?? -1) + 1,
     },
   });
@@ -46,6 +51,9 @@ export async function updateContentBlockAction(formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
   const value = String(formData.get("value") ?? "").trim();
+  const imageUrl = String(formData.get("imageUrl") ?? "").trim();
+  const priceInput = String(formData.get("price") ?? "").trim();
+  const priceCents = priceInput ? Math.round(Number(priceInput) * 100) : null;
   const active = formData.get("active") === "on";
 
   if (!id || !VALID_KINDS.includes(kind as (typeof VALID_KINDS)[number]) || !title || !value) {
@@ -54,7 +62,15 @@ export async function updateContentBlockAction(formData: FormData) {
 
   await prisma.contentBlock.update({
     where: { id },
-    data: { kind: kind as (typeof VALID_KINDS)[number], title, description: description || null, value, active },
+    data: {
+      kind: kind as (typeof VALID_KINDS)[number],
+      title,
+      description: description || null,
+      value,
+      imageUrl: imageUrl || null,
+      priceCents: priceCents !== null && !Number.isNaN(priceCents) ? priceCents : null,
+      active,
+    },
   });
 
   redirect("/admin/multimedia?guardado=1");

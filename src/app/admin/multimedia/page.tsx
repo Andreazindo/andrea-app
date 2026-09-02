@@ -125,15 +125,47 @@ export default async function MultimediaAdminPage({
                   </div>
                   <div>
                     <label className={labelClass} htmlFor={`description-${item.id}`}>
-                      Descripción (opcional, solo para tipo Enlace)
+                      Descripción {section.key === "cursos_online" ? "" : "(opcional, solo para tipo Enlace)"}
                     </label>
-                    <input
+                    <textarea
                       id={`description-${item.id}`}
                       name="description"
+                      rows={section.key === "cursos_online" ? 3 : 1}
                       defaultValue={item.description ?? ""}
                       className={inputClass}
                     />
                   </div>
+                  {section.key === "cursos_online" && (
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className={labelClass} htmlFor={`imageUrl-${item.id}`}>
+                          Imagen (URL)
+                        </label>
+                        <input
+                          id={`imageUrl-${item.id}`}
+                          name="imageUrl"
+                          placeholder="https://..."
+                          defaultValue={item.imageUrl ?? ""}
+                          className={inputClass}
+                        />
+                      </div>
+                      <div>
+                        <label className={labelClass} htmlFor={`price-${item.id}`}>
+                          Precio (MXN)
+                        </label>
+                        <input
+                          id={`price-${item.id}`}
+                          name="price"
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          placeholder="990"
+                          defaultValue={item.priceCents != null ? (item.priceCents / 100).toString() : ""}
+                          className={inputClass}
+                        />
+                      </div>
+                    </div>
+                  )}
                   <div className="flex items-center justify-between">
                     <label className="flex items-center gap-2 text-sm">
                       <input type="checkbox" name="active" defaultChecked={item.active} />
@@ -190,10 +222,44 @@ export default async function MultimediaAdminPage({
                 </div>
                 <div>
                   <label className={labelClass} htmlFor={`new-description-${section.key}`}>
-                    Descripción (opcional, solo para tipo Enlace)
+                    Descripción {section.key === "cursos_online" ? "" : "(opcional, solo para tipo Enlace)"}
                   </label>
-                  <input id={`new-description-${section.key}`} name="description" className={inputClass} />
+                  <textarea
+                    id={`new-description-${section.key}`}
+                    name="description"
+                    rows={section.key === "cursos_online" ? 3 : 1}
+                    className={inputClass}
+                  />
                 </div>
+                {section.key === "cursos_online" && (
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className={labelClass} htmlFor={`new-imageUrl-${section.key}`}>
+                        Imagen (URL)
+                      </label>
+                      <input
+                        id={`new-imageUrl-${section.key}`}
+                        name="imageUrl"
+                        placeholder="https://..."
+                        className={inputClass}
+                      />
+                    </div>
+                    <div>
+                      <label className={labelClass} htmlFor={`new-price-${section.key}`}>
+                        Precio (MXN)
+                      </label>
+                      <input
+                        id={`new-price-${section.key}`}
+                        name="price"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        placeholder="990"
+                        className={inputClass}
+                      />
+                    </div>
+                  </div>
+                )}
                 <button type="submit" className={secondaryButtonClass}>
                   Agregar
                 </button>
