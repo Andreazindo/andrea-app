@@ -147,7 +147,6 @@ export function HeaderNav({
                 <form key={item.key} action={logoutAction} className={notLast ? "border-b" : ""} style={rowStyle}>
                   <button
                     type="submit"
-                    onClick={close}
                     className="block w-full whitespace-nowrap px-4 py-3 text-left text-sm hover:bg-black/5 transition-colors"
                     style={{ color: zindoColors.green }}
                   >
