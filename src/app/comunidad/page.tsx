@@ -64,8 +64,8 @@ export default async function ComunidadPage({
             Publicaciones
           </h2>
           <p className="mt-2 text-sm max-w-md mx-auto" style={{ color: zindoColors.ink, opacity: 0.65 }}>
-            Comparte tu proceso, una pregunta o lo que quieras platicar con la comunidad. Cada publicación nueva la
-            revisamos antes de que se vea (puede tardar un poco); los comentarios sí se ven de inmediato.
+            Comparte tu proceso, una pregunta o lo que quieras platicar con la comunidad. Le damos un vistazo rápido
+            a cada publicación antes de que aparezca — un poco de paciencia 💛 — y los comentarios se ven al instante.
           </p>
         </div>
 
