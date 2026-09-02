@@ -151,6 +151,9 @@ model User {
   orders   Order[]
   payments Payment[] @relation("RecordedByAdmin")
   reviews  Review[]
+
+  communityPosts    CommunityPost[]
+  communityComments CommunityComment[]
 }
 
 // ---------- Reseñas ----------
@@ -167,6 +170,37 @@ model Review {
   createdAt DateTime @default(now())
 
   @@unique([productId, userId])
+}
+
+// ---------- Comunidad ----------
+
+// Feed simple tipo foro: publicaciones necesitan aprobación (igual que las
+// reseñas) antes de verse públicas; los comentarios se ven de inmediato y
+// se moderan borrándolos desde el admin si hace falta.
+model CommunityPost {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  content   String
+  imageUrl  String?
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  comments CommunityComment[]
+
+  @@index([approved, createdAt])
+}
+
+model CommunityComment {
+  id        String        @id @default(cuid())
+  postId    String
+  post      CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User          @relation(fields: [userId], references: [id])
+  content   String
+  createdAt DateTime      @default(now())
+
+  @@index([postId])
 }
 
 // ---------- Cupones ----------
