@@ -56,12 +56,18 @@ export default async function ComunidadPage({
       </div>
 
       <div className="max-w-xl mx-auto w-full space-y-6">
-        <h2
-          className="text-lg uppercase tracking-[0.1em] text-center"
-          style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
-        >
-          Publicaciones
-        </h2>
+        <div className="text-center">
+          <h2
+            className="text-lg uppercase tracking-[0.1em]"
+            style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
+          >
+            Publicaciones
+          </h2>
+          <p className="mt-2 text-sm max-w-md mx-auto" style={{ color: zindoColors.ink, opacity: 0.65 }}>
+            Comparte tu proceso, una pregunta o lo que quieras platicar con la comunidad. Cada publicación nueva la
+            revisamos antes de que se vea (puede tardar un poco); los comentarios sí se ven de inmediato.
+          </p>
+        </div>
 
         {publicacionEnviada && (
           <p className="text-sm rounded-md px-3 py-2" style={{ backgroundColor: "#0D3B3620", color: zindoColors.green }}>
