@@ -17,7 +17,9 @@ export const metadata: Metadata = {
 
 async function logoutAction() {
   "use server";
-  await signOut({ redirectTo: "/" });
+  const session = await auth();
+  const isAdmin = session?.user?.role === "ADMIN" || session?.user?.role === "OWNER";
+  await signOut({ redirectTo: isAdmin ? "/admin/login" : "/" });
 }
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
