@@ -117,8 +117,16 @@ export default async function AdminDashboardPage() {
     <div className="mx-auto max-w-3xl px-4 py-10 space-y-10">
       <div>
         <PlainBackLink href="/" label="Inicio" />
-        <div className="mt-3">
+        <div className="mt-3 flex items-start justify-between gap-4">
           <AdminPageHeader title="Dashboard" subtitle="Resumen del negocio, al día." />
+          <a
+            href="https://vercel.com/andreazindo/andrea-app/analytics"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-none rounded-md border border-[#9CBA9D]/50 bg-white px-3 py-1.5 text-xs font-medium text-[#0D3B36] hover:border-[#C9A15B] hover:text-[#C9A15B]"
+          >
+            Ver visitas y tráfico ↗
+          </a>
         </div>
       </div>
 
