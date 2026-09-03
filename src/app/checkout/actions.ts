@@ -122,5 +122,5 @@ export async function createOrderAction(formData: FormData) {
 
   await prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
 
-  redirect(`/pedidos/${order.id}`);
+  redirect(`/pedidos/${order.id}?nuevo=1`);
 }

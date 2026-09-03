@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Analytics } from "@vercel/analytics/next";
 import { auth, signOut } from "@/lib/auth";
 import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
 import { HeaderNav } from "@/components/zindo/HeaderNav";
@@ -66,6 +67,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             </Link>
           </p>
         </footer>
+        <Analytics />
       </body>
     </html>
   );

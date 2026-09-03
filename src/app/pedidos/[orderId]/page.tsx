@@ -9,6 +9,7 @@ import { isPaypalConfigured } from "@/lib/payments/paypal";
 import { startMercadoPagoAction, startPaypalAction } from "./actions";
 import { ZindoContentPage } from "@/components/zindo/ContentPage";
 import { zindoColors } from "@/components/zindo/theme";
+import { OrderCreatedTracker } from "@/components/zindo/OrderCreatedTracker";
 
 export const metadata: Metadata = { title: "Mi pedido" };
 
@@ -23,10 +24,13 @@ const STATUS_LABELS: Record<string, string> = {
 
 export default async function PedidoPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ orderId: string }>;
+  searchParams: Promise<{ nuevo?: string }>;
 }) {
   const { orderId } = await params;
+  const { nuevo } = await searchParams;
   const session = await auth();
   if (!session?.user?.id) redirect(`/login?callbackUrl=/pedidos/${orderId}`);
 
@@ -43,6 +47,13 @@ export default async function PedidoPage({
 
   return (
     <ZindoContentPage title={`Pedido #${order.id.slice(-8).toUpperCase()}`} backHref="/tienda" backLabel="Tienda">
+      {nuevo === "1" && isOwner && (
+        <OrderCreatedTracker
+          orderId={order.id}
+          totalCents={order.totalCents}
+          brandCodes={[...new Set(order.items.map((item) => item.brandCode))]}
+        />
+      )}
       {isConfirmed && (
         <div className="mb-2 rounded-lg bg-green-500/10 p-4">
           <p className="font-semibold text-green-700">¡Pedido confirmado! 🌿</p>
