@@ -35,7 +35,7 @@ export async function startMercadoPagoAction(formData: FormData) {
     appUrl,
   });
 
-  const redirectUrl = preference.sandbox_init_point ?? preference.init_point;
+  const redirectUrl = preference.init_point;
   if (!redirectUrl) throw new Error("Mercado Pago no devolvió una URL de pago");
 
   redirect(redirectUrl);
