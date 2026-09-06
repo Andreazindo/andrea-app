@@ -67,6 +67,9 @@ model Product {
   type        ProductType @default(SIMPLE)
   active      Boolean     @default(true)
 
+  // Orden de aparición dentro de su categoría en la tienda (menor = primero). Empate se rompe por nombre.
+  position Int @default(0)
+
   // Steril Mil (por ahora) no se vende en el sistema: el catálogo solo enlaza a Mercado Libre.
   isExternal  Boolean @default(false)
   externalUrl String?

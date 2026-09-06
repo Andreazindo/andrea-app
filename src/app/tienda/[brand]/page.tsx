@@ -19,7 +19,7 @@ const getBrandWithCatalog = cache(async (brandSlug: string) => {
         include: {
           products: {
             where: { active: true },
-            orderBy: { name: "asc" },
+            orderBy: [{ position: "asc" }, { name: "asc" }],
             include: {
               variants: { where: { active: true } },
               images: { orderBy: { position: "asc" } },

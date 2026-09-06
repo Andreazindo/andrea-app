@@ -16,7 +16,7 @@ const getCategory = cache(async (slug: string) => {
       brand: { select: { slug: true } },
       products: {
         where: { active: true },
-        orderBy: { name: "asc" },
+        orderBy: [{ position: "asc" }, { name: "asc" }],
         include: {
           variants: { where: { active: true } },
           images: { orderBy: { position: "asc" } },
