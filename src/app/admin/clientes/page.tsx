@@ -18,7 +18,7 @@ import {
 export const metadata: Metadata = { title: "Clientes (Admin)" };
 
 const ERROR_MESSAGES: Record<string, string> = {
-  "datos-invalidos": "Completa nombre y correo.",
+  "datos-invalidos": "Completa nombre, apellido, teléfono y correo.",
   "correo-en-uso": "Ese correo ya está en uso por otra cuenta.",
 };
 
@@ -77,11 +77,19 @@ export default async function ClientesAdminPage({
       <details className={sectionClass}>
         <summary className="text-sm font-semibold cursor-pointer text-[#0D3B36]">+ Nuevo cliente</summary>
         <form action={createCustomerAction} className="space-y-3 mt-4">
-          <div>
-            <label className={labelClass} htmlFor="new-name">
-              Nombre
-            </label>
-            <input id="new-name" name="name" required className={inputClass} />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className={labelClass} htmlFor="new-firstName">
+                Nombre
+              </label>
+              <input id="new-firstName" name="firstName" required className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="new-lastName">
+                Apellido
+              </label>
+              <input id="new-lastName" name="lastName" required className={inputClass} />
+            </div>
           </div>
           <div>
             <label className={labelClass} htmlFor="new-email">
@@ -93,7 +101,7 @@ export default async function ClientesAdminPage({
             <label className={labelClass} htmlFor="new-phone">
               Teléfono
             </label>
-            <input id="new-phone" name="phone" className={inputClass} />
+            <input id="new-phone" name="phone" required className={inputClass} />
           </div>
           <button type="submit" className={adminButtonPrimaryClass}>
             Crear cliente

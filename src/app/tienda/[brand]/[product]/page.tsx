@@ -9,8 +9,10 @@ import { addToCartAction } from "@/app/carrito/actions";
 import { submitReviewAction } from "./review-actions";
 import { ProductGallery } from "@/components/zindo/ProductGallery";
 import { LikeButton } from "@/components/zindo/LikeButton";
+import { ZindoLockedFiles } from "@/components/zindo/LockedFiles";
 import { zindoFontVars, zindoColors } from "@/components/zindo/theme";
 import { ZindoBackLink } from "@/components/BackLink";
+import { userHasPurchased } from "@/lib/purchases";
 
 type Params = { brand: string; product: string };
 
@@ -29,6 +31,8 @@ const getProduct = cache(async (brandSlug: string, productSlug: string) => {
         },
       },
       images: { orderBy: { position: "asc" } },
+      files: { orderBy: { position: "asc" } },
+      requiredProduct: { include: { brand: true } },
     },
   });
   if (!product || !product.active) return null;
@@ -93,6 +97,12 @@ export default async function ProductPage({
       availableStock: await getAvailableStock(variant),
     }))
   );
+
+  const unlockTargetId = product.requiredProduct?.id ?? product.id;
+  const unlocked =
+    product.files.length > 0 && session?.user?.id
+      ? await userHasPurchased(session.user.id, unlockTargetId)
+      : false;
 
   const path = `/tienda/${brandSlug}/${productSlug}`;
 
@@ -217,6 +227,18 @@ export default async function ProductPage({
             })}
           </div>
             )}
+
+            <ZindoLockedFiles
+              files={product.files}
+              unlocked={unlocked}
+              loggedIn={Boolean(session?.user?.id)}
+              requiredProductName={product.requiredProduct?.name ?? product.name}
+              buyHref={
+                product.requiredProduct
+                  ? `/tienda/${product.requiredProduct.brand.slug}/${product.requiredProduct.slug}`
+                  : undefined
+              }
+            />
           </div>
         </div>
 

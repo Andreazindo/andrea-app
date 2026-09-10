@@ -2,7 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
-import { updateProductAction, updateVariantAction, addVariantAction } from "./actions";
+import {
+  updateProductAction,
+  updateVariantAction,
+  addVariantAction,
+  addProductFileAction,
+  updateProductFileAction,
+  deleteProductFileAction,
+} from "./actions";
 import { PlainBackLink } from "@/components/BackLink";
 import {
   AdminPageHeader,
@@ -23,6 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 const ERROR_MESSAGES: Record<string, string> = {
   "falta-nombre": "El nombre es obligatorio.",
   "variante-invalida": "Revisa el nombre y el precio de la variante (debe ser mayor a 0).",
+  "archivo-invalido": "El título y el enlace del archivo son obligatorios.",
 };
 
 export default async function EditarProductoPage({
@@ -41,11 +49,18 @@ export default async function EditarProductoPage({
     include: {
       variants: { orderBy: { name: "asc" } },
       images: { orderBy: { position: "asc" } },
+      files: { orderBy: { position: "asc" } },
     },
   });
   if (!product) notFound();
 
   const categories = await prisma.category.findMany({
+    include: { brand: true },
+    orderBy: [{ brand: { name: "asc" } }, { name: "asc" }],
+  });
+
+  const otherProducts = await prisma.product.findMany({
+    where: { id: { not: id } },
     include: { brand: true },
     orderBy: [{ brand: { name: "asc" } }, { name: "asc" }],
   });
@@ -112,6 +127,28 @@ export default async function EditarProductoPage({
             <input type="checkbox" name="active" defaultChecked={product.active} />
             Producto activo (visible en la tienda)
           </label>
+          <div>
+            <label className={labelClass} htmlFor="requiredProductId">
+              Requiere haber comprado (para desbloquear sus archivos)
+            </label>
+            <select
+              id="requiredProductId"
+              name="requiredProductId"
+              defaultValue={product.requiredProductId ?? ""}
+              className={inputClass}
+            >
+              <option value="">Este mismo producto</option>
+              {otherProducts.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.brand.name} — {p.name}
+                </option>
+              ))}
+            </select>
+            <p className="mt-1 text-xs text-[#1A1A1A]/50">
+              Solo aplica si este producto tiene archivos con candado abajo. Úsalo cuando el contenido se desbloquea
+              comprando OTRO producto (ej. las rutinas en video de un kit).
+            </p>
+          </div>
           <button type="submit" className={primaryButtonClass}>
             Guardar
           </button>
@@ -218,6 +255,86 @@ export default async function EditarProductoPage({
             </div>
             <button type="submit" className={secondaryButtonClass}>
               Agregar variante
+            </button>
+          </form>
+        </details>
+      </section>
+
+      <section className="space-y-4">
+        <AdminSectionTitle>Archivos con candado</AdminSectionTitle>
+        <p className="text-xs text-[#1A1A1A]/50">
+          Enlaces (PDF, video de YouTube/Drive, etc.) visibles solo para quienes ya compraron el producto elegido
+          arriba en &quot;Requiere haber comprado&quot;. Aparecen en un &quot;Ver más&quot; en la página del producto.
+        </p>
+        {product.files.map((file) => (
+          <div key={file.id} className={sectionClass + " space-y-3"}>
+            <form action={updateProductFileAction} className="space-y-3">
+              <input type="hidden" name="fileId" value={file.id} />
+              <input type="hidden" name="productId" value={product.id} />
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className={labelClass} htmlFor={`file-label-${file.id}`}>
+                    Título
+                  </label>
+                  <input
+                    id={`file-label-${file.id}`}
+                    name="label"
+                    defaultValue={file.label}
+                    required
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label className={labelClass} htmlFor={`file-url-${file.id}`}>
+                    Enlace
+                  </label>
+                  <input
+                    id={`file-url-${file.id}`}
+                    name="url"
+                    defaultValue={file.url}
+                    required
+                    className={inputClass}
+                  />
+                </div>
+              </div>
+              <button type="submit" className={secondaryButtonClass}>
+                Guardar
+              </button>
+            </form>
+            <form action={deleteProductFileAction} className="flex justify-end">
+              <input type="hidden" name="fileId" value={file.id} />
+              <input type="hidden" name="productId" value={product.id} />
+              <button type="submit" className="text-xs text-red-600 hover:underline">
+                Borrar &quot;{file.label}&quot;
+              </button>
+            </form>
+          </div>
+        ))}
+
+        <details className={sectionClass}>
+          <summary className="text-sm font-semibold cursor-pointer text-[#0D3B36]">+ Agregar archivo</summary>
+          <form action={addProductFileAction} className="mt-4 space-y-4">
+            <input type="hidden" name="productId" value={product.id} />
+            <div>
+              <label className={labelClass} htmlFor="new-file-label">
+                Título
+              </label>
+              <input id="new-file-label" name="label" placeholder="Ej. Rutina 1 — Calentamiento" required className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="new-file-url">
+                Enlace
+              </label>
+              <input
+                id="new-file-url"
+                name="url"
+                placeholder="https://..."
+                required
+                className={inputClass}
+              />
+            </div>
+            <button type="submit" className={secondaryButtonClass}>
+              Agregar archivo
             </button>
           </form>
         </details>

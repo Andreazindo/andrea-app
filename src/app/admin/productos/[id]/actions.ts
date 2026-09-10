@@ -12,6 +12,7 @@ export async function updateProductAction(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
   const categoryId = String(formData.get("categoryId") ?? "").trim();
+  const requiredProductId = String(formData.get("requiredProductId") ?? "").trim();
   const active = formData.get("active") === "on";
 
   if (!name) redirect(`/admin/productos/${id}?error=falta-nombre`);
@@ -24,11 +25,55 @@ export async function updateProductAction(formData: FormData) {
       name,
       description: description || null,
       active,
+      requiredProductId: requiredProductId || null,
       ...(category ? { categoryId: category.id, brandId: category.brandId } : {}),
     },
   });
 
   redirect(`/admin/productos/${id}?guardado=1`);
+}
+
+export async function addProductFileAction(formData: FormData) {
+  await requireAdmin("/admin/productos");
+
+  const productId = String(formData.get("productId") ?? "");
+  const label = String(formData.get("label") ?? "").trim();
+  const url = String(formData.get("url") ?? "").trim();
+
+  if (!label || !url) redirect(`/admin/productos/${productId}?error=archivo-invalido`);
+
+  const maxPosition = await prisma.productFile.aggregate({ where: { productId }, _max: { position: true } });
+  await prisma.productFile.create({
+    data: { productId, label, url, position: (maxPosition._max.position ?? -1) + 1 },
+  });
+
+  redirect(`/admin/productos/${productId}?guardado=1`);
+}
+
+export async function updateProductFileAction(formData: FormData) {
+  await requireAdmin("/admin/productos");
+
+  const id = String(formData.get("fileId") ?? "");
+  const productId = String(formData.get("productId") ?? "");
+  const label = String(formData.get("label") ?? "").trim();
+  const url = String(formData.get("url") ?? "").trim();
+
+  if (!label || !url) redirect(`/admin/productos/${productId}?error=archivo-invalido`);
+
+  await prisma.productFile.update({ where: { id }, data: { label, url } });
+
+  redirect(`/admin/productos/${productId}?guardado=1`);
+}
+
+export async function deleteProductFileAction(formData: FormData) {
+  await requireAdmin("/admin/productos");
+
+  const id = String(formData.get("fileId") ?? "");
+  const productId = String(formData.get("productId") ?? "");
+
+  await prisma.productFile.delete({ where: { id } });
+
+  redirect(`/admin/productos/${productId}?guardado=1`);
 }
 
 export async function updateVariantAction(formData: FormData) {

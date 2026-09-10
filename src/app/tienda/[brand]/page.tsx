@@ -23,6 +23,7 @@ const getBrandWithCatalog = cache(async (brandSlug: string) => {
             include: {
               variants: { where: { active: true } },
               images: { orderBy: { position: "asc" } },
+              files: { select: { id: true } },
             },
           },
         },
@@ -102,6 +103,8 @@ export default async function BrandPage({
                     ? "Ver en Mercado Libre"
                     : minPrice !== null
                     ? `Desde ${formatCents(minPrice)}`
+                    : product.files.length > 0
+                    ? "Gratis"
                     : "Consultar precio";
                   return (
                     <li key={product.id}>

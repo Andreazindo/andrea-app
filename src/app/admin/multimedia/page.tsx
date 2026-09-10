@@ -20,6 +20,7 @@ const SECTIONS = [
   { key: "webinars", label: "Webinars", valueHelp: "ID de YouTube o de Google Drive" },
   { key: "testimonios", label: "Testimonios", valueHelp: "ID de YouTube o de Google Drive" },
   { key: "entrevistas", label: "Entrevistas", valueHelp: "ID de YouTube o de Google Drive" },
+  { key: "libreria_detox", label: "Librería · Detox Emocional", valueHelp: "ID de YouTube/Drive o enlace" },
   { key: "libreria_21dias", label: "Librería · 21 Días de Gratitud", valueHelp: "URL de la imagen (ej. /zindo/21-dias-gratitud/01.webp)" },
   { key: "libreria_meditaciones", label: "Librería · Meditaciones", valueHelp: "ID de YouTube o de Google Drive" },
   { key: "libreria_mas_recursos", label: "Librería · Más Recursos", valueHelp: "ID de YouTube/Drive o enlace" },

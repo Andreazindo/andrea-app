@@ -77,14 +77,36 @@ model Product {
   // Contador público de "me gusta" (sin login, tipo IG) — cada visitante lo marca desde su navegador.
   likesCount Int @default(0)
 
+  // Producto cuya compra desbloquea los archivos de este producto (ej. "Rutinas Kit Shine" se
+  // desbloquea al comprar "Kit Shine"). Si es null, los archivos se desbloquean comprando este
+  // mismo producto.
+  requiredProductId String?
+  requiredProduct    Product?  @relation("ProductUnlock", fields: [requiredProductId], references: [id])
+  unlockedBy         Product[] @relation("ProductUnlock")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   variants ProductVariant[]
   images   ProductImage[]
+  files    ProductFile[]
   reviews  Review[]
 
   @@unique([brandId, slug])
+}
+
+// Archivos/enlaces con candado (PDFs, videos) — visibles solo para quienes compraron el producto
+// que los desbloquea (ver Product.requiredProductId).
+model ProductFile {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  label     String
+  url       String
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([productId, position])
 }
 
 // Carrete de fotos por producto (mínimo 3 recomendadas para el carrusel de la tienda).

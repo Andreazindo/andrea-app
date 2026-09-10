@@ -9,13 +9,16 @@ import { prisma } from "@/lib/prisma";
 export async function createCustomerAction(formData: FormData) {
   await requireAdmin("/admin/clientes");
 
-  const name = String(formData.get("name") ?? "").trim();
+  const firstName = String(formData.get("firstName") ?? "").trim();
+  const lastName = String(formData.get("lastName") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const phone = String(formData.get("phone") ?? "").trim();
 
-  if (!name || !email) {
+  if (!firstName || !lastName || !email || !phone) {
     redirect("/admin/clientes?error=datos-invalidos");
   }
+
+  const name = `${firstName} ${lastName}`;
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
