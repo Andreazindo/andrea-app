@@ -6,6 +6,8 @@ export const EDITABLE_CONTENT_KEYS = [
   "home_cta_label",
   "tienda_tagline",
   "evolucion_tagline",
+  "andrea_bio_photo",
+  "andrea_bio",
   "libreria_tagline",
   "contacto_tagline",
   "contacto_mail",

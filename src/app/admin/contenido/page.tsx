@@ -109,6 +109,37 @@ export default async function ContenidoAdminPage({
         </details>
 
         <details className={sectionClass}>
+          <summary className={summaryClass}>Sobre Andrea (Evolución Personal)</summary>
+          <div className="mt-4 space-y-4">
+            <div>
+              <label className={labelClass} htmlFor="andrea_bio_photo">
+                Foto (URL)
+              </label>
+              <input
+                id="andrea_bio_photo"
+                name="andrea_bio_photo"
+                placeholder="https://..."
+                defaultValue={content.andrea_bio_photo}
+                className={inputClass}
+              />
+              <p className="mt-1 text-xs text-[#1A1A1A]/50">Si lo dejas vacío, se usa la foto actual por defecto.</p>
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="andrea_bio">
+                Biografía (un párrafo por línea, deja una línea en blanco entre párrafos)
+              </label>
+              <textarea
+                id="andrea_bio"
+                name="andrea_bio"
+                rows={14}
+                defaultValue={content.andrea_bio}
+                className={inputClass}
+              />
+            </div>
+          </div>
+        </details>
+
+        <details className={sectionClass}>
           <summary className={summaryClass}>Librería Gratuita</summary>
           <div className="mt-4">
             <label className={labelClass} htmlFor="libreria_tagline">
