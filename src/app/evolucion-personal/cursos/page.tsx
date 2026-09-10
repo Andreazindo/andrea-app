@@ -32,7 +32,7 @@ export default async function CursosOnlinePage() {
                   <img src={curso.imageUrl} alt={curso.title} className="h-full w-full object-cover" loading="lazy" />
                 </div>
               )}
-              <div className="p-5">
+              <div className="p-5 flex flex-col gap-2">
                 <h2
                   className="text-lg uppercase tracking-[0.1em]"
                   style={{ fontFamily: "var(--font-zindo-heading)", color: zindoColors.green }}
@@ -40,20 +40,21 @@ export default async function CursosOnlinePage() {
                   {curso.title}
                 </h2>
                 {curso.description && (
-                  <p className="mt-2 text-sm line-clamp-2" style={{ color: zindoColors.ink, opacity: 0.75 }}>
+                  <p className="text-sm line-clamp-2" style={{ color: zindoColors.ink, opacity: 0.75 }}>
                     {curso.description}
                   </p>
                 )}
-                <div className="mt-3 flex items-center justify-between">
-                  {curso.priceCents != null && (
-                    <span className="text-sm font-semibold" style={{ color: zindoColors.gold }}>
-                      {formatCents(curso.priceCents)}
-                    </span>
-                  )}
-                  <span className="text-sm font-medium" style={{ color: zindoColors.gold }}>
-                    Ver más →
+                {curso.priceCents != null && (
+                  <span className="text-sm font-semibold" style={{ color: zindoColors.gold }}>
+                    {formatCents(curso.priceCents)}
                   </span>
-                </div>
+                )}
+                <span
+                  className="mt-1 block text-center rounded-md px-4 py-2 text-sm font-medium text-white"
+                  style={{ backgroundColor: zindoColors.green }}
+                >
+                  Ver más
+                </span>
               </div>
             </Link>
           </li>

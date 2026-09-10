@@ -54,11 +54,6 @@ export default async function ContactoPage() {
           icon: <WhatsappIcon />,
         }
       : { name: "WhatsApp", description: "Muy pronto encontrarás aquí nuestro número de WhatsApp.", icon: <WhatsappIcon /> },
-    ...redesSociales.map((red): Canal => ({
-      name: red.name,
-      href: red.href,
-      icon: iconForPlatform(red.name),
-    })),
   ];
 
   return (
@@ -103,6 +98,29 @@ export default async function ContactoPage() {
             ))}
           </ul>
         </section>
+
+        {redesSociales.length > 0 && (
+          <section>
+            <ul className="flex flex-wrap justify-center gap-3 max-w-xl mx-auto">
+              {redesSociales.map((red) => (
+                <li key={red.name}>
+                  <a
+                    href={red.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="zindo-fade-in flex items-center gap-2 rounded-full bg-white/70 border px-4 py-2 transition-all duration-300 ease-out hover:border-[#C9A15B] hover:shadow-md"
+                    style={{ borderColor: zindoColors.sage, fontFamily: "var(--font-zindo-body)" }}
+                  >
+                    <span className="h-5 w-5 flex-none">{iconForPlatform(red.name)}</span>
+                    <span className="text-sm" style={{ color: zindoColors.green }}>
+                      {red.name}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {puntosDeVenta.length > 0 && (
           <section>

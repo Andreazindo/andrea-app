@@ -44,8 +44,6 @@ export default async function HomePage() {
             style={{
               fontFamily: "var(--font-zindo-body)",
               color: zindoColors.ink,
-              textAlign: "justify",
-              textAlignLast: "justify",
               textWrap: "balance",
             }}
           >

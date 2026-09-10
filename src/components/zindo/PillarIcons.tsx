@@ -12,14 +12,12 @@ const iconProps = {
 export function EvolucionIcon() {
   return (
     <svg {...iconProps}>
-      <g transform="translate(32,50)">
-        <path id="pillarPetal" d="M0,0 C -9,-7 -10,-24 0,-33 C 10,-24 9,-7 0,0 Z" />
-        <use href="#pillarPetal" transform="rotate(35)" />
-        <use href="#pillarPetal" transform="rotate(-35)" />
-        <use href="#pillarPetal" transform="rotate(64)" />
-        <use href="#pillarPetal" transform="rotate(-64)" />
-      </g>
-      <path d="M14,52 C20,56 44,56 50,52" />
+      <path d="M24,46 C15,46 10,38 12,30 C7,26 9,17 18,16 C19,10 27,7 32,11 C37,7 45,10 46,16 C55,17 57,26 52,30 C54,38 49,46 40,46 C38,50 34,52 32,49 C30,52 26,50 24,46 Z" />
+      <path d="M32,13 L32,47" />
+      <path d="M20,22 C25,23 25,30 20,32" />
+      <path d="M44,22 C39,23 39,30 44,32" />
+      <path d="M23,36 C27,34 29,37 27,41" />
+      <path d="M41,36 C37,34 35,37 37,41" />
     </svg>
   );
 }
