@@ -7,15 +7,18 @@ import { prisma } from "@/lib/prisma";
 import { signIn } from "@/lib/auth";
 
 export async function registerAction(formData: FormData) {
-  const name = String(formData.get("name") ?? "").trim();
+  const firstName = String(formData.get("firstName") ?? "").trim();
+  const lastName = String(formData.get("lastName") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const phone = String(formData.get("phone") ?? "").trim();
   const password = String(formData.get("password") ?? "");
   const callbackUrl = String(formData.get("callbackUrl") ?? "/tienda");
 
-  if (!name || !email || password.length < 8) {
+  if (!firstName || !lastName || !email || !phone || password.length < 8) {
     redirect(`/registro?error=datos-invalidos&callbackUrl=${encodeURIComponent(callbackUrl)}`);
   }
+
+  const name = `${firstName} ${lastName}`;
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {

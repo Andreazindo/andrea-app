@@ -7,7 +7,8 @@ import { zindoColors } from "@/components/zindo/theme";
 export const metadata: Metadata = { title: "Crear cuenta" };
 
 const ERROR_MESSAGES: Record<string, string> = {
-  "datos-invalidos": "Revisa tus datos: el nombre, correo y una contraseña de al menos 8 caracteres son obligatorios.",
+  "datos-invalidos":
+    "Revisa tus datos: nombre, apellido, teléfono, correo y una contraseña de al menos 8 caracteres son obligatorios.",
   "correo-en-uso": "Ya existe una cuenta con ese correo. Intenta iniciar sesión.",
 };
 
@@ -33,11 +34,19 @@ export default async function RegistroPage({
 
         <form action={registerAction} className="space-y-4">
           <input type="hidden" name="callbackUrl" value={callbackUrl ?? "/tienda"} />
-          <div>
-            <label className={labelClass} style={{ color: zindoColors.ink }} htmlFor="name">
-              Nombre
-            </label>
-            <input id="name" name="name" type="text" required className={inputClass} style={inputStyle} />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className={labelClass} style={{ color: zindoColors.ink }} htmlFor="firstName">
+                Nombre
+              </label>
+              <input id="firstName" name="firstName" type="text" required className={inputClass} style={inputStyle} />
+            </div>
+            <div>
+              <label className={labelClass} style={{ color: zindoColors.ink }} htmlFor="lastName">
+                Apellido
+              </label>
+              <input id="lastName" name="lastName" type="text" required className={inputClass} style={inputStyle} />
+            </div>
           </div>
           <div>
             <label className={labelClass} style={{ color: zindoColors.ink }} htmlFor="email">
@@ -47,9 +56,9 @@ export default async function RegistroPage({
           </div>
           <div>
             <label className={labelClass} style={{ color: zindoColors.ink }} htmlFor="phone">
-              Teléfono (opcional)
+              Teléfono
             </label>
-            <input id="phone" name="phone" type="tel" className={inputClass} style={inputStyle} />
+            <input id="phone" name="phone" type="tel" required className={inputClass} style={inputStyle} />
           </div>
           <div>
             <label className={labelClass} style={{ color: zindoColors.ink }} htmlFor="password">
