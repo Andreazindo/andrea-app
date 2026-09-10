@@ -9,11 +9,19 @@ import { getSiteContent } from "@/lib/site-content";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://zindo.com.mx"),
   title: {
     default: "ZINDO",
     template: "%s · ZINDO",
   },
   description: "Un espacio de bienestar y de desarrollo personal hacia una forma consciente de vivir.",
+  openGraph: {
+    title: "ZINDO",
+    description: "Un espacio de bienestar y de desarrollo personal hacia una forma consciente de vivir.",
+    siteName: "ZINDO",
+    locale: "es_MX",
+    type: "website",
+  },
 };
 
 async function logoutAction() {
