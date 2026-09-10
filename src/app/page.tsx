@@ -40,8 +40,14 @@ export default async function HomePage() {
             &ldquo;{content.home_tagline}&rdquo;
           </p>
           <p
-            className="mt-4 max-w-xl mx-auto text-sm sm:text-base"
-            style={{ fontFamily: "var(--font-zindo-body)", color: zindoColors.ink }}
+            className="mt-4 max-w-xs mx-auto text-sm sm:text-base"
+            style={{
+              fontFamily: "var(--font-zindo-body)",
+              color: zindoColors.ink,
+              textAlign: "justify",
+              textAlignLast: "justify",
+              textWrap: "balance",
+            }}
           >
             {content.home_description}
           </p>

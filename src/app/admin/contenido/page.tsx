@@ -73,6 +73,10 @@ export default async function ContenidoAdminPage({
                 defaultValue={content.home_description}
                 className={inputClass}
               />
+              <p className="mt-1 text-xs text-[#1A1A1A]/50">
+                Se muestra siempre en dos renglones justificados y balanceados automáticamente — escríbela como un solo
+                párrafo, sin saltos de línea manuales (no tienen efecto).
+              </p>
             </div>
             <div>
               <label className={labelClass} htmlFor="home_cta_label">
