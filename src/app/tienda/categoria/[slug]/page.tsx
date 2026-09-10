@@ -75,7 +75,7 @@ export default async function TiendaCategoriaPage({
               ? "Ver en Mercado Libre"
               : minPrice !== null
               ? `Desde ${formatCents(minPrice)}`
-              : product.files.length > 0
+              : product.files.length > 0 || product.requiredProductId
               ? "Gratis"
               : "Consultar precio";
             return (
