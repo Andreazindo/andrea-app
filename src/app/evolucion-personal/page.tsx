@@ -44,15 +44,16 @@ export default async function EvolucionPersonalPage() {
           <ZindoSectionHeading>Sobre Andrea</ZindoSectionHeading>
           <div className="grid grid-cols-1 sm:grid-cols-[240px_1fr] gap-10 items-start">
             <div className="mx-auto sm:mx-0 w-48 sm:w-full max-w-[240px]">
-              <div className="bg-white p-3 shadow-md" style={{ border: `1px solid ${zindoColors.gold}` }}>
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={andreaPhoto}
-                    alt="Andrea Domínguez, creadora de ZINDO"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
+              <div
+                className="relative aspect-[3/4] overflow-hidden rounded-md shadow-md"
+                style={{ border: `1px solid ${zindoColors.gold}` }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={andreaPhoto}
+                  alt="Andrea Domínguez, creadora de ZINDO"
+                  className="h-full w-full object-cover"
+                />
               </div>
             </div>
             <div>
