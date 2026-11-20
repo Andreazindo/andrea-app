@@ -68,7 +68,7 @@ export function ProductCard({
               type="button"
               aria-label="Imagen anterior"
               onClick={(e) => go(-1, e)}
-              className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 w-7 h-7 flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 w-7 h-7 flex items-center justify-center text-sm transition-opacity"
               style={{ color: zindoColors.ink }}
             >
               ‹
@@ -77,7 +77,7 @@ export function ProductCard({
               type="button"
               aria-label="Imagen siguiente"
               onClick={(e) => go(1, e)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 w-7 h-7 flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 w-7 h-7 flex items-center justify-center text-sm transition-opacity"
               style={{ color: zindoColors.ink }}
             >
               ›

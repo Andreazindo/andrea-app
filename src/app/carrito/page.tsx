@@ -38,6 +38,9 @@ export default async function CarritoPage() {
         </div>
       ) : (
         <>
+          <Link href="/tienda" className="mb-4 inline-block text-sm font-medium hover:underline" style={{ color: zindoColors.gold }}>
+            ← Seguir comprando
+          </Link>
           <ul className="space-y-4">
             {items.map((item) => (
               <li

@@ -39,6 +39,13 @@ export default async function LoginPage({
               Contraseña
             </label>
             <input id="password" name="password" type="password" required className={inputClass} style={inputStyle} />
+            <Link
+              href="/recuperar-contrasena"
+              className="mt-1 inline-block text-xs hover:underline"
+              style={{ color: zindoColors.gold }}
+            >
+              ¿Olvidaste tu contraseña?
+            </Link>
           </div>
           <button
             type="submit"
